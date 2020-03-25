@@ -5,7 +5,6 @@ module.exports = {
     node: true,
   },
 
-  extends: ['plugin:vue/essential', '@vue/prettier', 'eslint:recommended'],
   plugins: ['prettier'],
 
   rules: {
@@ -31,4 +30,6 @@ module.exports = {
   parserOptions: {
     parser: 'babel-eslint',
   },
+
+  extends: ['plugin:vue/essential', '@vue/prettier', 'eslint:recommended'],
 };
