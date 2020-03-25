@@ -9,10 +9,18 @@ const routes = [
     redirect: '/projects',
   },
   {
+    path: '/login-signup',
+    name: 'LoginSignup',
+    component: () =>
+      import(
+        /*webpackChunkName: "bundle.login-signup"*/ '../views/login-signup.vue'
+      ),
+  },
+  {
     path: '/projects',
     name: 'Home',
     component: () =>
-      import(/* webbackChunkName: "bundle.projects" */ '../views/home.vue'),
+      import(/* webpackChunkName: "bundle.projects" */ '../views/home.vue'),
   },
   {
     path: '/about',
