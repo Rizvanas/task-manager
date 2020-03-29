@@ -6,21 +6,21 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: '/',
-    redirect: '/projects',
+    redirect: '/goals',
   },
   {
-    path: '/login-signup',
-    name: 'LoginSignup',
+    path: '/login',
+    name: 'Login',
     component: () =>
       import(
-        /*webpackChunkName: "bundle.login-signup"*/ '../views/login-signup.vue'
+        /* webpackChunkName: "bundle.login-signup" */ '../views/login.vue'
       ),
   },
   {
-    path: '/projects',
-    name: 'Home',
+    path: '/goals',
+    name: 'Goals',
     component: () =>
-      import(/* webpackChunkName: "bundle.projects" */ '../views/home.vue'),
+      import(/* webpackChunkName: "bundle.goals" */ '../views/goals.vue'),
   },
   {
     path: '/about',
