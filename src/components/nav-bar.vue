@@ -1,19 +1,42 @@
 <template>
-  <nav class="navbar">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <router-link to="/projects" class="nav-link">
-          <font-awesome-icon :icon="['fas', 'clipboard-list']" size="4x" />
-          <span class="link-text">Projects</span>
+  <nav
+    class="navbar is-transparent is-fixed-top is-spaced is-hidden-touch"
+    role="navigation"
+    aria-label="main navigation"
+  >
+    <div class="navbar-brand is-size-3">
+      <router-link to="/goals" class="navbar-item">
+        <span class="navbar-title">Goalse</span>
+      </router-link>
+    </div>
+    <div class="navbar-menu">
+      <div class="navbar-start">
+        <router-link to="/goals" class="navbar-item">
+          <span>Goals</span>
         </router-link>
-      </li>
-      <li class="nav-item">
-        <router-link to="/about" class="nav-link">
-          <font-awesome-icon :icon="['fas', 'info-circle']" size="4x" />
-          <span class="link-text">About</span>
+        <router-link to="/about" class="navbar-item">
+          <span>About</span>
         </router-link>
-      </li>
-    </ul>
+        <div class="control has-icons-right">
+          <input
+            class="input is-rounded"
+            type="text"
+            placeholder="Search goals..."
+          />
+          <span class="icon is-small is-right">
+            <font-awesome-icon :icon="['fas', 'search']" />
+          </span>
+        </div>
+      </div>
+      <div class="navbar-end">
+        <router-link to="/login" class="navbar-item">
+          <span class="icon">
+            <font-awesome-icon :icon="['fas', 'sign-out-alt']" />
+          </span>
+          <span>Sign out</span>
+        </router-link>
+      </div>
+    </div>
   </nav>
 </template>
 

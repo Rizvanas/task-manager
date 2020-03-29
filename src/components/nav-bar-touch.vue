@@ -1,0 +1,57 @@
+<template>
+  <nav class="navbar is-spaced is-hidden-desktop is-fixed-top">
+    <div class="navbar-brand level">
+      <div class="navbar-item level-left is-size-4">
+        <router-link class="level-item" to="/goals">
+          <span
+            class="navbar-title navbar-item"
+            data-balloon="Home page"
+            data-balloon-pos="right"
+            >Goalse</span
+          >
+        </router-link>
+      </div>
+      <a
+        role="button"
+        class="navbar-burger level-right"
+        data-target="navMenu"
+        aria-label="menu"
+        aria-expanded="false"
+        @click="isActive = !isActive"
+        :class="{ 'is-active': isActive }"
+      >
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div class="navbar-menu" id="navMenu" :class="{ 'is-active': isActive }">
+      <div class="navbar-item">
+        <router-link to="/goals" class="navbar-item">
+          <span>Goals</span>
+        </router-link>
+        <router-link to="about" class="navbar-item">
+          <span>About</span>
+        </router-link>
+        <router-link to="/login" class="navbar-item">
+          <span class="icon">
+            <font-awesome-icon :icon="['fas', 'sign-out-alt']" />
+          </span>
+          <span>Sign out</span>
+        </router-link>
+      </div>
+    </div>
+  </nav>
+</template>
+
+<script>
+export default {
+  name: 'NavBarTouch',
+
+  data() {
+    return {
+      isActive: false,
+    };
+  },
+};
+</script>
