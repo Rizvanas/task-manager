@@ -1,20 +1,20 @@
 <template>
   <div id="app">
-    <div>
-      <!-- <NavBar /> -->
-      <main>
-        <router-view />
-      </main>
-    </div>
+    <NavBar />
+    <NavBarTouch />
+    <main class="main-section">
+      <router-view />
+    </main>
   </div>
 </template>
 
 <script>
-// import NavBar from '@/components/nav-bar';
+import NavBar from '@/components/nav-bar';
+import NavBarTouch from '@/components/nav-bar-touch';
 
 export default {
   name: 'App',
-  // components: { NavBar },
+  components: { NavBar, NavBarTouch },
 };
 </script>
 

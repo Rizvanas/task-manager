@@ -4,10 +4,6 @@
 
 <script>
 export default {
-  name: 'Projects',
-  data() {
-    return {};
-  },
-  computed: {},
+  name: 'GoalDetail',
 };
 </script>
