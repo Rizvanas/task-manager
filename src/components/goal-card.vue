@@ -15,18 +15,20 @@
       <h3 class="subtitle has-text-weight-bold">Next acomplishment</h3>
       <div class="level is-marginless">
         <div class="level-left is-size-5">🦄</div>
-        <div class="level-right">
-          <div class="has-text-left">
-            <label
-              class="has-text-left"
-              for="todo"
-              data-contet="Sukurti puslapio navigacija"
-              >Sukurti puslapio navigacija</label
-            >
-            <input type="checkbox" id="todo" name="todo" value="todo" />
+        <div class="field">
+          <div class="control">
+            <div class="b-checkbox is-warning">
+              <input id="checkbox" class="styled" checked type="checkbox" />
+              <label for="checkbox">
+                Is Warning
+              </label>
+            </div>
           </div>
         </div>
       </div>
+      <button aria-label="Whats up!" data-balloon-pos="down">
+        Hover me!
+      </button>
     </div>
     <div class="card-footer-item">
       <progress class="progress is-success" value="21" max="100" />

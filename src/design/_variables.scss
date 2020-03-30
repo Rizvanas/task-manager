@@ -1,4 +1,4 @@
-$highlight-color: #00d6e8;
+$highlight-color: #00c9b7;
 $hurry-color: #d33e5d;
 $blue: #3273dc;
 $lightgray: #9c9e9f;
@@ -12,3 +12,4 @@ $primary: $blue;
 $link: $primary;
 $navbar-background-color: $background;
 $family-sans-serif: 'Nunito', sans-serif;
+$balloon-bg: fade-out(rgb(145, 52, 52), 0.05) !default;

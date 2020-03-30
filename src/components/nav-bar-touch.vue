@@ -5,8 +5,8 @@
         <router-link class="level-item" to="/goals">
           <span
             class="navbar-title navbar-item"
-            data-balloon="Home page"
-            data-balloon-pos="right"
+            aria-label="Home page"
+            data-balloon-pos="bottom"
             >Goalse</span
           >
         </router-link>

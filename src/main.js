@@ -5,15 +5,24 @@ import {
   faInfo,
   faSignOutAlt,
   faCheckSquare,
-  faFire,
   faSearch,
+  faEnvelope,
+  faKey,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import App from './app.vue';
 import router from './router';
 import store from './store';
 
-library.add(faBullseye, faInfo, faSignOutAlt, faCheckSquare, faFire, faSearch);
+library.add(
+  faBullseye,
+  faInfo,
+  faSignOutAlt,
+  faCheckSquare,
+  faSearch,
+  faEnvelope,
+  faKey,
+);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.directive('click-outside', {

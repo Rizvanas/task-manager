@@ -17,15 +17,24 @@
         <router-link to="/about" class="navbar-item">
           <span>About</span>
         </router-link>
-        <div class="control has-icons-right">
-          <input
-            class="input is-rounded"
-            type="text"
-            placeholder="Search goals..."
-          />
-          <span class="icon is-small is-right">
-            <font-awesome-icon :icon="['fas', 'search']" />
-          </span>
+        <div class="dropdown is-hoverable dropdown-trigger">
+          <div class="control has-icons-right">
+            <input
+              class="input is-rounded"
+              type="text"
+              placeholder="Search goals..."
+              aria-haspopup="true"
+              aria-controls="search-options"
+            />
+            <span class="icon is-small is-right">
+              <font-awesome-icon :icon="['fas', 'search']" />
+            </span>
+          </div>
+          <div class="dropdown-menu" id="search-options" role="menu">
+            <div class="dropdown-content is-rounded">
+              <a href="#" class="dropdown-item">Overview</a>
+            </div>
+          </div>
         </div>
       </div>
       <div class="navbar-end">
