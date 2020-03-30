@@ -9,8 +9,10 @@
               method="post"
               @submit.prevent="handleLogin"
             >
-              <h3 class="title has-text-centered">Welcome Back!</h3>
-              <p class="subtitle has-text-centered">
+              <h3 class="title has-text-centered has-text-weight-bold">
+                Welcome Back!
+              </h3>
+              <p class="subtitle has-text-centered is-size-4">
                 <span class="is-inline-block is-inverted">🎉</span>
                 🤓
                 <span>🎉</span>
