@@ -10,43 +10,8 @@
               @submit.prevent="handleLogin"
             >
               <h3 class="title has-text-centered has-text-weight-bold">
-                Welcome Back!
+                Hi! ✋
               </h3>
-              <p class="subtitle has-text-centered">
-                <span class="is-inline-block is-inverted">🎉</span>
-                🤗
-                <span>🎉</span>
-              </p>
-              <div class="field">
-                <div class="control has-icons-left">
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    autofocus="autofocus"
-                    class="input"
-                  />
-                  <span class="icon is-small is-left">
-                    <font-awesome-icon :icon="['fas', 'envelope']" />
-                  </span>
-                </div>
-              </div>
-              <div class="field">
-                <div class="control has-icons-left">
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    autocomplete="off"
-                    class="input"
-                  />
-                  <span class="icon is-small is-left">
-                    <font-awesome-icon :icon="['fas', 'key']" />
-                  </span>
-                </div>
-              </div>
-              <button type="submit" class="button is-fullwidth is-primary">
-                Log in
-              </button>
-              <div class="is-divider" data-content="or"></div>
               <a class="button is-fullwidth">
                 <span class="google-button__icon">
                   <svg viewBox="0 0 366 372" xmlns="http://www.w3.org/2000/svg">
@@ -72,21 +37,65 @@
                   </svg>
                 </span>
                 <span class="google-button__text">
-                  Sign in with Google
+                  Continue with Google
                 </span>
               </a>
+              <div class="is-divider" data-content="or"></div>
+              <a
+                class="button is-fullwidth is-primary is-outlined"
+                @click="toggleSignUpMode"
+              >
+                Sign up using your email
+              </a>
+              <div v-if="signInWithEmail">
+                <br />
+                <h3 class="title has-text-centered has-text-weight-bold">
+                  Lets get started 😉
+                </h3>
+                <div class="field">
+                  <div class="control has-icons-left">
+                    <input
+                      type="text"
+                      placeholder="Username"
+                      autofocus="autofocus"
+                      class="input"
+                    />
+                    <span class="icon is-small is-left">
+                      <font-awesome-icon :icon="['fas', 'signature']" />
+                    </span>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="control has-icons-left">
+                    <input type="email" placeholder="Email" class="input" />
+                    <span class="icon is-small is-left">
+                      <font-awesome-icon :icon="['fas', 'envelope']" />
+                    </span>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="control has-icons-left">
+                    <input
+                      type="password"
+                      placeholder="Password"
+                      autocomplete="off"
+                      class="input"
+                    />
+                    <span class="icon is-small is-left">
+                      <font-awesome-icon :icon="['fas', 'key']" />
+                    </span>
+                  </div>
+                </div>
+                <a type="submit" class="button is-fullwidth is-primary">
+                  Sign up!
+                </a>
+              </div>
               <hr />
               <p class="subtitle is-size-6 has-text-centered">
-                Don't have an account?
-              </p>
-              <router-link to="/signup" class="button is-warning is-fullwidth">
-                Sign up, it's free!
-              </router-link>
-              <hr />
-              <p class="subtitle is-size-6 has-text-centered ">
-                <a class="has-text-dark" href="#">
-                  Forgot password?
-                </a>
+                Already have an account?
+                <router-link to="/login" class="has-text-link"
+                  >Log in</router-link
+                >
               </p>
             </form>
           </div>
@@ -98,12 +107,17 @@
 
 <script>
 export default {
-  name: 'Login',
+  name: 'SignUp',
   data() {
-    return {};
+    return {
+      signInWithEmail: false,
+    };
   },
   methods: {
-    handleLogin() {},
+    handleSignUp() {},
+    toggleSignUpMode() {
+      this.signInWithEmail = !this.signInWithEmail;
+    },
   },
 };
 </script>

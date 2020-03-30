@@ -17,6 +17,14 @@ const routes = [
       ),
   },
   {
+    path: '/signup',
+    name: 'SignUp',
+    component: () =>
+      import(
+        /* webpackChunkName: "bundle.login-signup" */ '../views/sign-up.vue'
+      ),
+  },
+  {
     path: '/goals',
     name: 'Goals',
     component: () =>
