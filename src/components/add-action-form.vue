@@ -27,9 +27,9 @@
                     lazy
                   >
                     <template v-for="val in [0, 2, 4, 6, 8, 10]">
-                      <b-slider-tick :value="val" :key="val">{{
-                        val
-                      }}</b-slider-tick>
+                      <b-slider-tick :value="val" :key="val">
+                        {{ val }}
+                      </b-slider-tick>
                     </template>
                   </b-slider>
                 </b-field>
@@ -76,7 +76,7 @@ export default {
   },
   computed: {
     currentActionEmoji: function() {
-      return getWorkHoursInEmoji(this.sliderValue);
+      return getWorkHoursInEmoji(this.workHours);
     },
   },
 };

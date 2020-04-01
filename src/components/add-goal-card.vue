@@ -2,14 +2,7 @@
   <form class="box has-shadow">
     <div class="one-line-items is-marginless"></div>
     <div class="card-content">
-      <b-steps
-        v-model="activeStep"
-        :animated="isAnimated"
-        :has-navigation="hasNavigation"
-        :icon-prev="prevIcon"
-        :icon-next="nextIcon"
-        type="is-info"
-      >
+      <b-steps v-model="activeStep" :has-navigation="true" type="is-info">
         <b-step-item label="Description">
           <h1 class="title has-text-weight-bold has-text-centered">
             Describe your goal
@@ -64,11 +57,7 @@
           <AddActionForm v-if="addNewAction" />
         </b-step-item>
 
-        <template
-          v-if="customNavigation"
-          slot="navigation"
-          slot-scope="{ previous, next }"
-        >
+        <template slot="navigation" slot-scope="{ previous, next }">
           <b-button
             outlined
             type="is-danger"
@@ -107,6 +96,7 @@ export default {
       gotSelected: false,
       showDatepicker: false,
       addNewAction: false,
+      activeStep: 0,
     };
   },
 
