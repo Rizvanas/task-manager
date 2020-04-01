@@ -67,7 +67,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.handle {
-}
-</style>
+<style scoped></style>

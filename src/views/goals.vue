@@ -5,10 +5,7 @@
         <h1 class="title is-size-1 has-text-weight-bold">
           <span class="underline-primary">Goals</span>
           <span>
-            <button
-              @click="enterAddNewCardMode"
-              class="button button-special is-rounded"
-            >
+            <button class="button button-special is-rounded">
               <span class="icon is-small">
                 <i class="fas fa-plus"></i>
               </span>
@@ -54,7 +51,6 @@ const goals = [
 
 export default {
   name: 'Goals',
-  display: 'Transitions',
   components: { GoalCard, AddGoalCard, draggable },
 
   data() {
@@ -70,7 +66,6 @@ export default {
     sort() {
       this.goals = this.goals.sort((a, b) => a.order - b.order);
     },
-    enterAddNewCardMode() {},
   },
   computed: {
     dragOptions() {
@@ -88,10 +83,6 @@ export default {
 </script>
 
 <style scoped>
-.flip-list-move {
-  transition: transform 0.5s;
-}
-
 .no-move {
   opacity: 0.5s;
 }
