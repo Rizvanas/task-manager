@@ -1,32 +1,15 @@
 import Vue from 'vue';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import {
-  faBullseye,
-  faInfo,
-  faSignOutAlt,
-  faCheckSquare,
-  faSearch,
-  faEnvelope,
-  faKey,
-  faSignature,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import Buefy from 'buefy';
+import 'buefy/dist/buefy.css';
 import App from './app.vue';
 import router from './router';
 import store from './store';
 
-library.add(
-  faBullseye,
-  faInfo,
-  faSignOutAlt,
-  faCheckSquare,
-  faSearch,
-  faEnvelope,
-  faKey,
-  faSignature,
-);
+Vue.use(Buefy, {
+  defaultIconPack: 'fas',
+  defaultContainerElement: '#content',
+});
 
-Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.directive('click-outside', {
   bind() {
     this.event = event => this.vm.$emit(this.expression, event);
