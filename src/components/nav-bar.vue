@@ -27,7 +27,7 @@
               aria-controls="search-options"
             />
             <span class="icon is-small is-right">
-              <font-awesome-icon :icon="['fas', 'search']" />
+              <i class="fas fa-search"></i>
             </span>
           </div>
           <div class="dropdown-menu" id="search-options" role="menu">
@@ -36,11 +36,19 @@
             </div>
           </div>
         </div>
+        <div class="navbar-item">
+          <button class="button button-special is-rounded">
+            <span class="icon is-small">
+              <i class="fas fa-plus"></i>
+            </span>
+            <span>Set new goal</span>
+          </button>
+        </div>
       </div>
       <div class="navbar-end">
         <router-link to="/login" class="navbar-item">
           <span class="icon">
-            <font-awesome-icon :icon="['fas', 'sign-out-alt']" />
+            <i class="fas fa-sign-out-alt"></i>
           </span>
           <span>Sign out</span>
         </router-link>
