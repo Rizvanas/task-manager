@@ -4,7 +4,7 @@
       <div class="field has-addons">
         <div class="control">
           <b-dropdown
-            position="is-left"
+            position="is-bottom-right"
             append-to-body
             aria-role="menu"
             trap-focus
@@ -24,7 +24,6 @@
                     :custom-formatter="emojiTooltip"
                     tooltip-type="is-white"
                     v-model="workHours"
-                    lazy
                   >
                     <template v-for="val in [0, 2, 4, 6, 8, 10]">
                       <b-slider-tick :value="val" :key="val">
