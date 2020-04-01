@@ -35,7 +35,7 @@
         </router-link>
         <router-link to="/login" class="navbar-item">
           <span class="icon">
-            <font-awesome-icon :icon="['fas', 'sign-out-alt']" />
+            <i class="fas fa-sign-out-alt"></i>
           </span>
           <span>Sign out</span>
         </router-link>
