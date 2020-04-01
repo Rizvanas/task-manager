@@ -1,37 +1,30 @@
 <template>
   <article class="box has-shadow-lift">
-    <div class="one-line-items is-marginless">
-      <span class="is-size-5 is-right">🔥 7 days left</span>
-    </div>
     <div class="card-content">
       <div class="title has-text-weight-bold">{{ clonedGoal.title }}</div>
-      <hr />
-      <p class="subtitle">
-        I'm baby copper mug quinoa tofu bitters, four loko pitchfork kickstarter
-        cloud bread authentic artisan retro.
-      </p>
     </div>
-    <div class="card-content">
-      <h3 class="subtitle has-text-weight-bold">Next acomplishment</h3>
-      <div class="level is-marginless">
-        <div class="level-left is-size-5">🦄</div>
-        <div class="field">
-          <div class="control">
-            <div class="b-checkbox is-warning">
-              <input id="checkbox" class="styled" checked type="checkbox" />
-              <label for="checkbox">
-                Is Warning
-              </label>
-            </div>
-          </div>
+    <div class="level">
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="title">7</p>
+          <p class="heading">Days left</p>
         </div>
       </div>
-      <button aria-label="Whats up!" data-balloon-pos="down">
-        Hover me!
-      </button>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="title">12</p>
+          <p class="heading">Tasks left</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="title">9</p>
+          <p class="heading">Tasks finished</p>
+        </div>
+      </div>
     </div>
     <div class="card-footer-item">
-      <progress class="progress is-success" value="21" max="100" />
+      <progress class="progress is-small is-success" value="21" max="100" />
     </div>
   </article>
 </template>
@@ -73,3 +66,8 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.handle {
+}
+</style>
