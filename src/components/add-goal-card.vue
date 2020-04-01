@@ -79,13 +79,16 @@
                         <div class="has-shadow" style="width:242px;">
                           <b-field>
                             <b-slider
-                              aria-label="Fan"
                               label="Time action will take"
                               type="is-info"
                               :min="0"
-                              :max="8"
+                              :max="10"
+                              :step="0.1"
+                              :custom-formatter="emojiTooltip"
+                              tooltip-type="is-white"
+                              v-model="sliderValue"
                             >
-                              <template v-for="val in [0, 4, 8]">
+                              <template v-for="val in [0, 2, 4, 6, 8, 10]">
                                 <b-slider-tick :value="val" :key="val">{{
                                   val
                                 }}</b-slider-tick>
@@ -152,6 +155,7 @@
 </template>
 
 <script>
+import { getWorkHoursInEmoji } from '@/shared/constants';
 export default {
   name: 'AddGoalCard',
   data() {
@@ -160,8 +164,10 @@ export default {
       gotSelected: false,
       showDatepicker: false,
       addNewAction: false,
+      sliderValue: 1,
     };
   },
+
   methods: {
     daysLeft() {
       const now = new Date();
@@ -178,6 +184,10 @@ export default {
     },
     toggleShowDatepicker() {
       this.$refs.datepicker.toggle();
+    },
+    emojiTooltip(val) {
+      const emoji = getWorkHoursInEmoji(val);
+      return emoji;
     },
   },
   computed: {
