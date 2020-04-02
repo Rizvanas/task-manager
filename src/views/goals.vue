@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <AddGoalCard class="column is-12-tablet is-6-desktop is-4-widescreen" />
+    <AddGoalCard />
     <draggable
       class="columns is-multiline"
       v-model="goals"
