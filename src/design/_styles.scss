@@ -96,6 +96,25 @@ input::-moz-focus-inner {
   transition: cubic-bezier(0.19, 1, 0.22, 1);
 }
 
+.actions-scroller {
+  min-height: 0;
+  max-height: 200px;
+  overflow-y: scroll;
+}
+
+.actions-scroller::-webkit-scrollbar {
+  width: 0.25rem;
+}
+
+.actions-scroller::-webkit-scrollbar-track {
+  background: $bg-color;
+}
+
+.actions-scroller::-webkit-scrollbar-thumb {
+  background: #babac0;
+  border-radius: 16px;
+}
+
 .google-button__icon {
   display: inline-block;
   vertical-align: middle;
