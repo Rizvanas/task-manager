@@ -1,6 +1,5 @@
 <template>
-  <form class="box has-shadow">
-    <div class="one-line-items is-marginless"></div>
+  <form class="box has-shadow column is-12-tablet is-7-desktop is-6-widescreen">
     <div class="card-content">
       <b-steps v-model="activeStep" :has-navigation="true" type="is-info">
         <b-step-item label="Description">
@@ -44,38 +43,48 @@
             Actions to achieve goal
           </h1>
           <div class="field">
-            <a
-              @click="addNewAction = true"
-              class="button is-fullwidth is-outlined"
-            >
+            <a @click="addNewAction" class="button is-fullwidth is-outlined">
               <span class="icon is-small">
                 <i class="fas fa-plus"></i>
               </span>
               <span>Add new action</span>
             </a>
           </div>
-          <AddActionForm v-if="addNewAction" />
+          <div v-if="actions.length > 0" class="box has-border" id="actions">
+            <p class="subtitle has-text-weight-bold">Actions</p>
+            <div class="actions-scroller" ref="actions">
+              <Action
+                v-for="action in actions"
+                :key="action.id"
+                :action="action"
+                @actionUpdated="updateAction"
+                @actionDeleted="deleteAction(action.id)"
+              />
+            </div>
+          </div>
         </b-step-item>
 
         <template slot="navigation" slot-scope="{ previous, next }">
-          <b-button
-            outlined
-            type="is-danger"
-            icon-pack="fas"
-            icon-left="backward"
-            :disabled="previous.disabled"
-            @click.prevent="previous.action"
-            >Previous</b-button
-          >
-          <b-button
-            outlined
-            type="is-success"
-            icon-pack="fas"
-            icon-right="forward"
-            :disabled="next.disabled"
-            @click.prevent="next.action"
-            >Next</b-button
-          >
+          <div class="is-marginless level">
+            <b-button
+              outlined
+              type="is-primary"
+              icon-pack="fas"
+              icon-left="caret-left"
+              :disabled="previous.disabled"
+              @click.prevent="previous.action"
+              >Previous</b-button
+            >
+            <b-button
+              type="is-primary"
+              custom-class="is-pulled-right"
+              icon-pack="fas"
+              icon-right="caret-right"
+              :disabled="next.disabled"
+              @click.prevent="next.action"
+              >Next</b-button
+            >
+          </div>
         </template>
       </b-steps>
     </div>
@@ -83,21 +92,26 @@
 </template>
 
 <script>
-import AddActionForm from '@/components/add-action-form';
+import Action from '@/components/action';
 
+const actions = [];
 export default {
   name: 'AddGoalCard',
 
-  components: { AddActionForm },
+  components: { Action },
 
   data() {
     return {
       deadline: new Date(),
       gotSelected: false,
       showDatepicker: false,
-      addNewAction: false,
       activeStep: 0,
+      actions: actions,
     };
+  },
+
+  updated() {
+    this.scrollToEnd();
   },
 
   methods: {
@@ -116,6 +130,31 @@ export default {
     },
     toggleShowDatepicker() {
       this.$refs.datepicker.toggle();
+    },
+
+    addNewAction() {
+      const id =
+        this.actions.length === 0
+          ? 1
+          : this.actions[this.actions.length - 1].id + 1;
+      this.actions.push({ id, title: '', workHours: 0 });
+    },
+    deleteAction(id) {
+      const index = this.actions.findIndex(a => a.id === id);
+      this.actions.splice(index, 1);
+    },
+
+    updateAction(action) {
+      const index = this.actions.findIndex(a => a.id === action.id);
+      if (index !== -1) {
+        this.actions[index] = { ...action };
+      }
+    },
+    scrollToEnd() {
+      var content = this.$refs.actions;
+      if (content != null) {
+        content.scrollTop = content.scrollHeight + 10;
+      }
     },
   },
   computed: {

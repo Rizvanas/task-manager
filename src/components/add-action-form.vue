@@ -12,8 +12,8 @@
             <a class="button" slot="trigger" role="button">
               <span>{{ currentActionEmoji }}</span>
             </a>
-            <b-dropdown-item :focusable="false" custom>
-              <div class="has-shadow" style="width:242px;">
+            <b-dropdown-item custom>
+              <div class="has-shadow" style="width:132px; z-index: 100;">
                 <b-field>
                   <b-slider
                     label="Time action will take"

@@ -97,13 +97,21 @@ input::-moz-focus-inner {
 }
 
 .actions-scroller {
-  min-height: 0;
-  max-height: 200px;
+  height: 174px;
   overflow-y: scroll;
+  scrollbar-width: thin;
+  padding: 15px;
+  scrollbar-color: #babac0 $bg-color;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
 }
 
 .actions-scroller::-webkit-scrollbar {
   width: 0.25rem;
+}
+
+#janky-slider {
+  overflow: visible !important;
 }
 
 .actions-scroller::-webkit-scrollbar-track {
