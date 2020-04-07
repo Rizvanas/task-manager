@@ -1,59 +1,52 @@
 <template>
-  <div class="field has-addons">
-    <div class="control">
-      <b-dropdown
-        style="overflow: visible !important;"
-        position="is-bottom-right"
-        append-to-body
-        aria-role="menu"
-        trap-focus
-      >
-        <a class="button" slot="trigger" role="button">
-          <span>{{ currentActionEmoji }}</span>
-        </a>
-        <b-dropdown-item custom focusable>
-          <div class="has-shadow">
-            <b-field>
-              <b-slider
-                aria-role
-                @active-change="dropdownActivated"
-                @change="update"
-                label="Time action will take"
-                type="is-info"
-                :min="0"
-                :max="10"
-                :step="0.1"
-                :custom-formatter="emojiTooltip"
-                tooltip-type="is-white"
-                v-model="clonedAction.workHours"
-              >
-                <template v-for="val in [0, 2, 4, 6, 8, 10]">
-                  <b-slider-tick :value="val" :key="val">
-                    {{ val }}
-                  </b-slider-tick>
-                </template>
-              </b-slider>
-            </b-field>
+  <div>
+    <div class="level">
+      <div class="level-left">
+        <div class="level-item has-text-centered">
+          <p class="title">{{ currentActionEmoji }}</p>
+        </div>
+      </div>
+      <transition name="fade">
+        <div class="level-item">
+          <p v-if="!isInEditMode" class="action-text">
+            {{ clonedAction.title }}
+          </p>
+          <div v-if="isInEditMode" class="field">
+            <input
+              v-model="clonedAction.title"
+              class="input"
+              type="text"
+              placeholder="Text input"
+            />
           </div>
-        </b-dropdown-item>
-      </b-dropdown>
+        </div>
+      </transition>
+
+      <div class="level-right" tabindex="-1">
+        <div class="level-item">
+          <span>
+            <p class="is-small is-pulled-right action-button">
+              <i v-if="!isInEditMode" class="fas fa-check"></i>
+              <i v-else class="fas fa-times"></i>
+            </p>
+          </span>
+        </div>
+      </div>
     </div>
-    <p class="control is-expanded">
-      <input
-        @keyup="update"
-        type="text"
-        class="input is-fullwidth"
-        placeholder="Name your action"
-        v-model="clonedAction.title"
-      />
-    </p>
-    <p class="control">
-      <button @click="deleteAction" type="button" class="button">
-        <span class>
-          <i class="fas fa-times"></i>
-        </span>
-      </button>
-    </p>
+    <transition name="fade">
+      <b-field v-if="isInEditMode">
+        <b-slider
+          label="Time action will take"
+          type="is-info"
+          :min="0"
+          :max="10"
+          :step="0.1"
+          :custom-formatter="workHoursTooltip"
+          tooltip-type="is-white"
+          v-model="clonedAction.workHours"
+        ></b-slider>
+      </b-field>
+    </transition>
   </div>
 </template>
 
@@ -62,15 +55,30 @@ import { getWorkHoursInEmoji } from '@/shared/constants';
 
 export default {
   name: 'Action',
+  props: {
+    action: {
+      type: Object,
+      default: () => {
+        return {
+          title: '',
+          workHours: 0,
+        };
+      },
+    },
+    isInEditMode: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       clonedAction: { ...this.action },
+      isCompleted: [],
     };
   },
   methods: {
-    emojiTooltip(val) {
-      const emoji = getWorkHoursInEmoji(val);
-      return emoji;
+    workHoursTooltip(val) {
+      return `${val} hours`;
     },
 
     update() {
@@ -86,16 +94,20 @@ export default {
       return getWorkHoursInEmoji(this.clonedAction.workHours);
     },
   },
-  props: {
-    action: {
-      type: Object,
-      default: () => {
-        return {
-          title: '',
-          workHours: 0,
-        };
-      },
-    },
-  },
 };
 </script>
+
+<style scoped>
+.action-text {
+  overflow: hidden;
+  padding: 0 1rem 0 1rem;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 100ms cubic-bezier(0, 0.09, 0.33, 0.97);
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
