@@ -17,10 +17,13 @@
     "bulma": "^0.8.1",
     "bulma-calendar": "^6.0.7",
     "bulma-divider": "^0.2.0",
+    "chart.js": "^2.9.3",
+    "chartjs-plugin-datalabels": "^0.7.0",
     "cool-checkboxes-for-bulma.io": "^1.1.0",
     "core-js": "^3.6.4",
     "date-fns": "^2.11.0",
     "vue": "^2.6.11",
+    "vue-chartjs": "^3.5.0",
     "vue-router": "^3.1.5",
     "vuedraggable": "^2.23.2",
     "vuex": "^3.1.2"
