@@ -50,9 +50,9 @@
               <span>Add new action</span>
             </a>
           </div>
-          <div v-if="actions.length > 0" class="box has-border" id="actions">
+          <div v-if="actions.length > 0" class="box" id="actions">
             <p class="subtitle has-text-weight-bold">Actions</p>
-            <div class="actions-scroller" ref="actions">
+            <div class="box actions-scroller" ref="actions">
               <Action
                 v-for="action in actions"
                 :key="action.id"
