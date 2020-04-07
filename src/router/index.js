@@ -3,6 +3,8 @@ import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
 
+const parseProps = req => ({ id: parseInt(req.params.id) });
+
 const routes = [
   {
     path: '/',
@@ -35,6 +37,13 @@ const routes = [
     name: 'About',
     component: () =>
       import(/* webpackChunkName: "about" */ '../views/about.vue'),
+  },
+  {
+    path: '/goals/:id',
+    name: 'goal-detail',
+    props: parseProps,
+    component: () =>
+      import(/* webpackChunkName: "bundle.goals" */ '../views/goal-detail.vue'),
   },
 ];
 
