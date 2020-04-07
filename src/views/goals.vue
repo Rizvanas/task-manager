@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section>
     <div class="hero">
       <div class="hero-body">
         <h1 class="title is-size-1 has-text-weight-bold">
