@@ -50,40 +50,42 @@
       </div>
       <div class="tile is-parent fits-screen-height">
         <div class="tile is-child box has-shadow-border">
-          <span>
-            <transition name="fade">
-              <a
-                v-if="!editMode"
-                @mouseenter="hovered = true"
-                @mouseleave="hovered = false"
-                @click="setEditMode"
-                class="is-small is-pulled-right edit-button"
-              >
-                <i class="fas fa-pen"></i>
-              </a>
-              <a
-                v-else
-                @mouseenter="hovered = true"
-                @mouseleave="hovered = false"
-                @click="turnOffEditMode"
-                class="is-small is-pulled-right edit-button is-delete"
-              >
-                <i class="fas fa-times"></i>
-              </a>
-            </transition>
-            <transition name="slide-fade">
-              <a
-                v-if="editMode"
-                @mouseenter="hovered = true"
-                @mouseleave="hovered = false"
-                @click="saveChanges"
-                class="is-small is-pulled-right edit-button is-approve"
-              >
-                <i class="fas fa-check"></i>
-              </a>
-            </transition>
-          </span>
-          <br />
+          <div class="level is-marginless">
+            <div class="level-right level-item">
+              <transition name="slide-fade">
+                <a
+                  v-if="editMode"
+                  @mouseenter="hovered = true"
+                  @mouseleave="hovered = false"
+                  @click="saveChanges"
+                  class="is-small edit-button is-approve"
+                >
+                  <i class="fas fa-check"></i>
+                </a>
+              </transition>
+              <transition name="fade">
+                <a
+                  v-if="!editMode"
+                  @mouseenter="hovered = true"
+                  @mouseleave="hovered = false"
+                  @click="setEditMode"
+                  class="is-small edit-button"
+                >
+                  <i class="fas fa-pen"></i>
+                </a>
+                <a
+                  v-else
+                  @mouseenter="hovered = true"
+                  @mouseleave="hovered = false"
+                  @click="turnOffEditMode"
+                  class="is-small edit-button is-delete"
+                >
+                  <i class="fas fa-times"></i>
+                </a>
+              </transition>
+            </div>
+          </div>
+
           <p class="subtitle has-text-weight-bold has-text-centered">Actions</p>
           <div class="scrollable">
             <ul class="menu menu-list">
