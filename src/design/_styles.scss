@@ -239,3 +239,14 @@ input::-moz-focus-inner {
 .tile .fits-screen-height {
   height: calc(100vh - #{$navbar-height} - 4.9rem);
 }
+
+.no-scroll-zone {
+  overflow: hidden;
+}
+
+.menu {
+  height: 400px;
+  margin-right: -17px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
