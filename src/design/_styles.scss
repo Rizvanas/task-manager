@@ -174,7 +174,7 @@ input::-moz-focus-inner {
     }
 
     .action-button {
-      background-color: $hovered-item-red;
+      background-color: $light-red;
       &:hover {
         background-color: $hurry-color;
       }
@@ -191,6 +191,30 @@ input::-moz-focus-inner {
     box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
     background-color: $bg-color;
   }
+
+  &.is-delete {
+    padding: 0.5em 0.85em;
+    box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
+    background-color: $light-red;
+    margin-left: 0.5em;
+    &:hover {
+      background-color: $hurry-color;
+      i {
+        color: #fff;
+      }
+    }
+  }
+
+  &.is-approve {
+    box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
+    background-color: $light-green;
+    &:hover {
+      background-color: $green;
+      i {
+        color: #fff;
+      }
+    }
+  }
 }
 
 .action-button {
@@ -206,4 +230,12 @@ input::-moz-focus-inner {
       background-color: $hurry-color;
     }
   }
+}
+
+.tile .is-fullheight {
+  height: 100%;
+}
+
+.tile .fits-screen-height {
+  height: calc(100vh - #{$navbar-height} - 4.9rem);
 }
