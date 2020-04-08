@@ -36,7 +36,6 @@
     <transition name="fade">
       <b-field v-if="isInEditMode">
         <b-slider
-          label="Time action will take"
           type="is-info"
           :min="0"
           :max="10"
@@ -104,7 +103,7 @@ export default {
 }
 .fade-enter-active,
 .fade-leave-active {
-  transition: all 100ms cubic-bezier(0, 0.09, 0.33, 0.97);
+  transition: opacity 100ms cubic-bezier(0, 0.09, 0.33, 0.97);
 }
 .fade-enter,
 .fade-leave-to {
