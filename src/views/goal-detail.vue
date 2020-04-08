@@ -1,58 +1,59 @@
 <template>
   <section class="section">
-    <div class="container is-fluid">
-      <div class="tile is-ancestor">
-        <div class="tile is-7 is-vertical">
-          <div class="tile is-parent is-vertical">
-            <article class="tile is-child box has-shadow-border">
-              <div class="card-content">
-                <p class="title">{{ goal.title }}</p>
-                <hr />
-                <p class="subtitle">{{ goal.description }}</p>
-              </div>
-              <br />
-              <div class="level">
-                <div class="level-item has-text-centered">
-                  <div class="action">
-                    <p class="title">🧊</p>
-                    <p class="heading">Urgency</p>
-                  </div>
-                </div>
-                <div class="level-item has-text-centered">
-                  <div class="action">
-                    <p class="title">9</p>
-                    <p class="heading">Tasks finished</p>
-                  </div>
-                </div>
-                <div class="level-item has-text-centered">
-                  <div class="action">
-                    <p class="title">7</p>
-                    <p class="heading">Days left</p>
-                  </div>
+    <div class="tile is-ancestor">
+      <div class="tile is-7 is-vertical is-fullheight">
+        <div class="tile is-parent is-vertical">
+          <article class="tile is-child box has-shadow-border">
+            <div class="card-content">
+              <p class="title">{{ goal.title }}</p>
+              <hr />
+              <p class="subtitle">{{ goal.description }}</p>
+            </div>
+            <br />
+            <div class="level">
+              <div class="level-item has-text-centered">
+                <div class="action">
+                  <p class="title">🧊</p>
+                  <p class="heading">Urgency</p>
                 </div>
               </div>
-              <div>
-                <progress
-                  class="progress is-small is-primary"
-                  value="21"
-                  max="100"
-                />
+              <div class="level-item has-text-centered">
+                <div class="action">
+                  <p class="title">9</p>
+                  <p class="heading">Tasks finished</p>
+                </div>
               </div>
-            </article>
-          </div>
-          <div class="tile is-parent">
-            <article class="tile is-child box has-shadow-border">
-              <div class="has-text-centered">
-                <p class="subtitle has-text-weight-bold">Activity</p>
+              <div class="level-item has-text-centered">
+                <div class="action">
+                  <p class="title">7</p>
+                  <p class="heading">Days left</p>
+                </div>
               </div>
-              <ActivityChart :height="200" />
-            </article>
-          </div>
+            </div>
+            <div>
+              <progress
+                class="progress is-small is-primary"
+                value="21"
+                max="100"
+              />
+            </div>
+          </article>
         </div>
         <div class="tile is-parent">
-          <div class="tile is-child box has-shadow-border">
-            <span>
+          <article class="tile is-child box has-shadow-border">
+            <div class="has-text-centered">
+              <p class="subtitle has-text-weight-bold">Activity</p>
+            </div>
+            <ActivityChart :height="200" />
+          </article>
+        </div>
+      </div>
+      <div class="tile is-parent fits-screen-height">
+        <div class="tile is-child box has-shadow-border">
+          <span>
+            <transition name="fade">
               <a
+                v-if="!editMode"
                 @mouseenter="hovered = true"
                 @mouseleave="hovered = false"
                 @click="setEditMode"
@@ -60,11 +61,31 @@
               >
                 <i class="fas fa-pen"></i>
               </a>
-            </span>
-            <br />
-            <p class="subtitle has-text-weight-bold has-text-centered">
-              Actions
-            </p>
+              <a
+                v-else
+                @mouseenter="hovered = true"
+                @mouseleave="hovered = false"
+                @click="turnOffEditMode"
+                class="is-small is-pulled-right edit-button is-delete"
+              >
+                <i class="fas fa-times"></i>
+              </a>
+            </transition>
+            <transition name="slide-fade">
+              <a
+                v-if="editMode"
+                @mouseenter="hovered = true"
+                @mouseleave="hovered = false"
+                @click="saveChanges"
+                class="is-small is-pulled-right edit-button is-approve"
+              >
+                <i class="fas fa-check"></i>
+              </a>
+            </transition>
+          </span>
+          <br />
+          <p class="subtitle has-text-weight-bold has-text-centered">Actions</p>
+          <div class="scrollable">
             <ul class="menu menu-list">
               <li v-for="action in goal.actions" :key="action.id">
                 <a class="action" :class="{ 'is-edited': editMode }">
@@ -72,22 +93,6 @@
                 </a>
               </li>
             </ul>
-            <div v-if="editMode" class="buttons is-centered">
-              <button class="button is-primary is-rounded">
-                <span class="icon is-small">
-                  <i class="fas fa-save"></i>
-                </span>
-                <span>Save</span>
-              </button>
-              <button
-                @click="turnOffEditMode"
-                class="button is-danger is-rounded is-outlined"
-              >
-                <span class="icon is-small">
-                  <i class="fas fa-times"></i>
-                </span>
-              </button>
-            </div>
           </div>
         </div>
       </div>
@@ -150,6 +155,7 @@ export default {
         this.editMode = false;
       }
     },
+    saveChanges() {},
   },
 };
 </script>
@@ -157,5 +163,19 @@ export default {
 <style scoped>
 .actions-container {
   height: 30vh;
+}
+.slide-fade-enter-active,
+.slide-fade-leave-active,
+.fade-enter-active,
+.fade-enter-active,
+.fade-enter,
+.fade-leave-to {
+  transition: all 100ms cubic-bezier(0, 0.09, 0.33, 0.97);
+}
+
+.slide-fade-enter,
+.slide-fade-leave-to {
+  transform: translateX(15px);
+  opacity: 0;
 }
 </style>
