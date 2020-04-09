@@ -87,7 +87,7 @@
           </div>
 
           <p class="subtitle has-text-weight-bold has-text-centered">Actions</p>
-          <div class="scrollable">
+          <perfect-scrollbar>
             <ul class="menu menu-list">
               <li v-for="action in goal.actions" :key="action.id">
                 <a class="action" :class="{ 'is-edited': editMode }">
@@ -95,7 +95,7 @@
                 </a>
               </li>
             </ul>
-          </div>
+          </perfect-scrollbar>
         </div>
       </div>
     </div>
@@ -138,6 +138,10 @@ export default {
         { id: 5, title: 'Meh Task #5', workHours: 7 },
         { id: 6, title: 'Funny Task #6', workHours: 6 },
         { id: 7, title: 'Scary task #7', workHours: 8 },
+        { id: 8, title: 'Scary task #7', workHours: 8 },
+        { id: 9, title: 'Scary task #7', workHours: 8 },
+        { id: 10, title: 'Scary task #7', workHours: 8 },
+        { id: 11, title: 'Scary task #7', workHours: 8 },
       ],
     };
   },
@@ -179,5 +183,8 @@ export default {
 .slide-fade-leave-to {
   transform: translateX(15px);
   opacity: 0;
+}
+.ps {
+  height: 460px;
 }
 </style>
