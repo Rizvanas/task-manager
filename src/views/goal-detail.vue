@@ -4,30 +4,124 @@
       <div class="tile is-7 is-vertical is-fullheight">
         <div class="tile is-parent is-vertical">
           <article class="tile is-child box has-shadow-border">
-            <div class="card-content">
-              <p class="title">{{ goal.title }}</p>
-              <hr />
-              <p class="subtitle">{{ goal.description }}</p>
+            <div class="one-line-form" v-if="editTitle">
+              <div class="field">
+                <div class="control">
+                  <input
+                    v-model="goal.title"
+                    class="title input is-fullwidth"
+                    type="text"
+                    placeholder="Name your goal"
+                  />
+                </div>
+              </div>
+              <div class="field is-pulled-right">
+                <div class="control">
+                  <a
+                    @mouseenter="hovered = true"
+                    @mouseleave="hovered = false"
+                    @click="saveChanges"
+                    class="is-small action-button--submit"
+                  >
+                    <i class="fas fa-check"></i>
+                  </a>
+                  <a
+                    @mouseenter="hovered = true"
+                    @mouseleave="hovered = false"
+                    class="is-small action-button--cancel"
+                  >
+                    <i class="fas fa-times"></i>
+                  </a>
+                </div>
+              </div>
             </div>
+            <a v-else>
+              <p @click="enableTitleEditor" class="title clickable-form">
+                {{ goal.title }}
+              </p>
+            </a>
+            <hr />
+            <div class="one-line-form" v-if="editDescription">
+              <div class="field">
+                <div class="control">
+                  <input
+                    v-model="goal.description"
+                    class="subtitle input"
+                    type="text"
+                    placeholder="Describe your goal"
+                  />
+                </div>
+              </div>
+              <div class="field is-pulled-right">
+                <div class="control">
+                  <a
+                    @mouseenter="hovered = true"
+                    @mouseleave="hovered = false"
+                    @click="saveChanges"
+                    class="is-small action-button--submit"
+                  >
+                    <i class="fas fa-check"></i>
+                  </a>
+                  <a
+                    @mouseenter="hovered = true"
+                    @mouseleave="hovered = false"
+                    class="is-small action-button--cancel"
+                  >
+                    <i class="fas fa-times"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <a v-else>
+              <p
+                @click="enableDescriptionEditor"
+                class="subtitle clickable-form"
+              >
+                {{ goal.description }}
+              </p>
+            </a>
             <br />
             <div class="level">
               <div class="level-item has-text-centered">
-                <div class="action">
+                <div class="goal-card-stat">
                   <p class="title">🧊</p>
                   <p class="heading">Urgency</p>
                 </div>
               </div>
               <div class="level-item has-text-centered">
-                <div class="action">
+                <div class="goal-card-stat">
                   <p class="title">9</p>
                   <p class="heading">Tasks finished</p>
                 </div>
               </div>
               <div class="level-item has-text-centered">
-                <div class="action">
-                  <p class="title">7</p>
-                  <p class="heading">Days left</p>
-                </div>
+                <b-dropdown
+                  position="is-bottom-left"
+                  append-to-body
+                  aria-role="menu"
+                  trap-focus
+                >
+                  <a slot="trigger" role="button">
+                    <div class="action goal-card-stat">
+                      <p class="title">7</p>
+                      <p class="heading">Days left</p>
+                    </div>
+                  </a>
+                  <b-dropdown-item
+                    aria-role="menu-item"
+                    :focusable="false"
+                    custom
+                    paddingless
+                  >
+                    <div class="modal-card" style="width:320px;">
+                      <b-datepicker
+                        v-model="goal.completionDate"
+                        inline
+                        size="is-small"
+                      ></b-datepicker>
+                    </div>
+                  </b-dropdown-item>
+                </b-dropdown>
               </div>
             </div>
             <div>
@@ -165,6 +259,8 @@ export default {
       editMode: false,
       insertMode: false,
       displayFinishedActions: false,
+      editDescription: false,
+      editTitle: false,
     };
   },
   created() {
@@ -172,6 +268,7 @@ export default {
       title: 'Read another shitty book',
       description:
         'Read a shitty self help book to get inspired for a meme app',
+      completionDate: new Date(),
       actions: [
         { id: 1, title: 'Random Task #1', workHours: 5, isFinished: false },
         { id: 2, title: 'Generic Task #2', workHours: 3, isFinished: false },
@@ -216,6 +313,12 @@ export default {
     },
     saveChanges() {},
     addNewAction() {},
+    enableTitleEditor() {
+      this.editTitle = true;
+    },
+    enableDescriptionEditor() {
+      this.editDescription = true;
+    },
   },
 };
 </script>
