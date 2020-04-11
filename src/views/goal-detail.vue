@@ -90,19 +90,25 @@
               </div>
               <div class="level-item has-text-centered">
                 <div class="goal-card-stat">
-                  <p class="title">9</p>
-                  <p class="heading">Tasks finished</p>
+                  <p class="title">{{ actionsFinished }}</p>
+                  <p class="heading">Actions finished</p>
+                </div>
+              </div>
+              <div class="level-item has-text-centered">
+                <div class="goal-card-stat">
+                  <p class="title">{{ remainingActions }}</p>
+                  <p class="heading">Actions remaining</p>
                 </div>
               </div>
               <div class="level-item has-text-centered">
                 <b-dropdown
-                  position="is-bottom-left"
+                  position="is-bottom-right"
                   append-to-body
                   aria-role="menu"
                   trap-focus
                 >
                   <a slot="trigger" role="button">
-                    <div class="action goal-card-stat">
+                    <div class="action goal-card-stat--active">
                       <p class="title">7</p>
                       <p class="heading">Days left</p>
                     </div>
@@ -191,43 +197,46 @@
           <p class="subtitle has-text-weight-bold has-text-centered">Actions</p>
           <perfect-scrollbar>
             <ul class="menu menu-list">
-              <a v-if="insertMode" class="action is-edited">
-                <Action
-                  :isInCreationMode="true"
-                  @insertionCanceled="turnOffInsertMode"
-                />
-              </a>
-              <transition name="slide">
-                <div key="1" v-if="!displayFinishedActions">
-                  <li v-for="action in goal.actions" :key="action.id">
-                    <a class="action" :class="{ 'is-edited': editMode }">
-                      <Action :action="action" :isInEditMode="editMode" />
-                    </a>
-                  </li>
-                </div>
-                <div v-else>
-                  <li v-for="action in goal.finishedActions" :key="action.id">
-                    <a class="action" :class="{ 'is-edited': editMode }">
-                      <Action :action="action" :isInEditMode="editMode" />
-                    </a>
-                  </li>
-                </div>
-              </transition>
+              <li v-if="insertMode">
+                <a class="action is-edited">
+                  <Action
+                    :isInCreationMode="true"
+                    @insertionCanceled="turnOffInsertMode"
+                  />
+                </a>
+              </li>
+              <li v-for="action in actions" :key="action.id">
+                <a class="action" :class="{ 'is-edited': editMode }">
+                  <Action :action="action" :isInEditMode="editMode" />
+                </a>
+              </li>
             </ul>
           </perfect-scrollbar>
           <transition name="fade">
-            <div v-if="!editMode" class="container has-text-centered">
-              <button
-                @click="displayFinishedActions = !displayFinishedActions"
-                class="button button-special is-blue is-rounded"
-              >
-                <span class="icon is-small">
-                  <i v-if="displayFinishedActions" class="fas fa-angle-up"></i>
-                  <i v-else class="fas fa-angle-down"></i>
-                </span>
-                <span v-if="displayFinishedActions">Active</span>
-                <span v-else>Finished</span>
-              </button>
+            <div v-if="!editMode" class="level has-text-centered">
+              <div class="level-item">
+                <button
+                  @click="currentFilter = 'all'"
+                  class="button button-special--filter is-rounded"
+                  :class="{ selected: currentFilter === 'all' }"
+                >
+                  <span>All</span>
+                </button>
+                <button
+                  @click="currentFilter = 'active'"
+                  class="button button-special--filter is-rounded"
+                  :class="{ selected: currentFilter === 'active' }"
+                >
+                  <span>Active</span>
+                </button>
+                <button
+                  @click="currentFilter = 'finished'"
+                  class="button button-special--filter is-rounded"
+                  :class="{ selected: currentFilter === 'finished' }"
+                >
+                  <span>Finished</span>
+                </button>
+              </div>
             </div>
           </transition>
         </div>
@@ -240,8 +249,21 @@
 import Action from '@/components/action';
 import ActivityChart from '@/components/activity-chart';
 
+var actionFilters = {
+  all: function(actions) {
+    return actions;
+  },
+  active: function(actions) {
+    return actions.filter(action => !action.isFinished);
+  },
+  finished: function(actions) {
+    return actions.filter(action => action.isFinished);
+  },
+};
+
 export default {
   name: 'GoalDetail',
+
   props: {
     id: {
       type: Number,
@@ -261,6 +283,7 @@ export default {
       displayFinishedActions: false,
       editDescription: false,
       editTitle: false,
+      currentFilter: 'all',
     };
   },
   created() {
@@ -276,12 +299,16 @@ export default {
         { id: 4, title: 'Gay Task #4', workHours: 6, isFinished: false },
         { id: 5, title: 'Meh Task #5', workHours: 7, isFinished: false },
         { id: 6, title: 'Funny Task #6', workHours: 6, isFinished: false },
-      ],
-      finishedActions: [
-        { id: 8, title: 'Finished task #1', workHours: 8, isFinished: true },
-        { id: 9, title: 'Finished task #2', workHours: 8, isFinished: true },
-        { id: 10, title: 'Finished task #3', workHours: 8, isFinished: true },
-        { id: 11, title: 'Finished task #4', workHours: 8, isFinished: true },
+        { id: 7, title: 'Funny Task #6', workHours: 6, isFinished: false },
+        { id: 8, title: 'Funny Task #6', workHours: 6, isFinished: false },
+        { id: 9, title: 'Funny Task #6', workHours: 6, isFinished: false },
+        { id: 10, title: 'Funny Task #6', workHours: 6, isFinished: false },
+        { id: 11, title: 'Funny Task #6', workHours: 6, isFinished: false },
+        { id: 12, title: 'Funny Task #6', workHours: 6, isFinished: false },
+        { id: 13, title: 'Finished task #1', workHours: 8, isFinished: true },
+        { id: 14, title: 'Finished task #2', workHours: 8, isFinished: true },
+        { id: 15, title: 'Finished task #3', workHours: 8, isFinished: true },
+        { id: 16, title: 'Finished task #4', workHours: 8, isFinished: true },
       ],
     };
   },
@@ -318,6 +345,29 @@ export default {
     },
     enableDescriptionEditor() {
       this.editDescription = true;
+    },
+
+    scrollToFinished() {
+      let finished = this.$el.querySelector('#finished');
+      finished.scrollTop = finished.scrollHeight;
+    },
+
+    isSelectedFilter(filterNum) {
+      return this.filterNum === filterNum;
+    },
+  },
+
+  computed: {
+    actions() {
+      return actionFilters[this.currentFilter](this.goal.actions);
+    },
+
+    remainingActions() {
+      return actionFilters.active(this.goal.actions).length;
+    },
+
+    actionsFinished() {
+      return actionFilters.finished(this.goal.actions).length;
     },
   },
 };
@@ -368,19 +418,12 @@ export default {
 
 .slide-enter-active,
 .slide-leave-active {
-  transition: all 0.3s ease-out;
+  transition: transform 0.3s ease-in-out;
 }
 
-.slide-enter {
-  transform: translateY(420px);
-}
-
+.slide-enter,
 .slide-leave-to {
-  transform: translateY(-420px);
-}
-
-.slide-enter-to,
-.slide-leave {
-  transition: all 3s ease-in-out;
+  opacity: 0;
+  transform: translateY(500px);
 }
 </style>
