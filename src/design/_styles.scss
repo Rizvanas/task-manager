@@ -160,10 +160,13 @@ input::-moz-focus-inner {
 
 .action {
   margin: 0 20px;
+  border-radius: 6px;
   transition: all 300ms cubic-bezier(0, 0.09, 0.33, 0.97);
+
   &:hover {
     box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
     border-radius: 6px;
+
     .action-button {
       background-color: $hovered-item;
       &:hover {
@@ -176,10 +179,11 @@ input::-moz-focus-inner {
   }
 
   &.is-edited {
-    box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
     border-radius: 6px;
+    box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
     background-color: $bg-color;
     margin: 0.75em 20px;
+
     i {
       color: #fff;
     }
@@ -200,6 +204,22 @@ input::-moz-focus-inner {
       &:hover {
         background-color: $green;
       }
+    }
+  }
+
+  &.is-finished {
+    border-radius: 6px;
+    margin: 0.5em 20px;
+    box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
+    background-color: $background;
+
+    &:hover {
+      background-color: $light-green;
+    }
+
+    .title {
+      @extend .title;
+      margin-right: 0.25em;
     }
   }
 }

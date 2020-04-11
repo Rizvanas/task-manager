@@ -1,19 +1,28 @@
 <template>
   <div>
     <div class="level">
-      <div class="level-left">
-        <div class="level-item has-text-centered">
-          <p class="title">{{ currentActionEmoji }}</p>
+      <div class="level-item has-text-centered">
+        <p class="title">{{ currentActionEmoji }}</p>
+        <p class="action-text">{{ clonedAction.title }}</p>
+      </div>
+    </div>
+    <div class="level">
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading has-text-weight-bold">Expected</p>
+          <p class="action-text">8 h</p>
         </div>
       </div>
-      <transition name="fade">
-        <div class="level-item">
-          <p class="action-text">{{ clonedAction.title }}</p>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading has-text-weight-bold">Taken</p>
+          <p class="action-text">8.9 h</p>
         </div>
-      </transition>
-      <div class="level-right" tabindex="-1">
-        <div class="level-item">
-          <p>Uzbaigimo statistika</p>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading has-text-weight-bold">Rating</p>
+          <p class="action-text">💪</p>
         </div>
       </div>
     </div>
