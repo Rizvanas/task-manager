@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import { getWorkHoursInEmoji } from '@/shared/constants';
+import ActionMixins from '@/mixins/action-mixins';
 
 export default {
   name: 'Action',
@@ -108,6 +108,7 @@ export default {
       isCompleted: [],
     };
   },
+  mixins: [ActionMixins],
   methods: {
     workHoursTooltip(val) {
       return `${val} hours`;
@@ -125,11 +126,6 @@ export default {
 
     cancelActionInsert() {
       this.$emit('insertionCanceled');
-    },
-  },
-  computed: {
-    currentActionEmoji: function() {
-      return getWorkHoursInEmoji(this.clonedAction.workHours);
     },
   },
 };

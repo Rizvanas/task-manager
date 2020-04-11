@@ -207,7 +207,8 @@
               </li>
               <li v-for="action in actions" :key="action.id">
                 <a class="action" :class="{ 'is-edited': editMode }">
-                  <Action :action="action" :isInEditMode="editMode" />
+                  <FinishedAction v-if="action.isFinished" :action="action" />
+                  <Action v-else :action="action" :isInEditMode="editMode" />
                 </a>
               </li>
             </ul>
@@ -247,6 +248,7 @@
 
 <script>
 import Action from '@/components/action';
+import FinishedAction from '@/components/finished-action';
 import ActivityChart from '@/components/activity-chart';
 
 var actionFilters = {
@@ -273,6 +275,7 @@ export default {
   components: {
     ActivityChart,
     Action,
+    FinishedAction,
   },
   data() {
     return {
@@ -321,6 +324,7 @@ export default {
     setEditMode() {
       if (!this.editMode) {
         this.editMode = true;
+        this.currentFilter = 'active';
       }
     },
     turnOffEditMode() {
