@@ -2,27 +2,32 @@
   <div>
     <div class="level">
       <div class="level-item has-text-centered">
-        <p class="title">{{ currentActionEmoji }}</p>
-        <p class="action-text">{{ clonedAction.title }}</p>
+        <p class="action-text has-text-weight-bold">{{ clonedAction.title }}</p>
       </div>
     </div>
     <div class="level">
       <div class="level-item has-text-centered">
         <div>
-          <p class="heading has-text-weight-bold">Expected</p>
-          <p class="action-text">8 h</p>
+          <p class="heading has-text-weight-bold">Status</p>
+          <p class="status-tag--success">Finished</p>
         </div>
       </div>
       <div class="level-item has-text-centered">
         <div>
-          <p class="heading has-text-weight-bold">Taken</p>
-          <p class="action-text">8.9 h</p>
+          <p class="heading has-text-weight-bold">Expected</p>
+          <p class="status-tag action-text">8 h</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading has-text-weight-bold">Took</p>
+          <p class="status-tag action-text">8.9 h</p>
         </div>
       </div>
       <div class="level-item has-text-centered">
         <div>
           <p class="heading has-text-weight-bold">Rating</p>
-          <p class="action-text">💪</p>
+          <p class="status-tag action-text">{{ currentActionEmoji }}</p>
         </div>
       </div>
     </div>

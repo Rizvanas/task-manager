@@ -214,7 +214,7 @@ input::-moz-focus-inner {
     background-color: $background;
 
     &:hover {
-      background-color: $light-green;
+      background-color: $hovered-item;
     }
 
     .title {
@@ -344,5 +344,23 @@ input::-moz-focus-inner {
       }
       background-color: $bg-color;
     }
+  }
+}
+
+.status-tag {
+  padding: 0.25em 0.75em;
+  background-color: inherit;
+  border-radius: 20px;
+
+  &--success {
+    @extend .status-tag;
+    background-color: $primary;
+    color: white;
+  }
+
+  &--fail {
+    @extend .status-tag;
+    background-color: $hurry-color;
+    color: white;
   }
 }
