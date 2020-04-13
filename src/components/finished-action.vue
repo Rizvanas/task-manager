@@ -15,13 +15,13 @@
       <div class="level-item has-text-centered">
         <div>
           <p class="heading has-text-weight-bold">Expected</p>
-          <p class="status-tag action-text">8 h</p>
+          <p class="status-tag action-text">{{ action.expectedHours }} h</p>
         </div>
       </div>
       <div class="level-item has-text-centered">
         <div>
           <p class="heading has-text-weight-bold">Took</p>
-          <p class="status-tag action-text">8.9 h</p>
+          <p class="status-tag action-text">{{ action.totalHours }} h</p>
         </div>
       </div>
       <div class="level-item has-text-centered">
@@ -46,7 +46,7 @@ export default {
       default: () => {
         return {
           title: '',
-          workHours: 0,
+          expectedHours: 0,
         };
       },
     },

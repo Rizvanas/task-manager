@@ -7,11 +7,7 @@ import store from './store';
 import PerfectScrollbar from 'vue2-perfect-scrollbar';
 import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css';
 
-Vue.use(PerfectScrollbar, {
-  suppressScrollX: true,
-  wheelPropagation: false,
-  wheelSpeed: 2,
-});
+Vue.use(PerfectScrollbar);
 
 Vue.use(Buefy, {
   defaultIconPack: 'fas',

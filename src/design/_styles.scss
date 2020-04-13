@@ -364,3 +364,9 @@ input::-moz-focus-inner {
     color: white;
   }
 }
+
+.dropdown-trigger {
+  a {
+    color: $subtitle-color;
+  }
+}

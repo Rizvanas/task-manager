@@ -85,19 +85,19 @@
               <div class="level-item has-text-centered">
                 <div class="goal-card-stat">
                   <p class="title">🧊</p>
-                  <p class="heading">Urgency</p>
+                  <p class="heading has-text-weight-bold">Urgency</p>
                 </div>
               </div>
               <div class="level-item has-text-centered">
                 <div class="goal-card-stat">
                   <p class="title">{{ actionsFinished }}</p>
-                  <p class="heading">Actions finished</p>
+                  <p class="heading has-text-weight-bold">Actions finished</p>
                 </div>
               </div>
               <div class="level-item has-text-centered">
                 <div class="goal-card-stat">
                   <p class="title">{{ remainingActions }}</p>
-                  <p class="heading">Actions remaining</p>
+                  <p class="heading has-text-weight-bold">Actions remaining</p>
                 </div>
               </div>
               <div class="level-item has-text-centered">
@@ -110,7 +110,7 @@
                   <a slot="trigger" role="button">
                     <div class="action goal-card-stat--active">
                       <p class="title">7</p>
-                      <p class="heading">Days left</p>
+                      <p class="heading has-text-weight-bold">Days left</p>
                     </div>
                   </a>
                   <b-dropdown-item
@@ -195,34 +195,31 @@
             </div>
           </div>
           <p class="subtitle has-text-weight-bold has-text-centered">Actions</p>
-          <perfect-scrollbar>
+          <perfect-scrollbar :options="options">
             <ul class="menu menu-list">
-              <li v-if="insertMode">
-                <a class="action is-edited">
-                  <Action
-                    :isInCreationMode="true"
-                    @insertionCanceled="turnOffInsertMode"
-                  />
-                </a>
-              </li>
-              <li v-for="action in actions" :key="action.id">
-                <a class="action" :class="{ 'is-edited': editMode }">
-                  <FinishedAction v-if="action.isFinished" :action="action" />
-                  <Action v-else :action="action" :isInEditMode="editMode" />
-                </a>
-              </li>
+              <transition-group name="list" tag="li">
+                <li key="0" v-if="insertMode">
+                  <a class="action is-edited">
+                    <ActionForm />
+                  </a>
+                </li>
+                <li v-for="action in actions" :key="action.id">
+                  <a v-if="action.isFinished" class="action is-finished">
+                    <FinishedAction :action="action" />
+                  </a>
+                  <a v-else class="action" :class="{ 'is-edited': editMode }">
+                    <transition name="fade">
+                      <ActionForm v-if="editMode" :action="action" />
+                      <Action v-else :action="action" />
+                    </transition>
+                  </a>
+                </li>
+              </transition-group>
             </ul>
           </perfect-scrollbar>
           <transition name="fade">
-            <div v-if="!editMode" class="level has-text-centered">
+            <div class="level has-text-centered">
               <div class="level-item">
-                <button
-                  @click="currentFilter = 'all'"
-                  class="button button-special--filter is-rounded"
-                  :class="{ selected: currentFilter === 'all' }"
-                >
-                  <span>All</span>
-                </button>
                 <button
                   @click="currentFilter = 'active'"
                   class="button button-special--filter is-rounded"
@@ -231,6 +228,7 @@
                   <span>Active</span>
                 </button>
                 <button
+                  v-if="!insertMode && !editMode"
                   @click="currentFilter = 'finished'"
                   class="button button-special--filter is-rounded"
                   :class="{ selected: currentFilter === 'finished' }"
@@ -248,17 +246,18 @@
 
 <script>
 import Action from '@/components/action';
+import ActionForm from '@/components/action-form';
 import FinishedAction from '@/components/finished-action';
 import ActivityChart from '@/components/activity-chart';
 
 var actionFilters = {
-  all: function(actions) {
-    return actions;
-  },
   active: function(actions) {
     return actions.filter(action => !action.isFinished);
   },
   finished: function(actions) {
+    if (this.editMode || this.insertMode) {
+      return actions;
+    }
     return actions.filter(action => action.isFinished);
   },
 };
@@ -275,6 +274,7 @@ export default {
   components: {
     ActivityChart,
     Action,
+    ActionForm,
     FinishedAction,
   },
   data() {
@@ -286,7 +286,8 @@ export default {
       displayFinishedActions: false,
       editDescription: false,
       editTitle: false,
-      currentFilter: 'all',
+      currentFilter: 'active',
+      options: { wheelPropagation: false },
     };
   },
   created() {
@@ -296,22 +297,182 @@ export default {
         'Read a shitty self help book to get inspired for a meme app',
       completionDate: new Date(),
       actions: [
-        { id: 1, title: 'Random Task #1', workHours: 5, isFinished: false },
-        { id: 2, title: 'Generic Task #2', workHours: 3, isFinished: false },
-        { id: 3, title: 'Shitty Task #3', workHours: 10, isFinished: false },
-        { id: 4, title: 'Gay Task #4', workHours: 6, isFinished: false },
-        { id: 5, title: 'Meh Task #5', workHours: 7, isFinished: false },
-        { id: 6, title: 'Funny Task #6', workHours: 6, isFinished: false },
-        { id: 7, title: 'Funny Task #6', workHours: 6, isFinished: false },
-        { id: 8, title: 'Funny Task #6', workHours: 6, isFinished: false },
-        { id: 9, title: 'Funny Task #6', workHours: 6, isFinished: false },
-        { id: 10, title: 'Funny Task #6', workHours: 6, isFinished: false },
-        { id: 11, title: 'Funny Task #6', workHours: 6, isFinished: false },
-        { id: 12, title: 'Funny Task #6', workHours: 6, isFinished: false },
-        { id: 13, title: 'Finished task #1', workHours: 8, isFinished: true },
-        { id: 14, title: 'Finished task #2', workHours: 8, isFinished: true },
-        { id: 15, title: 'Finished task #3', workHours: 8, isFinished: true },
-        { id: 16, title: 'Finished task #4', workHours: 8, isFinished: true },
+        {
+          id: 1,
+          title: 'Random Task #1',
+          expectedHours: 5,
+          totalHours: 10,
+          startTime: '',
+          pauseTime: '',
+          isStarted: false,
+          isPaused: false,
+          isFinished: false,
+        },
+        {
+          id: 2,
+          title: 'Generic Task #2',
+          expectedHours: 5,
+          totalHours: 10,
+          startTime: '',
+          pauseTime: '',
+          isStarted: false,
+          isActive: false,
+          isFinished: false,
+        },
+        {
+          id: 3,
+          title: 'Shitty Task #3',
+          expectedHours: 5,
+          totalHours: 10,
+          startTime: '',
+          pauseTime: '',
+          isStarted: false,
+          isActive: false,
+          isFinished: false,
+        },
+        {
+          id: 4,
+          title: 'Nice Task',
+          expectedHours: 5,
+          totalHours: 10,
+          startTime: '',
+          pauseTime: '',
+          isStarted: false,
+          isActive: false,
+          isFinished: false,
+        },
+        {
+          id: 5,
+          title: 'Meh Task #5',
+          expectedHours: 5,
+          totalHours: 10,
+          startTime: '',
+          pauseTime: '',
+          isStarted: false,
+          isActive: false,
+          isFinished: false,
+        },
+        {
+          id: 6,
+          title: 'Funny Task #6',
+          expectedHours: 5,
+          totalHours: 10,
+          startTime: '',
+          pauseTime: '',
+          isStarted: false,
+          isActive: false,
+          isFinished: false,
+        },
+        {
+          id: 7,
+          title: 'Funny Task #6',
+          expectedHours: 5,
+          totalHours: 10,
+          startTime: '',
+          pauseTime: '',
+          isStarted: false,
+          isActive: false,
+          isFinished: false,
+        },
+        {
+          id: 8,
+          title: 'Funny Task #6',
+          expectedHours: 5,
+          totalHours: 10,
+          startTime: '',
+          pauseTime: '',
+          isStarted: false,
+          isActive: false,
+          isFinished: false,
+        },
+        {
+          id: 9,
+          title: 'Funny Task #6',
+          expectedHours: 5,
+          totalHours: 10,
+          startTime: '',
+          pauseTime: '',
+          isStarted: false,
+          isActive: false,
+          isFinished: false,
+        },
+        {
+          id: 10,
+          title: 'Funny Task #6',
+          expectedHours: 5,
+          totalHours: 10,
+          startTime: '',
+          pauseTime: '',
+          isStarted: false,
+          isActive: false,
+          isFinished: false,
+        },
+        {
+          id: 11,
+          title: 'Funny Task #6',
+          expectedHours: 5,
+          totalHours: 10,
+          startTime: '',
+          pauseTime: '',
+          isStarted: false,
+          isActive: false,
+          isFinished: false,
+        },
+        {
+          id: 12,
+          title: 'Funny Task #6',
+          expectedHours: 5,
+          totalHours: 10,
+          startTime: '',
+          pauseTime: '',
+          isStarted: false,
+          isActive: false,
+          isFinished: false,
+        },
+        {
+          id: 13,
+          title: 'Finished task #1',
+          expectedHours: 5,
+          totalHours: 10,
+          startTime: '',
+          pauseTime: '',
+          isStarted: false,
+          isActive: false,
+          isFinished: true,
+        },
+        {
+          id: 14,
+          title: 'Finished task #2',
+          expectedHours: 5,
+          totalHours: 10,
+          startTime: '',
+          pauseTime: '',
+          isStarted: false,
+          isActive: false,
+          isFinished: true,
+        },
+        {
+          id: 15,
+          title: 'Finished task #3',
+          expectedHours: 5,
+          totalHours: 10,
+          startTime: '',
+          pauseTime: '',
+          isStarted: false,
+          isActive: false,
+          isFinished: true,
+        },
+        {
+          id: 16,
+          title: 'Finished task #4',
+          expectedHours: 5,
+          totalHours: 10,
+          startTime: '',
+          pauseTime: '',
+          isStarted: false,
+          isActive: false,
+          isFinished: true,
+        },
       ],
     };
   },
@@ -333,6 +494,7 @@ export default {
       }
     },
     setInsertMode() {
+      this.currentFilter = 'active';
       if (!this.insertMode) {
         this.insertMode = true;
       }
@@ -378,16 +540,19 @@ export default {
 </script>
 
 <style scoped>
-.actions-container {
-  height: 30vh;
-}
 .slide-fade-enter-active,
-.slide-fade-leave-active,
+.slide-fade-leave-active {
+  transition: all 100ms cubic-bezier(0, 0.09, 0.33, 0.97);
+}
+
 .fade-enter-active,
-.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 50ms ease-in-out;
+}
 .fade-enter,
 .fade-leave-to {
-  transition: all 100ms cubic-bezier(0, 0.09, 0.33, 0.97);
+  display: none;
+  opacity: 0;
 }
 
 .slide-fade-enter,
@@ -412,7 +577,7 @@ export default {
 
 .list-enter-active,
 .list-leave-active {
-  transition: all 300ms ease;
+  transition: all 100ms ease;
 }
 .list-enter,
 .list-leave-to {
@@ -422,7 +587,7 @@ export default {
 
 .slide-enter-active,
 .slide-leave-active {
-  transition: transform 0.3s ease-in-out;
+  transition: transform 100ms ease-in-out;
 }
 
 .slide-enter,
