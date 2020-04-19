@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section v-if="asyncDataStatus_ready">
     <div class="hero">
       <div class="hero-body">
         <h1 class="title is-size-1 has-text-weight-bold">
@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <AddGoalCard />
+    <!-- <AddGoalCard /> -->
     <draggable
       class="columns is-multiline"
       v-model="goals"
@@ -36,38 +36,30 @@
   </section>
 </template>
 <script>
+import { mapActions } from 'vuex';
+import asyncDataStatus from '@/mixins/asyncDataStatus';
 import GoalCard from '@/components/goal-card.vue';
-import AddGoalCard from '@/components/add-goal-card.vue';
+// import AddGoalCard from '@/components/add-goal-card.vue';
 import draggable from 'vuedraggable';
-
-const goals = [
-  { id: 1, title: 'Mano tikslas' },
-  { id: 2, title: 'Mano tikslas su ilgu pavadinimu' },
-  { id: 3, title: 'Mano tikslas su labai, labai iilgu pavadinimu' },
-  { id: 4, title: 'Mano didingas tikslas' },
-  { id: 5, title: 'Mano gyvenimo tikslas' },
-  { id: 6, title: 'My tikslas' },
-];
 
 export default {
   name: 'Goals',
-  components: { GoalCard, AddGoalCard, draggable },
+  components: { GoalCard, draggable },
 
   data() {
     return {
-      goals: goals.map((goal, index) => {
-        return { ...goal, order: index + 1 };
-      }),
       drag: false,
       addingNewCard: false,
     };
   },
-  methods: {
-    sort() {
-      this.goals = this.goals.sort((a, b) => a.order - b.order);
-    },
-  },
+
+  mixins: [asyncDataStatus],
+
   computed: {
+    goals() {
+      return Object.values(this.$store.state.goals.items);
+    },
+
     dragOptions() {
       return {
         animation: 150,
@@ -78,6 +70,18 @@ export default {
         sort: true,
       };
     },
+  },
+
+  methods: {
+    ...mapActions({ fetchUserGoals: 'goals/fetchUserGoals' }),
+    sort() {
+      this.goals = this.goals.sort((a, b) => a.order - b.order);
+    },
+  },
+
+  async created() {
+    await this.fetchUserGoals();
+    this.asyncDataStatus_fetched();
   },
 };
 </script>

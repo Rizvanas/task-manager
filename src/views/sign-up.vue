@@ -4,16 +4,11 @@
       <div class="container">
         <div class="columns is-centered">
           <div class="column is-6-tablet is-5-desktop is-4-widescreen">
-            <form
-              class="box has-shadow-lift"
-              method="post"
-              @submit.prevent="handleLogin"
-            >
+            <form class="box" method="post" @submit.prevent="handleSignUp">
               <h3 class="title has-text-centered has-text-weight-bold">
                 Hi! ✋
               </h3>
-
-              <a class="button is-fullwidth">
+              <a @click="signUpWithGoogle" class="button is-fullwidth">
                 <span class="google-button__icon">
                   <svg viewBox="0 0 366 372" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -46,7 +41,7 @@
                 @click="toggleSignUpMode"
                 >Sign up using your email</a
               >
-              <div v-if="signInWithEmail">
+              <div v-if="isEmailSignUp">
                 <br />
                 <h3 class="title has-text-centered has-text-weight-bold">
                   Lets get started 😉
@@ -54,6 +49,7 @@
                 <div class="field">
                   <div class="control has-icons-left">
                     <input
+                      v-model="form.username"
                       type="text"
                       placeholder="Username"
                       autofocus="autofocus"
@@ -66,7 +62,12 @@
                 </div>
                 <div class="field">
                   <div class="control has-icons-left">
-                    <input type="email" placeholder="Email" class="input" />
+                    <input
+                      v-model="form.email"
+                      type="email"
+                      placeholder="Email"
+                      class="input"
+                    />
                     <span class="icon is-small is-left">
                       <i class="fas fa-envelope"></i>
                     </span>
@@ -75,6 +76,7 @@
                 <div class="field">
                   <div class="control has-icons-left">
                     <input
+                      v-model="form.password"
                       type="password"
                       placeholder="Password"
                       autocomplete="off"
@@ -85,9 +87,9 @@
                     </span>
                   </div>
                 </div>
-                <a type="submit" class="button is-fullwidth is-primary"
-                  >Sign up!</a
-                >
+                <button type="submit" class="button is-fullwidth is-primary">
+                  Sign up!
+                </button>
               </div>
               <hr />
               <p class="subtitle is-size-6 has-text-centered">
@@ -105,18 +107,48 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   name: 'SignUp',
   data() {
     return {
-      signInWithEmail: false,
+      isEmailSignUp: false,
+      form: {
+        email: '',
+        username: '',
+        password: '',
+      },
     };
   },
   methods: {
-    handleSignUp() {},
-    toggleSignUpMode() {
-      this.signInWithEmail = !this.signInWithEmail;
+    ...mapActions('auth', ['signUpWithEmailAndPassword', 'signInWithGoogle']),
+
+    handleSignUp() {
+      if (this.isEmailSignUp) {
+        this.signUpWithEmail();
+      } else {
+        this.signUpWithGoogle();
+      }
     },
+
+    toggleSignUpMode() {
+      this.isEmailSignUp = !this.isEmailSignUp;
+    },
+
+    signUpWithEmail() {
+      this.signUpWithEmailAndPassword(this.form);
+      this.$router.push('/');
+    },
+
+    async signUpWithGoogle() {
+      await this.signInWithGoogle();
+      this.$router.push('/');
+    },
+  },
+
+  created() {
+    this.$emit('ready');
   },
 };
 </script>

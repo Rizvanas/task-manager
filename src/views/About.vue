@@ -5,3 +5,12 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  name: 'About',
+  created() {
+    this.$emit('ready');
+  },
+};
+</script>

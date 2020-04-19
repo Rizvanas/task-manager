@@ -4,11 +4,7 @@
       <div class="container">
         <div class="columns is-centered">
           <div class="column is-6-tablet is-5-desktop is-4-widescreen">
-            <form
-              class="box has-shadow-lift"
-              method="post"
-              @submit.prevent="handleLogin"
-            >
+            <form class="box" method="post" @submit.prevent="login">
               <h3 class="title has-text-centered has-text-weight-bold">
                 Welcome Back!
               </h3>
@@ -20,6 +16,7 @@
               <div class="field">
                 <div class="control has-icons-left">
                   <input
+                    v-model="form.email"
                     type="email"
                     placeholder="Email"
                     autofocus="autofocus"
@@ -33,6 +30,7 @@
               <div class="field">
                 <div class="control has-icons-left">
                   <input
+                    v-model="form.password"
                     type="password"
                     placeholder="Password"
                     autocomplete="off"
@@ -47,7 +45,7 @@
                 Log in
               </button>
               <div class="is-divider" data-content="or"></div>
-              <a class="button is-fullwidth">
+              <a @click="loginWithGoogle" class="button is-fullwidth">
                 <span class="google-button__icon">
                   <svg viewBox="0 0 366 372" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -93,13 +91,38 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   name: 'Login',
   data() {
-    return {};
+    return {
+      form: {
+        email: '',
+        password: '',
+      },
+    };
   },
   methods: {
-    handleLogin() {},
+    ...mapActions('auth', ['signInWithEmailAndPassword', 'signInWithGoogle']),
+    async login() {
+      await this.signInWithEmailAndPassword(this.form);
+      this.successRedirect();
+    },
+
+    async loginWithGoogle() {
+      await this.signInWithGoogle();
+      this.successRedirect();
+    },
+
+    successRedirect() {
+      const redirectTo = this.$route.query.redirectTo || { name: 'Goals' };
+      this.$router.push(redirectTo);
+    },
+  },
+
+  created() {
+    this.$emit('ready');
   },
 };
 </script>

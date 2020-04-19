@@ -1,5 +1,6 @@
 <template>
   <nav
+    v-if="user"
     class="navbar is-transparent is-fixed-top is-spaced is-hidden-touch"
     role="navigation"
     aria-label="main navigation"
@@ -46,7 +47,7 @@
         </div>
       </div>
       <div class="navbar-end">
-        <router-link to="/login" class="navbar-item">
+        <router-link to="/logout" class="navbar-item">
           <span class="icon">
             <i class="fas fa-sign-out-alt"></i>
           </span>
@@ -58,7 +59,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'NavBar',
+  computed: {
+    ...mapGetters('auth', { user: 'authUser' }),
+  },
 };
 </script>
