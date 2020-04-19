@@ -4,7 +4,7 @@ export default {
   name: 'ActionMixins',
   computed: {
     currentActionEmoji: function() {
-      return getWorkHoursInEmoji(this.clonedAction.workHours);
+      return getWorkHoursInEmoji(this.clonedAction.expectedHours);
     },
   },
 };

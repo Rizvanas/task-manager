@@ -22,12 +22,16 @@
     "cool-checkboxes-for-bulma.io": "^1.1.0",
     "core-js": "^3.6.4",
     "date-fns": "^2.11.0",
+    "firebase": "^7.14.1",
+    "nprogress": "^0.2.0",
     "vue": "^2.6.11",
     "vue-chartjs": "^3.5.0",
     "vue-router": "^3.1.5",
     "vue2-perfect-scrollbar": "^1.5.0",
     "vuedraggable": "^2.23.2",
-    "vuex": "^3.1.2"
+    "vuefire": "^2.2.2",
+    "vuex": "^3.1.2",
+    "vuexfire": "^3.2.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.2.0",
