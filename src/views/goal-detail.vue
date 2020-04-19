@@ -197,20 +197,25 @@
           <p class="subtitle has-text-weight-bold has-text-centered">Actions</p>
           <perfect-scrollbar :options="options">
             <ul class="menu menu-list">
+              <li v-if="insertMode">
+                <a class="action is-edited">
+                  <ActionForm />
+                </a>
+              </li>
               <transition-group name="list" tag="li">
-                <li key="0" v-if="insertMode">
-                  <a class="action is-edited">
-                    <ActionForm />
-                  </a>
-                </li>
                 <li v-for="action in actions" :key="action.id">
                   <a v-if="action.isFinished" class="action is-finished">
-                    <FinishedAction :action="action" />
+                    <FinishedAction :action="actiion" />
                   </a>
                   <a v-else class="action" :class="{ 'is-edited': editMode }">
                     <transition name="fade">
                       <ActionForm v-if="editMode" :action="action" />
-                      <Action v-else :action="action" />
+                      <Action
+                        v-else
+                        :action="action"
+                        @actionStateChange="changeActionState"
+                        @actionFinished="finishAction"
+                      />
                     </transition>
                   </a>
                 </li>
@@ -249,16 +254,17 @@ import Action from '@/components/action';
 import ActionForm from '@/components/action-form';
 import FinishedAction from '@/components/finished-action';
 import ActivityChart from '@/components/activity-chart';
+import { mapActions } from 'vuex';
 
 var actionFilters = {
   active: function(actions) {
-    return actions.filter(action => !action.isFinished);
+    return actions;
   },
   finished: function(actions) {
     if (this.editMode || this.insertMode) {
       return actions;
     }
-    return actions.filter(action => action.isFinished);
+    return actions;
   },
 };
 
@@ -267,8 +273,8 @@ export default {
 
   props: {
     id: {
-      type: Number,
-      default: 0,
+      required: true,
+      type: String,
     },
   },
   components: {
@@ -279,7 +285,7 @@ export default {
   },
   data() {
     return {
-      goal: {},
+      goalActions: [],
       hovered: false,
       editMode: false,
       insertMode: false,
@@ -290,194 +296,16 @@ export default {
       options: { wheelPropagation: false },
     };
   },
-  created() {
-    this.goal = {
-      title: 'Read another shitty book',
-      description:
-        'Read a shitty self help book to get inspired for a meme app',
-      completionDate: new Date(),
-      actions: [
-        {
-          id: 1,
-          title: 'Random Task #1',
-          expectedHours: 5,
-          totalHours: 10,
-          startTime: '',
-          pauseTime: '',
-          isStarted: false,
-          isPaused: false,
-          isFinished: false,
-        },
-        {
-          id: 2,
-          title: 'Generic Task #2',
-          expectedHours: 5,
-          totalHours: 10,
-          startTime: '',
-          pauseTime: '',
-          isStarted: false,
-          isActive: false,
-          isFinished: false,
-        },
-        {
-          id: 3,
-          title: 'Shitty Task #3',
-          expectedHours: 5,
-          totalHours: 10,
-          startTime: '',
-          pauseTime: '',
-          isStarted: false,
-          isActive: false,
-          isFinished: false,
-        },
-        {
-          id: 4,
-          title: 'Nice Task',
-          expectedHours: 5,
-          totalHours: 10,
-          startTime: '',
-          pauseTime: '',
-          isStarted: false,
-          isActive: false,
-          isFinished: false,
-        },
-        {
-          id: 5,
-          title: 'Meh Task #5',
-          expectedHours: 5,
-          totalHours: 10,
-          startTime: '',
-          pauseTime: '',
-          isStarted: false,
-          isActive: false,
-          isFinished: false,
-        },
-        {
-          id: 6,
-          title: 'Funny Task #6',
-          expectedHours: 5,
-          totalHours: 10,
-          startTime: '',
-          pauseTime: '',
-          isStarted: false,
-          isActive: false,
-          isFinished: false,
-        },
-        {
-          id: 7,
-          title: 'Funny Task #6',
-          expectedHours: 5,
-          totalHours: 10,
-          startTime: '',
-          pauseTime: '',
-          isStarted: false,
-          isActive: false,
-          isFinished: false,
-        },
-        {
-          id: 8,
-          title: 'Funny Task #6',
-          expectedHours: 5,
-          totalHours: 10,
-          startTime: '',
-          pauseTime: '',
-          isStarted: false,
-          isActive: false,
-          isFinished: false,
-        },
-        {
-          id: 9,
-          title: 'Funny Task #6',
-          expectedHours: 5,
-          totalHours: 10,
-          startTime: '',
-          pauseTime: '',
-          isStarted: false,
-          isActive: false,
-          isFinished: false,
-        },
-        {
-          id: 10,
-          title: 'Funny Task #6',
-          expectedHours: 5,
-          totalHours: 10,
-          startTime: '',
-          pauseTime: '',
-          isStarted: false,
-          isActive: false,
-          isFinished: false,
-        },
-        {
-          id: 11,
-          title: 'Funny Task #6',
-          expectedHours: 5,
-          totalHours: 10,
-          startTime: '',
-          pauseTime: '',
-          isStarted: false,
-          isActive: false,
-          isFinished: false,
-        },
-        {
-          id: 12,
-          title: 'Funny Task #6',
-          expectedHours: 5,
-          totalHours: 10,
-          startTime: '',
-          pauseTime: '',
-          isStarted: false,
-          isActive: false,
-          isFinished: false,
-        },
-        {
-          id: 13,
-          title: 'Finished task #1',
-          expectedHours: 5,
-          totalHours: 10,
-          startTime: '',
-          pauseTime: '',
-          isStarted: false,
-          isActive: false,
-          isFinished: true,
-        },
-        {
-          id: 14,
-          title: 'Finished task #2',
-          expectedHours: 5,
-          totalHours: 10,
-          startTime: '',
-          pauseTime: '',
-          isStarted: false,
-          isActive: false,
-          isFinished: true,
-        },
-        {
-          id: 15,
-          title: 'Finished task #3',
-          expectedHours: 5,
-          totalHours: 10,
-          startTime: '',
-          pauseTime: '',
-          isStarted: false,
-          isActive: false,
-          isFinished: true,
-        },
-        {
-          id: 16,
-          title: 'Finished task #4',
-          expectedHours: 5,
-          totalHours: 10,
-          startTime: '',
-          pauseTime: '',
-          isStarted: false,
-          isActive: false,
-          isFinished: true,
-        },
-      ],
+
+  firestore() {
+    return {
+      goalActions: this.actionsCollection.orderBy('isActive'),
     };
   },
 
   methods: {
+    ...mapActions(['fetchGoal', 'fetchGoalActions']),
+
     toggleHover() {
       this.hover = !this.hover;
     },
@@ -521,20 +349,53 @@ export default {
     isSelectedFilter(filterNum) {
       return this.filterNum === filterNum;
     },
+
+    changeActionState(updatedAction) {
+      const index = this.actions.findIndex(a => a.id === updatedAction.id);
+      if (index > 0) {
+        this.actions[index] = updatedAction;
+      }
+    },
+
+    finishAction(id) {
+      const index = this.actions.findIndex(a => a._id === id);
+      if (index >= 0) {
+        this.actions[index].isFinished = true;
+      }
+    },
   },
 
   computed: {
+    goal() {
+      return this.$store.state.goals[this.id];
+    },
+
+    actionsCollection() {
+      return this.$store.state.actions[this.id];
+    },
+
+    actionsAreEmpty() {
+      return !this.goal.actions;
+    },
+
     actions() {
-      return actionFilters[this.currentFilter](this.goal.actions);
+      return actionFilters[this.currentFilter](this.goalActions);
     },
 
     remainingActions() {
-      return actionFilters.active(this.goal.actions).length;
+      return this.goal.totalActions - this.goal.completedActions;
     },
 
     actionsFinished() {
-      return actionFilters.finished(this.goal.actions).length;
+      return this.goal.completedActions;
     },
+  },
+
+  async created() {
+    const goal = await this.fetchGoal(this.id);
+    if (goal) {
+      await this.fetchGoalActions(this.id);
+    }
   },
 };
 </script>

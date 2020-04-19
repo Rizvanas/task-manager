@@ -8,25 +8,28 @@
     <div class="level-item">
       <p class="action-text">{{ clonedAction.title }}</p>
     </div>
-    <div class="level-right" tabindex="-1">
-      <div class="level-item">
-        <p
-          @click="toggleStartPause"
-          class="is-small is-pulled-right action-button"
-        >
-          <i v-if="clonedAction.isPaused" class="fas fa-pause"></i>
-          <i v-else class="fas fa-play"></i>
-        </p>
+    <transition name="fade">
+      <div class="level-right">
+        <div class="level-item">
+          <p
+            @click="toggleStartPause"
+            class="is-small is-pulled-right action-button"
+          >
+            <i v-if="clonedAction.isActive" class="fas fa-pause"></i>
+            <i v-else class="fas fa-play"></i>
+          </p>
+        </div>
+        <div class="level-item">
+          <p
+            @click="finishTask"
+            v-if="clonedAction.isStarted"
+            class="is-small is-pulled-right action-button"
+          >
+            <i class="fas fa-check"></i>
+          </p>
+        </div>
       </div>
-      <div class="level-item">
-        <p
-          v-if="clonedAction.isStarted"
-          class="is-small is-pulled-right action-button"
-        >
-          <i class="fas fa-check"></i>
-        </p>
-      </div>
-    </div>
+    </transition>
   </div>
 </template>
 
@@ -43,7 +46,7 @@ export default {
           title: '',
           expectedHours: 1,
           isStarted: false,
-          isPaused: true,
+          isActive: false,
           isFinished: false,
         };
       },
@@ -57,13 +60,19 @@ export default {
   mixins: [ActionMixins],
   methods: {
     toggleStartPause() {
-      if (!this.clonedAction.isStarted) {
+      if (!this.clonedAction.isStarted && !this.clonedAction.isFinished) {
         this.clonedAction.isStarted = true;
       }
-      if (this.clonedAction.isStarted) {
-        this.clonedAction.isPaused = !this.clonedAction.isPaused;
+      if (this.clonedAction.isStarted && !this.clonedAction.isFinished) {
+        this.clonedAction.isActive = !this.clonedAction.isActive;
       }
       this.$emit('actionStateChange', this.clonedAction);
+    },
+
+    finishTask() {
+      if (this.clonedAction.isStarted && !this.clonedAction.isFinished) {
+        this.$emit('actionFinished', this.clonedAction._id);
+      }
     },
   },
 };
@@ -73,5 +82,15 @@ export default {
 .action-text {
   overflow: hidden;
   padding: 0 1rem 0 1rem;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 50ms ease-in-out;
+}
+.fade-enter,
+.fade-leave-to {
+  display: none;
+  opacity: 0;
 }
 </style>
