@@ -47,45 +47,108 @@
                   Lets get started 😉
                 </h3>
                 <div class="field">
-                  <div class="control has-icons-left">
+                  <div class="control has-icons-left has-icons-right">
                     <input
-                      v-model="form.username"
+                      v-model.lazy="form.username"
                       type="text"
                       placeholder="Username"
                       autofocus="autofocus"
                       class="input"
+                      :class="{ 'is-danger': $v.form.username.$error }"
+                      @blur="$v.form.username.$touch()"
                     />
                     <span class="icon is-small is-left">
                       <i class="fas fa-signature"></i>
                     </span>
+                    <span
+                      v-if="$v.form.username.$error"
+                      class="icon is-small is-right has-text-danger"
+                    >
+                      <i class="fas fa-exclamation-circle"></i>
+                    </span>
                   </div>
+                  <template v-if="$v.form.username.$error">
+                    <p v-if="!$v.form.username.required" class="help is-danger">
+                      Username is required
+                    </p>
+                    <p
+                      v-else-if="!$v.form.username.minLength"
+                      class="help is-danger"
+                    >
+                      Username must be at least 4 characters long
+                    </p>
+                    <p
+                      v-else-if="!$v.form.username.unique"
+                      class="help is-danger"
+                    >
+                      This username is already taken
+                    </p>
+                  </template>
                 </div>
                 <div class="field">
-                  <div class="control has-icons-left">
+                  <div class="control has-icons-left has-icons-right">
                     <input
-                      v-model="form.email"
+                      v-model.lazy="form.email"
                       type="email"
                       placeholder="Email"
                       class="input"
+                      :class="{ 'is-danger': $v.form.email.$error }"
+                      @blur="$v.form.email.$touch()"
                     />
                     <span class="icon is-small is-left">
                       <i class="fas fa-envelope"></i>
                     </span>
+                    <span
+                      v-if="$v.form.email.$error"
+                      class="icon is-small is-right has-text-danger"
+                    >
+                      <i class="fas fa-exclamation-circle"></i>
+                    </span>
                   </div>
+                  <template v-if="$v.form.email.$error">
+                    <p v-if="!$v.form.email.required" class="help is-danger">
+                      Email is required
+                    </p>
+                    <p v-else-if="!$v.form.email.email" class="help is-danger">
+                      Email address must be valid
+                    </p>
+                    <p v-else-if="!$v.form.email.unique" class="help is-danger">
+                      This email address is already taken
+                    </p>
+                  </template>
                 </div>
                 <div class="field">
-                  <div class="control has-icons-left">
+                  <div class="control has-icons-left has-icons-right">
                     <input
                       v-model="form.password"
                       type="password"
                       placeholder="Password"
                       autocomplete="off"
                       class="input"
+                      :class="{ 'is-danger': $v.form.password.$error }"
+                      @blur="$v.form.password.$touch()"
                     />
                     <span class="icon is-small is-left">
                       <i class="fas fa-key"></i>
                     </span>
+                    <span
+                      v-if="$v.form.password.$error"
+                      class="icon is-small is-right has-text-danger"
+                    >
+                      <i class="fas fa-exclamation-circle"></i>
+                    </span>
                   </div>
+                  <template v-if="$v.form.password.$error">
+                    <p v-if="!$v.form.password.required" class="help is-danger">
+                      Password is required
+                    </p>
+                    <p
+                      v-else-if="!$v.form.password.minLength"
+                      class="help is-danger"
+                    >
+                      Password must be at least 6 characters long
+                    </p>
+                  </template>
                 </div>
                 <button type="submit" class="button is-fullwidth is-primary">
                   Sign up!
@@ -107,24 +170,46 @@
 </template>
 
 <script>
+import { uniqueUsername, uniqueEmail } from '@/shared/validators';
 import { mapActions } from 'vuex';
+import { required, email, minLength } from 'vuelidate/lib/validators';
 
 export default {
   name: 'SignUp',
   data() {
+    0;
     return {
       isEmailSignUp: false,
       form: {
-        email: '',
-        username: '',
-        password: '',
+        email: null,
+        username: null,
+        password: null,
       },
     };
+  },
+  validations: {
+    form: {
+      email: {
+        required,
+        email,
+        unique: uniqueEmail,
+      },
+      username: {
+        required,
+        minLength: minLength(4),
+        unique: uniqueUsername,
+      },
+      password: { required, minLength: minLength(6) },
+    },
   },
   methods: {
     ...mapActions('auth', ['signUpWithEmailAndPassword', 'signInWithGoogle']),
 
     handleSignUp() {
+      this.$v.form.$touch();
+      if (this.$v.form.$invalid) {
+        return;
+      }
       if (this.isEmailSignUp) {
         this.signUpWithEmail();
       } else {

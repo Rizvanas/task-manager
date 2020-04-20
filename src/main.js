@@ -7,6 +7,9 @@ import store from './store';
 import PerfectScrollbar from 'vue2-perfect-scrollbar';
 import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css';
 
+import Vuelidate from 'vuelidate';
+Vue.use(Vuelidate);
+
 Vue.use(PerfectScrollbar);
 
 Vue.use(Buefy, {
