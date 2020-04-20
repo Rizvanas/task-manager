@@ -59,12 +59,10 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import navBarMixins from '@/mixins/navBarMixins';
 
 export default {
   name: 'NavBar',
-  computed: {
-    ...mapGetters('auth', { user: 'authUser' }),
-  },
+  mixins: [navBarMixins],
 };
 </script>

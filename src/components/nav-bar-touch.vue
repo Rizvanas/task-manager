@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar is-spaced is-hidden-desktop is-fixed-top">
+  <nav v-if="user" class="navbar is-hidden-desktop is-fixed-top">
     <div class="navbar-brand level">
       <div class="navbar-item level-left is-size-4">
         <router-link class="level-item" to="/goals">
@@ -33,7 +33,7 @@
         <router-link to="about" class="navbar-item">
           <span>About</span>
         </router-link>
-        <router-link to="/login" class="navbar-item">
+        <router-link to="/logout" class="navbar-item">
           <span class="icon">
             <i class="fas fa-sign-out-alt"></i>
           </span>
@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import navBarMixins from '@/mixins/navBarMixins';
+
 export default {
   name: 'NavBarTouch',
 
@@ -53,5 +55,7 @@ export default {
       isActive: false,
     };
   },
+
+  mixins: [navBarMixins],
 };
 </script>
