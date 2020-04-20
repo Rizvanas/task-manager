@@ -75,7 +75,9 @@
               <p class="subtitle is-size-6 has-text-centered">
                 Don't have an account?
               </p>
-              <router-link to="/signup" class="button is-warning is-fullwidth"
+              <router-link
+                :to="{ name: 'SignUp' }"
+                class="button is-warning is-fullwidth"
                 >Sign up, it's free!</router-link
               >
               <hr />
