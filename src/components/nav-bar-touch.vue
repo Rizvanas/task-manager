@@ -7,7 +7,7 @@
             class="navbar-title navbar-item"
             aria-label="Home page"
             data-balloon-pos="bottom"
-            >Goalse</span
+            >Goalona</span
           >
         </router-link>
       </div>

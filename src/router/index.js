@@ -57,6 +57,15 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "bundle.goals" */ '../views/goal-detail.vue'),
   },
+  {
+    path: '/profile',
+    name: 'ProfilePage',
+    meta: { requiresAuth: true },
+    component: () =>
+      import(
+        /* webpackChunkName: "bundle.profile" */ '../views/ProfilePage.vue'
+      ),
+  },
 ];
 
 const router = new VueRouter({
