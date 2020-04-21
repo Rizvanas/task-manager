@@ -26,7 +26,7 @@
         </div>
       </div>
       <div class="card-footer-item">
-        <progress class="progress is-small is-success" value="21" max="100" />
+        <progress class="progress is-small is-primary" value="21" max="100" />
       </div>
     </article>
   </router-link>
