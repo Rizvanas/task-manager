@@ -4,14 +4,6 @@
       <div class="hero-body">
         <h1 class="title is-size-1 has-text-weight-bold">
           <span class="underline-primary">Goals</span>
-          <span>
-            <button class="button button-special is-rounded">
-              <span class="icon is-small">
-                <i class="fas fa-plus"></i>
-              </span>
-              <span>Set new goal</span>
-            </button>
-          </span>
         </h1>
       </div>
     </div>
@@ -60,6 +52,10 @@ export default {
       return Object.values(this.$store.state.goals.items);
     },
 
+    authId() {
+      return this.$store.state.auth.authId;
+    },
+
     dragOptions() {
       return {
         animation: 150,
@@ -73,7 +69,9 @@ export default {
   },
 
   methods: {
-    ...mapActions({ fetchUserGoals: 'goals/fetchUserGoals' }),
+    ...mapActions({
+      fetchUserGoals: 'goals/fetchUserGoals',
+    }),
     sort() {
       this.goals = this.goals.sort((a, b) => a.order - b.order);
     },
