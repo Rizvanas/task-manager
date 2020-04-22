@@ -36,14 +36,14 @@
             aria-role="menu"
             trap-focus
           >
-            <a
+            <button
               @click="fetchInvites"
               role="button"
               slot="trigger"
-              class="is-small invites-button"
+              class="button button-special"
             >
               <i class="fas fa-people-arrows"></i>
-            </a>
+            </button>
             <b-dropdown-item aria-role="menu-item" :focusable="false" custom>
               <div class="modal-card" style="width:350px;">
                 <ReceivedInvitesList
