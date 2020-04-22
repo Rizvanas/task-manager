@@ -2,13 +2,28 @@
   <div>
     <div class="level is-marginless">
       <div class="level-item level-right">
-        <a
-          @mouseenter="hovered = true"
-          @mouseleave="hovered = false"
+        <b-dropdown
           class="edit-button"
+          position="is-bottom-left"
+          append-to-body
+          aria-role="menu"
+          trap-focus
         >
-          <i class="fas fa-user-plus"></i>
-        </a>
+          <a
+            role="button"
+            slot="trigger"
+            @mouseenter="hovered = true"
+            @mouseleave="hovered = false"
+            class="edit-icon"
+          >
+            <i class="fas fa-user-plus"></i>
+          </a>
+          <b-dropdown-item aria-role="menu-item" :focusable="false" custom>
+            <div class="modal-card" style="width:400px;">
+              <UserSearchDropdown />
+            </div>
+          </b-dropdown-item>
+        </b-dropdown>
       </div>
     </div>
     <p class="is-size-5 has-text-weight-bold tile-title">Friends</p>
@@ -30,11 +45,13 @@
 
 <script>
 import FriendListItem from '@/components/FriendListItem';
+import UserSearchDropdown from '@/components/UserSearchDropdown';
 export default {
   name: 'FriendList',
 
   components: {
     FriendListItem,
+    UserSearchDropdown,
   },
 
   data() {

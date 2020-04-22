@@ -381,16 +381,6 @@ input::-moz-focus-inner {
 }
 
 .editable-tile {
-  i {
-    // display: flex;
-    // justify-content: center;
-    position: absolute;
-    margin: 0.25em 0 0 0;
-
-    // align-content: center;
-    color: #363636;
-  }
-
   .edit-button {
     width: 40px;
     height: 40px;
@@ -398,9 +388,19 @@ input::-moz-focus-inner {
     margin: 0.5em 0 0 0.5em;
     position: absolute;
 
-    &:hover {
+    .edit-icon {
       i {
-        color: #3273dc;
+        position: absolute;
+        margin: 0.25em 0 0 0;
+        color: #363636;
+      }
+    }
+
+    &:hover {
+      .edit-icon {
+        i {
+          color: #3273dc;
+        }
       }
     }
 
