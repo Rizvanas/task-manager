@@ -122,9 +122,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ps {
-  height: 420px;
-}
 .profile-pic {
   margin-right: 0.75em;
 }
