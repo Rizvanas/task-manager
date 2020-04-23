@@ -37,8 +37,12 @@
         </a>
       </li>
     </ul>
-    <br />
-    <div class="has-text-centered">You have no pending invitations</div>
+    <div v-else>
+      <br />
+      <div class="has-text-centered">
+        Currently you have no pending invitations
+      </div>
+    </div>
   </div>
 </template>
 
