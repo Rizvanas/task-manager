@@ -1,8 +1,6 @@
 <template>
   <div>
-    <p class="has-text-size-large has-text-weight-bold has-text-centered">
-      Friend invitations
-    </p>
+    <p class="has-text-weight-bold has-text-centered">Friend invitations</p>
     <ul v-if="invites.length > 0" class="menu menu-list">
       <li v-for="invite in invites" :key="invite['.key']">
         <a class="action">
