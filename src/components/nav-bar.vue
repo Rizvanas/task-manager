@@ -43,7 +43,7 @@
               class="button button-special"
             >
               <span class="icon is-small">
-                <i class="fas fa-people-carry"></i>
+                <i class="fas fa-user-friends"></i>
               </span>
             </button>
             <b-dropdown-item aria-role="menu-item" :focusable="false" custom>
