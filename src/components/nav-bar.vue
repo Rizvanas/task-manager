@@ -42,7 +42,9 @@
               slot="trigger"
               class="button button-special"
             >
-              <i class="fas fa-people-arrows"></i>
+              <span class="icon is-small">
+                <i class="fas fa-people-carry"></i>
+              </span>
             </button>
             <b-dropdown-item aria-role="menu-item" :focusable="false" custom>
               <div class="modal-card" style="width:350px;">
