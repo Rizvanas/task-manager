@@ -27,11 +27,8 @@
       </div>
     </div>
     <p class="is-size-5 has-text-weight-bold tile-title">Friends</p>
-    <perfect-scrollbar>
+    <perfect-scrollbar :options="options">
       <ul class="menu menu-list">
-        <FriendListItem />
-        <FriendListItem />
-        <FriendListItem />
         <FriendListItem />
         <FriendListItem />
         <FriendListItem />
@@ -46,6 +43,7 @@
 <script>
 import FriendListItem from '@/components/FriendListItem';
 import UserSearchDropdown from '@/components/UserSearchDropdown';
+
 export default {
   name: 'FriendList',
 
@@ -57,6 +55,8 @@ export default {
   data() {
     return {
       hovered: false,
+      showInvitationForm: false,
+      options: { wheelPropagation: false },
     };
   },
 };
@@ -65,5 +65,9 @@ export default {
 <style lang="scss" scoped>
 .tile-title {
   margin: 0 0 1em 1em;
+}
+
+.ps {
+  height: 420px;
 }
 </style>
