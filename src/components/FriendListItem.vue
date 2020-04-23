@@ -1,5 +1,5 @@
 <template>
-  <div class="level friend-item">
+  <div v-if="!showInvitationForm" class="level friend-item">
     <div class="level-left">
       <div class="level-item">
         <span class="profile-pic image is-32x32">
@@ -9,27 +9,41 @@
       <div class="level-item">
         <p class="is-size-6">{{ friend.username }}</p>
       </div>
+      <br />
     </div>
     <transition name="fade">
       <div class="level-right is-size-7">
-        <p class="is-small is-pulled-right action-button--submit">
+        <a
+          @click="showInvitationForm = true"
+          class="is-small is-pulled-right action-button--submit"
+        >
           <span class="icon">
             <i class="fas fa-project-diagram"></i>
           </span>
-        </p>
-        <p class="is-small is-pulled-right action-button--cancel">
+        </a>
+        <a class="is-small is-pulled-right action-button--cancel">
           <span class="icon">
             <i class="fas fa-times"></i>
           </span>
-        </p>
+        </a>
       </div>
     </transition>
   </div>
+  <GoalInvitationForm
+    v-else
+    :friend="friend"
+    @formClosed="showInvitationForm = false"
+  />
 </template>
 
 <script>
+import GoalInvitationForm from '@/components/GoalInvitationForm';
+
 export default {
-  name: 'FieldListItem',
+  name: 'FriendListItem',
+
+  components: { GoalInvitationForm },
+
   props: {
     friend: {
       type: Object,
@@ -41,14 +55,19 @@ export default {
       },
     },
   },
+
+  data() {
+    return {
+      showInvitationForm: false,
+    };
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .friend-item {
-  margin: 4px 20px;
-  padding: 0 0.5em 0 0.5em;
-  height: 42px;
+  margin: 8px 20px;
+  padding: 6px 0.5em;
   border-radius: 6px;
   transition: all 300ms cubic-bezier(0, 0.09, 0.33, 0.97);
 
@@ -73,6 +92,7 @@ export default {
     i {
       position: absolute;
       left: 50%;
+      top: 50%;
       transform: translate(-50%, -50%);
       display: block;
     }
