@@ -117,6 +117,7 @@ export default {
 .profile-pic {
   margin-right: 1em;
 }
+
 .ps {
   max-height: 280px;
 }
