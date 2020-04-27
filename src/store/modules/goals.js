@@ -1,4 +1,5 @@
 import { goalsRef } from '@/shared/firebase';
+import { appendChildToParent } from '@/store/helpers';
 
 export default {
   namespaced: true,
@@ -8,18 +9,23 @@ export default {
   },
 
   actions: {
-    async fetchGoal({ dispatch }, goalId) {
-      const goal = await goalsRef.doc(goalId).get();
-
-      return await dispatch(
+    async fetchGoal({ commit, state }, goalId) {
+      const goalDoc = await goalsRef.doc(goalId).get();
+      const goal = {
+        ...goalDoc.data(),
+        completionDate: goalDoc.data().completionDate.toDate(),
+      };
+      commit(
         'setItem',
         {
           resource: 'goals',
-          item: goal.data(),
-          id: goal.id,
+          item: goal,
+          id: goalDoc.id,
         },
         { root: true },
       );
+
+      return state.items[goalId];
     },
 
     async fetchUserGoals({ commit, rootState }) {
@@ -39,5 +45,7 @@ export default {
         );
       });
     },
+
+    appendActionToGoal: appendChildToParent('actions'),
   },
 };

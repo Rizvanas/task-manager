@@ -71,7 +71,6 @@ export default {
     async signInWithGoogle({ dispatch }) {
       const userData = await auth.signInWithPopup(googleAuthProvider);
       let user = userData.user;
-
       const userDoc = await usersRef.doc(user.uid).get();
       if (!userDoc.exists) {
         await dispatch(
@@ -79,7 +78,7 @@ export default {
           {
             id: user.uid,
             email: user.email,
-            username: user.email,
+            username: user.displayName.replace(/ .*/, ''),
             avatar: user.photoURL,
           },
           { root: true },

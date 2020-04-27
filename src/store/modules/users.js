@@ -1,4 +1,4 @@
-import { usersRef } from '@/shared/firebase';
+import { usersRef, docId } from '@/shared/firebase';
 
 export default {
   namespaced: true,
@@ -7,12 +7,23 @@ export default {
     items: {},
   },
 
+  getters: {
+    getUsers: state => ids => {
+      return ids.map(id => state.items[id]);
+    },
+  },
+
   actions: {
     createUser({ commit, state }, { id, email, username, avatar }) {
       return new Promise((resolve, reject) => {
         email = email.toLowerCase();
         const lowerUsername = username.toLowerCase();
-        const user = { email, username, lowerUsername, avatar };
+        const user = {
+          email,
+          username,
+          lowerUsername,
+          avatar,
+        };
         usersRef
           .doc(`${id}`)
           .set(user)
@@ -36,6 +47,49 @@ export default {
         { resource: 'users', id: id },
         { root: true },
       );
+    },
+
+    async fetchUsersByUsername(context, username) {
+      const querySnap = await usersRef
+        .where('lowerUsername', '>=', username)
+        .limit(50)
+        .get();
+
+      return querySnap.map(userDoc => {
+        userDoc.data(), userDoc.id;
+      });
+    },
+
+    async fetchUserFriends(context, userId) {
+      const querySnap = await usersRef
+        .doc(userId)
+        .collection('friends')
+        .get();
+
+      return querySnap.docs.map(userDoc => {
+        return { ...userDoc.data(), id: userDoc.id };
+      });
+    },
+
+    async fetchUsers({ commit }, ids) {
+      const usersSnap = await usersRef.where(docId, 'in', ids).get();
+
+      usersSnap.docs.forEach(userDoc => {
+        commit(
+          'setItem',
+          {
+            resource: 'users',
+            item: {
+              ...userDoc.data(),
+              id: userDoc.id,
+            },
+            id: userDoc.id,
+          },
+          { root: true },
+        );
+      });
+
+      return;
     },
   },
 };
