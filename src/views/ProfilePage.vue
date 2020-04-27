@@ -7,12 +7,10 @@
             <article class="tile editable-tile is-child box has-shadow-border">
               <div class="level is-marginless">
                 <div class="level-item level-right">
-                  <a
-                    @mouseenter="hovered = true"
-                    @mouseleave="hovered = false"
-                    class="edit-button"
-                  >
-                    <i class="fas fa-pen"></i>
+                  <a class="edit-button">
+                    <span class="edit-icon">
+                      <i class="fas fa-pen"></i>
+                    </span>
                   </a>
                 </div>
               </div>
@@ -101,7 +99,6 @@ export default {
     return {
       editUsername: false,
       editEmail: false,
-      hovered: false,
     };
   },
 
