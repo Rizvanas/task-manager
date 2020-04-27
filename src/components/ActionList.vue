@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="level is-marginless">
-      <div class="level-right level-item">
+      <div class="level-left level-item">
+        <p class="is-size-5 has-text-weight-bold tile-title">Actions</p>
+      </div>
+      <div class="level-right level-item" style="margin-bottom: 1.25em;">
         <transition name="slide-fade">
           <a
             v-if="!editMode && !insertMode"
@@ -36,7 +39,6 @@
         </transition>
       </div>
     </div>
-    <p class="is-size-5 has-text-weight-bold tile-title">Actions</p>
     <perfect-scrollbar :options="options">
       <ul class="menu menu-list">
         <li v-if="insertMode">
