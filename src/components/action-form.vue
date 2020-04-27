@@ -7,14 +7,15 @@
       <div class="control">
         <UserSelectionList
           :users="users"
-          :assignedUserId="action.assignedUserId"
-          @newUserAssigned="update"
+          :assignedUserId="clonedAction.assignedUserId"
+          @newUserAssigned="assignNewUser"
         />
       </div>
       <transition name="fade">
         <div class="control is-expanded action-form-input">
           <input
             v-model="clonedAction.title"
+            @input="update"
             class="input is-static"
             type="text"
             placeholder="Name your action"
@@ -25,14 +26,14 @@
         <div class="level-item">
           <p
             v-if="creationState"
-            @click="submit"
+            @click="create"
             class="is-small is-pulled-right action-button is-check"
           >
             <span class="icon is-small">
               <i class="fas fa-check"></i>
             </span>
           </p>
-          <p @click="remove" class="is-small is-pulled-right action-button">
+          <p @click="cancel" class="is-small is-pulled-right action-button">
             <span class="icon is-small">
               <i class="fas fa-times"></i>
             </span>
@@ -42,9 +43,9 @@
     </div>
     <div class="field is-grouped columns is-vcentered difficulty-slider">
       <div class="column is-1 control">
-        <span class="title is-size-4">
-          {{ clonedAction.expectedWorkHours | hoursEmoji }}
-        </span>
+        <span class="title is-size-4">{{
+          clonedAction.expectedWorkHours | hoursEmoji
+        }}</span>
       </div>
       <div class="column is-10 control">
         <transition name="fade">
@@ -57,6 +58,7 @@
               :custom-formatter="workHoursTooltip"
               tooltip-type="is-white"
               v-model="clonedAction.expectedWorkHours"
+              @change="update"
             ></b-slider>
           </b-field>
         </transition>
@@ -66,6 +68,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import emojiStatus from '@/mixins/emojiStatus';
 import UserSelectionList from '@/components/UserSelectionList';
 
@@ -83,7 +86,6 @@ export default {
         return {
           title: '',
           expectedWorkHours: 1,
-          assignedUserId: null,
         };
       },
     },
@@ -96,6 +98,10 @@ export default {
 
   created() {
     this.creationState = this.action['.key'] == undefined;
+    this.clonedAction.goalId = this.goalId;
+    if (!this.clonedAction.assignedUserId) {
+      this.clonedAction.assignedUserId = this.$store.state.auth.authId;
+    }
   },
 
   data() {
@@ -112,36 +118,35 @@ export default {
       const goal = this.$store.state.goals.items[this.goalId];
       return this.$store.getters['users/getUsers'](goal.members);
     },
+
+    assignedUserId() {
+      return this.clonedAction.assignedUserId;
+    },
   },
 
   methods: {
-    remove() {
-      if (this.creationState) {
-        this.$emit('canceled');
-      } else {
-        this.$emit('delete', this.clonedAction.id);
-      }
-    },
+    ...mapActions('actions', ['createAction']),
 
-    save() {
-      const action = this.persist();
-      this.$emit('save', action);
+    create() {
+      const action = this.createAction(this.clonedAction);
+      this.$emit('create', action);
     },
 
     cancel() {
-      this.$emit('cancel');
+      this.creationState
+        ? this.$emit('cancel')
+        : this.$emit('remove', this.clonedAction['.key']);
     },
 
-    async persist() {
-      return this.$data;
-    },
-
-    submit() {
-      this.$emit('actionCreated', this.clonedAction);
+    assignNewUser(id) {
+      this.clonedAction.assignedUserId = id;
+      this.update();
     },
 
     update() {
-      this.update('actionUpdated', this.clonedAction);
+      if (!this.creationState) {
+        this.$emit('update', this.clonedAction);
+      }
     },
 
     workHoursTooltip(val) {

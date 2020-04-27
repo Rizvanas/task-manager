@@ -31,7 +31,7 @@
           </a>
           <a
             v-else-if="!insertMode || editMode"
-            @click="editMode = false"
+            @click="cancelChanges"
             class="is-small edit-button is-delete"
           >
             <i class="fas fa-times"></i>
@@ -43,7 +43,11 @@
       <ul class="menu menu-list">
         <li v-if="insertMode">
           <p class="action-list-item action is-edited">
-            <ActionForm :goalId="goalId" />
+            <ActionForm
+              :goalId="goalId"
+              @cancel="insertMode = false"
+              @create="insertMode = false"
+            />
           </p>
         </li>
         <transition-group name="list" tag="li">
@@ -56,7 +60,13 @@
             </p>
             <p v-else class="action" :class="{ 'is-edited': editMode }">
               <transition name="fade">
-                <ActionForm v-if="editMode" :action="action" :goalId="goalId" />
+                <ActionForm
+                  v-if="editMode"
+                  :action="action"
+                  :goalId="goalId"
+                  @update="addToUpdates"
+                  @remove="addToDeletes"
+                />
                 <Action
                   v-else
                   :action="action"
@@ -101,6 +111,7 @@
 import Action from '@/components/action';
 import ActionForm from '@/components/action-form';
 import FinishedAction from '@/components/finished-action';
+import { mapActions } from 'vuex';
 
 const actionFilters = {
   active: function(actions) {
@@ -141,6 +152,8 @@ export default {
       insertMode: false,
       filter: 'active',
       options: { wheelPropagation: false },
+      updates: {},
+      deletes: {},
     };
   },
 
@@ -157,9 +170,40 @@ export default {
   },
 
   methods: {
+    ...mapActions('actions', ['updateActionList']),
+
+    addToUpdates(action) {
+      if (!this.deletes[action['.key']]) {
+        this.updates[action['.key']] = { ...action };
+      }
+    },
+
+    addToDeletes(id) {
+      if (this.updates[id]) {
+        delete this.updates[id];
+      }
+      this.deletes[id] = true;
+    },
+
+    cancelChanges() {
+      this.editMode = false;
+      this.updates = {};
+      this.deletes = {};
+    },
+
+    saveChanges() {
+      this.editMode = false;
+
+      this.updateActionList({
+        updates: Object.values(this.updates),
+        deletes: Object.keys(this.deletes),
+        goalId: this.goalId,
+      });
+      this.updates = {};
+      this.deletes = {};
+    },
     changeActionState() {},
     finishAction() {},
-    saveChanges() {},
   },
 };
 </script>
@@ -170,6 +214,16 @@ export default {
 }
 
 .ps {
-  height: 420px;
+  height: 450px;
+}
+
+.list-enter-active,
+.list-leave-active {
+  transition: all 100ms ease;
+}
+.list-enter,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(20px);
 }
 </style>

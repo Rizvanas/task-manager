@@ -270,16 +270,6 @@ export default {
   transition: all 200ms cubic-bezier(0, 0.09, 0.33, 0.97);
 }
 
-.list-enter-active,
-.list-leave-active {
-  transition: all 100ms ease;
-}
-.list-enter,
-.list-leave-to {
-  opacity: 0;
-  transform: translateY(20px);
-}
-
 .slide-enter-active,
 .slide-leave-active {
   transition: transform 100ms ease-in-out;

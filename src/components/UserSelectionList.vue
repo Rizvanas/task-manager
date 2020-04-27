@@ -16,12 +16,12 @@
       :key="user['.key']"
       aria-role="menu-item"
       :focusable="false"
-      @click="assignNewUser(user['.key'])"
       custom
       class="has-text-justified"
     >
       <button
-        v-if="user['.key'] !== assignedUserId"
+        @click="assignNewUser(user['.key'])"
+        v-if="user['.key'] !== userId"
         class="button button-special"
       >
         <span class="profile-pic image is-24x24">
@@ -49,19 +49,25 @@ export default {
     },
   },
 
+  data() {
+    return {
+      userId: this.assignedUserId ? this.assignedUserId : this.authId,
+    };
+  },
+
   computed: {
     authId() {
       return this.$store.state.auth.authId;
     },
 
     assignedUser() {
-      const userId = this.assignedUserId ? this.assignedUserId : this.authId;
-      return this.$store.state.users.items[userId];
+      return this.$store.state.users.items[this.userId];
     },
   },
 
   methods: {
     assignNewUser(id) {
+      this.userId = id;
       this.$emit('newUserAssigned', id);
     },
   },
