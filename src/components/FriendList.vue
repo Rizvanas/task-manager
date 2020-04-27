@@ -9,13 +9,7 @@
           aria-role="menu"
           trap-focus
         >
-          <a
-            role="button"
-            slot="trigger"
-            @mouseenter="hovered = true"
-            @mouseleave="hovered = false"
-            class="edit-icon"
-          >
+          <a role="button" slot="trigger" class="edit-icon">
             <i class="fas fa-user-plus"></i>
           </a>
           <b-dropdown-item aria-role="menu-item" :focusable="false" custom>
@@ -54,7 +48,6 @@ export default {
 
   data() {
     return {
-      hovered: false,
       showInvitationForm: false,
       options: { wheelPropagation: false },
     };
