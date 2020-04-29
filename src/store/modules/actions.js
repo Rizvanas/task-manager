@@ -34,15 +34,15 @@ export default {
 
     async createAction(
       { commit, rootState, state },
-      { title, assignedUserId, expectedWorkHours, goalId },
+      { title, assignedUserId, timeExpected, goalId },
     ) {
       const action = {
         title,
         assignedUserId,
-        expectedWorkHours,
+        timeExpected,
         isActive: false,
         isFinished: false,
-        actualWorkHours: 0,
+        timeTaken: 0,
         creator: rootState.auth.authId,
       };
       const actionRef = await actionsRef(goalId).add(action);
@@ -59,13 +59,21 @@ export default {
       return state.items[actionRef.id];
     },
 
-    async deleteActions({ commit }, { goalId, deletes }) {
-      const batch = firestore.batch();
-      deletes.forEach(id => batch.delete(actionsRef(goalId).doc(id)));
-      await batch.commit();
+    async updateAction({ commit }, { goalId, id, updatedAction }) {
+      await actionsRef(goalId)
+        .doc(id)
+        .update({
+          title: updatedAction.title,
+          timeExpected: updatedAction.timeExpected,
+          assignedUserId: updatedAction.assignedUserId,
+          isActive: updatedAction.isActive,
+          isFinished: updatedAction.isFinished,
+        });
 
-      deletes.forEach(id =>
-        commit('deleteItem', { resource: 'actions', id }, { root: true }),
+      commit(
+        'setItem',
+        { resource: 'actions', id, item: updatedAction },
+        { root: true },
       );
     },
 
@@ -75,7 +83,7 @@ export default {
       updates.forEach(action =>
         batch.update(actionsRef(goalId).doc(action['.key']), {
           title: action.title,
-          expectedWorkHours: action.expectedWorkHours,
+          timeExpected: action.timeExpected,
           assignedUserId: action.assignedUserId,
           isActive: action.isActive,
           isFinished: action.isFinished,
