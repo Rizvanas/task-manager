@@ -5,8 +5,6 @@
         <span class="profile-pic image is-32x32">
           <img class="is-rounded" :src="friend.avatar" alt="Friend avatar" />
         </span>
-      </div>
-      <div class="level-item">
         <p class="is-size-6">{{ friend.username }}</p>
       </div>
       <br />
@@ -47,12 +45,7 @@ export default {
   props: {
     friend: {
       type: Object,
-      default: () => {
-        return {
-          username: 'Rizvanas',
-          avatar: 'https://bulma.io/images/placeholders/96x96.png',
-        };
-      },
+      required: true,
     },
   },
 
@@ -69,12 +62,12 @@ export default {
   margin: 8px 20px;
   padding: 6px 0.5em;
   border-radius: 6px;
+  box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
+  background-color: #f6f9fc;
   transition: all 300ms cubic-bezier(0, 0.09, 0.33, 0.97);
 
   &:hover {
-    box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
-    background-color: #f6f9fc;
-
+    background-color: #e6efff;
     .action-button {
       background-color: #cde3f8;
     }
@@ -118,7 +111,7 @@ export default {
   }
 }
 .profile-pic {
-  margin-right: 1em;
+  margin-right: 0.5em;
 }
 .ps {
   height: 420px;

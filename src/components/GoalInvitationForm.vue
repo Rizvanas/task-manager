@@ -6,8 +6,6 @@
           <span class="profile-pic image is-32x32">
             <img class="is-rounded" :src="friend.avatar" alt="Friend avatar" />
           </span>
-        </div>
-        <div class="level-item">
           <p class="is-size-6">{{ friend.username }}</p>
         </div>
         <br />
@@ -115,7 +113,7 @@ export default {
   }
 }
 .profile-pic {
-  margin-right: 1em;
+  margin-right: 0.5em;
 }
 
 .ps {

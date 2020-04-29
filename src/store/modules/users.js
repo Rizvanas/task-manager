@@ -60,17 +60,6 @@ export default {
       });
     },
 
-    async fetchUserFriends(context, userId) {
-      const querySnap = await usersRef
-        .doc(userId)
-        .collection('friends')
-        .get();
-
-      return querySnap.docs.map(userDoc => {
-        return { ...userDoc.data(), id: userDoc.id };
-      });
-    },
-
     async fetchUsers({ commit }, ids) {
       const usersSnap = await usersRef.where(docId, 'in', ids).get();
 
