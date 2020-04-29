@@ -43,9 +43,9 @@
     </div>
     <div class="field is-grouped columns is-vcentered difficulty-slider">
       <div class="column is-1 control">
-        <span class="title is-size-4">{{
-          clonedAction.expectedWorkHours | hoursEmoji
-        }}</span>
+        <span class="title is-size-4">
+          {{ clonedAction.timeExpected | hoursEmoji }}
+        </span>
       </div>
       <div class="column is-10 control">
         <transition name="fade">
@@ -57,7 +57,7 @@
               :step="0.1"
               :custom-formatter="workHoursTooltip"
               tooltip-type="is-white"
-              v-model="clonedAction.expectedWorkHours"
+              v-model="clonedAction.timeExpected"
               @change="update"
             ></b-slider>
           </b-field>
@@ -85,7 +85,7 @@ export default {
       default: () => {
         return {
           title: '',
-          expectedWorkHours: 1,
+          timeExpected: 1,
         };
       },
     },

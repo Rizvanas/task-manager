@@ -14,8 +14,8 @@
           <div>
             <span></span>
             <p class="action-text is-size-6 has-text-weight-bold">
-              {{ action.title }}
-              {{ action.expectedWorkHours | hoursEmoji }}
+              {{ clonedAction.title }}
+              {{ clonedAction.timeExpected | hoursEmoji }}
             </p>
             <p class="action-text is-size-7 has-text-weight-light">
               In progress: 8h : 32m
@@ -27,16 +27,16 @@
         <div class="level-right is-size-7">
           <div class="level-item">
             <p
-              @click="toggleStartPause"
+              @click="toggleActivation"
               class="is-small is-pulled-right action-button"
             >
               <span class="icon is-small">
-                <i v-if="action.isActive" class="fas fa-pause"></i>
+                <i v-if="clonedAction.isActive" class="fas fa-pause"></i>
                 <i v-else class="fas fa-play"></i>
               </span>
             </p>
           </div>
-          <div v-if="action.isActive" class="level-item">
+          <div v-if="clonedAction.isActive" class="level-item">
             <p
               @click="finishTask"
               class="is-small is-pulled-right action-button"
@@ -66,7 +66,9 @@ export default {
   },
 
   data() {
-    return {};
+    return {
+      clonedAction: { ...this.action },
+    };
   },
 
   mixins: [emojiStatus],
@@ -74,47 +76,33 @@ export default {
   methods: {
     ...mapActions('actions', ['updateAction']),
 
-    toggleStartPause() {
-      if (!this.isStarted && !this.action.isFinished) {
-        this.startAction();
+    toggleActivation() {
+      if (!this.clonedAction.isFinished) {
+        this.clonedAction.isActive = !this.clonedAction.isActive;
+        this.update();
       }
-
-      if (this.isStarted && !this.action.isFinished) {
-        this.action.isActive = !this.action.isActive;
-      }
-
-      this.$emit('actionStateChange', this.action);
     },
 
     finishTask() {
-      if (this.isStarted && !this.action.isFinished) {
-        this.$emit('actionFinished', this.action._id);
+      if (this.isStarted && !this.clonedAction.isFinished) {
+        this.clonedAction.isFinished = true;
+        this.update();
       }
     },
 
-    async startAction() {
-      const payload = {
-        id: this.action['.key'],
-        goalId: this.action.goalId,
-        isActive: true,
-        lastActivationTime: new Date(),
-      };
-      await this.updateAction(payload);
-    },
-
-    async assignPersonToAction() {
-      const payload = {
-        id: this.action['.key'],
-        goalId: this.action.goalId,
-        assignedUserId: this.a,
-      };
-      await this.updateAction(payload);
+    update() {
+      this.updateAction({
+        id: this.clonedAction['.key'],
+        goalId: this.clonedAction.goalId,
+        updatedAction: this.clonedAction,
+      });
+      this.$emit('actionStateChange', this.clonedAction);
     },
   },
 
   computed: {
     isStarted() {
-      return this.action.lastActivationTime !== undefined;
+      return this.clonedAction.lastActivationTime !== undefined;
     },
 
     assignedUser() {

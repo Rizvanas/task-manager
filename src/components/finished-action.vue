@@ -2,32 +2,34 @@
   <div>
     <div class="level">
       <div class="level-item has-text-centered">
-        <p class="action-text has-text-weight-bold">{{ clonedAction.title }}</p>
+        <p class="has-text-weight-bold">{{ action.title }}</p>
       </div>
     </div>
     <div class="level">
       <div class="level-item has-text-centered">
         <div>
-          <p class="heading has-text-weight-bold">Status</p>
-          <p class="status-tag--success">Finished</p>
+          <p class="has-text-weight-bold is-size-7">Status</p>
+          <p class="status-tag--success has-text-white">Finished</p>
         </div>
       </div>
       <div class="level-item has-text-centered">
         <div>
-          <p class="heading has-text-weight-bold">Expected</p>
-          <p class="status-tag action-text">{{ action.expectedHours }} h</p>
+          <p class="has-text-weight-bold is-size-7">Expected</p>
+          <p class="status-tag action-text">{{ action.timeExpected }} h</p>
         </div>
       </div>
       <div class="level-item has-text-centered">
         <div>
-          <p class="heading has-text-weight-bold">Took</p>
-          <p class="status-tag action-text">{{ action.totalHours }} h</p>
+          <p class="has-text-weight-bold is-size-7">Took</p>
+          <p class="status-tag action-text">{{ action.timeTaken }} h</p>
         </div>
       </div>
       <div class="level-item has-text-centered">
         <div>
-          <p class="heading has-text-weight-bold">Rating</p>
-          <p class="status-tag action-text">{{ currentActionEmoji }}</p>
+          <p class="has-text-weight-bold is-size-7">Rating</p>
+          <p class="status-tag action-text">
+            {{ action.timeExpected | hoursEmoji }}
+          </p>
         </div>
       </div>
     </div>
@@ -35,7 +37,7 @@
 </template>
 
 <script>
-import ActionMixins from '@/mixins/action-mixins';
+import emojiStatus from '@/mixins/emojiStatus';
 
 export default {
   name: 'FinishedAction',
@@ -46,18 +48,12 @@ export default {
       default: () => {
         return {
           title: '',
-          expectedHours: 0,
+          timeExpected: 0,
         };
       },
     },
   },
 
-  mixins: [ActionMixins],
-
-  data() {
-    return {
-      clonedAction: { ...this.action },
-    };
-  },
+  mixins: [emojiStatus],
 };
 </script>

@@ -18,7 +18,7 @@
               <div class="field is-pulled-right">
                 <div class="control">
                   <a
-                    @click="saveChanges"
+                    @click="updateTitle"
                     class="is-small action-button--submit"
                   >
                     <i class="fas fa-check"></i>
@@ -54,7 +54,7 @@
               <div class="field is-pulled-right">
                 <div class="control">
                   <a
-                    @click="saveChanges"
+                    @click="updateDescription"
                     class="is-small action-button--submit"
                   >
                     <i class="fas fa-check"></i>
@@ -122,7 +122,7 @@
                   >
                     <div class="modal-card" style="width:320px;">
                       <b-datepicker
-                        v-model="goal.completionDate"
+                        v-model="completionDate"
                         inline
                         size="is-small"
                       ></b-datepicker>
@@ -186,23 +186,13 @@ export default {
     };
   },
 
-  methods: {
-    ...mapActions('goals', ['fetchGoal']),
-    ...mapActions('actions', ['fetchGoalActions']),
-    ...mapActions('users', ['fetchUsers']),
-
-    saveChanges() {},
-    addNewAction() {},
-
-    scrollToFinished() {
-      let finished = this.$el.querySelector('#finished');
-      finished.scrollTop = finished.scrollHeight;
-    },
-  },
-
   computed: {
     goal() {
-      return this.$store.state.goals.items[this.id];
+      return { ...this.$store.state.goals.items[this.id] };
+    },
+
+    completionDate() {
+      return this.goal.completionDate.toDate();
     },
 
     actions() {
@@ -216,11 +206,39 @@ export default {
     },
 
     remainingActions() {
-      return this.goal.totalActions - this.goal.completedActions;
+      return this.goal.totalActions - this.goal.actionsFinished;
     },
 
     actionsFinished() {
-      return this.goal.completedActions;
+      return this.goal.actionsFinished;
+    },
+  },
+
+  methods: {
+    ...mapActions('goals', ['fetchGoal', 'updateGoal']),
+    ...mapActions('actions', ['fetchGoalActions']),
+    ...mapActions('users', ['fetchUsers']),
+
+    saveChanges() {},
+    addNewAction() {},
+
+    scrollToFinished() {
+      let finished = this.$el.querySelector('#finished');
+      finished.scrollTop = finished.scrollHeight;
+    },
+
+    updateTitle() {
+      this.update();
+      this.editTitle = false;
+    },
+
+    updateDescription() {
+      this.update();
+      this.editDescription = false;
+    },
+
+    update() {
+      this.updateGoal({ id: this.goal['.key'], updatedGoal: this.goal });
     },
   },
 

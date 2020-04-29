@@ -20,8 +20,8 @@
         </div>
         <div class="level-item has-text-centered">
           <div>
-            <p class="title">{{ goal.completedActions }}</p>
-            <p class="heading">Actions completed</p>
+            <p class="title">{{ goal.actionsFinished }}</p>
+            <p class="heading">Actions finished</p>
           </div>
         </div>
       </div>
@@ -49,7 +49,7 @@ export default {
   },
   computed: {
     actionsLeft() {
-      return this.goal.totalActions - this.goal.completedActions;
+      return this.goal.totalActions - this.goal.actionsFinished;
     },
   },
 };

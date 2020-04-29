@@ -115,8 +115,9 @@ import { mapActions } from 'vuex';
 
 const actionFilters = {
   active: function(actions) {
-    return actions;
+    return actions.filter(action => !action.isFinished);
   },
+
   finished: function(actions) {
     if (this.editMode || this.insertMode) {
       this.filter = 'active';
