@@ -46,6 +46,7 @@ export default {
         title: updatedGoal.title,
         description: updatedGoal.description,
         completionDate: updatedGoal.completionDate,
+        members: updatedGoal.members,
       });
 
       commit(

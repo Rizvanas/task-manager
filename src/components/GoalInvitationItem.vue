@@ -2,18 +2,17 @@
   <div class="level goal-invitation-item">
     <div class="level-left">
       <div class="level-item">
-        <p class="is-size-6">{{ goal.title }}</p>
+        <p class="is-size-6">{{ invitation.title }}</p>
       </div>
       <br />
     </div>
     <transition name="fade">
       <div class="level-right is-size-7">
         <a
-          @click="showInvitationForm = true"
+          @click="addToGoal"
           class="is-small is-pulled-right action-button--submit"
         >
           <span class="icon">
-            <!-- <i class="fas fa-arrows-alt-h"></i> -->
             <i class="fas fa-share"></i>
           </span>
         </a>
@@ -23,22 +22,39 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+import cloneDeep from 'lodash/cloneDeep';
+
 export default {
   name: 'GoalInvitationItem',
 
   props: {
-    goal: {
+    invitation: {
       type: Object,
-      default: () => {
-        return {
-          title: 'Win Global GameJam 2020',
-        };
-      },
+      required: true,
     },
   },
 
   data() {
     return {};
+  },
+
+  computed: {
+    goalId() {
+      return this.invitation['.key'];
+    },
+  },
+
+  methods: {
+    ...mapActions('goals', ['updateGoal']),
+    ...mapActions('invites', ['removeInvite']),
+
+    addToGoal() {
+      let goal = cloneDeep(this.$store.state.goals.items[this.goalId]);
+      goal.members.push(this.invitation.to);
+      this.updateGoal({ id: this.goalId, updatedGoal: goal });
+      this.removeInvite({ resource: 'goal', id: this.invitation['.key'] });
+    },
   },
 };
 </script>

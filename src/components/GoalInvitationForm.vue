@@ -33,15 +33,16 @@
       </p>
     </div>
     <perfect-scrollbar>
-      <GoalInvitationItem />
-      <GoalInvitationItem />
-      <GoalInvitationItem />
+      <li v-for="invitation in invitations" :key="invitation['.key']">
+        <GoalInvitationItem :invitation="invitation" />
+      </li>
     </perfect-scrollbar>
   </div>
 </template>
 
 <script>
 import GoalInvitationItem from '@/components/GoalInvitationItem';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'GoalInvitationForm',
@@ -53,13 +54,29 @@ export default {
   props: {
     friend: {
       type: Object,
-      default: () => {
-        return {
-          username: 'Rizvanas',
-          avatar: 'https://bulma.io/images/placeholders/96x96.png',
-        };
-      },
+      required: true,
     },
+  },
+
+  computed: {
+    authId() {
+      return this.$store.state.auth.authId;
+    },
+
+    invitations() {
+      return Object.values(this.$store.state.invites.goal).filter(
+        invite =>
+          invite.to === this.friend.userId && invite.from === this.authId,
+      );
+    },
+  },
+
+  methods: {
+    ...mapActions('invites', ['fetchGoalInvitations']),
+  },
+
+  created() {
+    this.fetchGoalInvitations({ from: this.authId, to: this.friend.userId });
   },
 };
 </script>

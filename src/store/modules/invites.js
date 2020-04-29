@@ -1,12 +1,21 @@
 import Vue from 'vue';
-import { friendInvitesRef, usersRef, serverTimestamp } from '@/shared/firebase';
-
+import {
+  friendInvitesRef,
+  usersRef,
+  goalsRef,
+  serverTimestamp,
+} from '@/shared/firebase';
 export default {
   namespaced: true,
 
   state: {
     sent: {},
     received: {},
+    friend: {
+      sent: {},
+      received: {},
+    },
+    goal: {},
   },
 
   actions: {
@@ -64,12 +73,42 @@ export default {
 
       await friendInvitesRef.doc(inviteId).delete();
     },
+
+    async fetchGoalInvitations({ commit }, { from, to }) {
+      const goalsSnap = await goalsRef
+        .where('owner', '==', from)
+        .limit(50)
+        .get();
+
+      goalsSnap.docs.forEach(goal => {
+        if (!goal.data().members.includes(to)) {
+          commit('setInvite', {
+            resource: 'goal',
+            id: goal.id,
+            invite: { title: goal.data().title, from, to },
+          });
+          commit(
+            'setItem',
+            { resource: 'goals', id: goal.id, item: goal.data() },
+            { root: true },
+          );
+        }
+      });
+    },
+
+    removeInvite({ commit }, { resource, id }) {
+      commit('removeInvite', { resource, id });
+    },
   },
 
   mutations: {
     setInvite(state, { invite, id, resource }) {
       invite['.key'] = id;
       Vue.set(state[resource], id, invite);
+    },
+
+    removeInvite(state, { resource, id }) {
+      Vue.delete(state[resource], id);
     },
   },
 };
