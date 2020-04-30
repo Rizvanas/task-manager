@@ -1,7 +1,11 @@
 <template>
   <router-link :to="{ name: 'GoalDetail', params: { id: goal['.key'] } }">
     <article class="box has-shadow-lift">
-      <div class="is-pulled-right">{{ goal.ownerName }}</div>
+      <div class="is-pulled-right is-marginless">
+        <span class="profile-pic image is-32x32">
+          <img class="is-rounded" :src="goal.ownerAvatar" alt="User avatar" />
+        </span>
+      </div>
       <div class="card-content">
         <div class="title has-text-weight-bold">{{ goal.title }}</div>
       </div>
@@ -55,7 +59,7 @@ export default {
   props: {
     goal: {
       type: Object,
-      default: () => {},
+      required: true,
     },
   },
 
@@ -75,4 +79,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.profile-pic {
+  margin-right: 0.5em;
+}
+</style>
