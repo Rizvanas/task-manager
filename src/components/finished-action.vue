@@ -15,13 +15,13 @@
       <div class="level-item has-text-centered">
         <div>
           <p class="has-text-weight-bold is-size-7">Expected</p>
-          <p class="status-tag action-text">{{ action.timeExpected }} h</p>
+          <p class="status-tag action-text">{{ expectedFinishTime }}</p>
         </div>
       </div>
       <div class="level-item has-text-centered">
         <div>
           <p class="has-text-weight-bold is-size-7">Took</p>
-          <p class="status-tag action-text">{{ action.timeTaken }} h</p>
+          <p class="status-tag action-text">{{ actualFinishTime }}</p>
         </div>
       </div>
       <div class="level-item has-text-centered">
@@ -38,22 +38,27 @@
 
 <script>
 import emojiStatus from '@/mixins/emojiStatus';
-
+import { getTimeDurationInDisplayFormat } from '@/shared/dateHelpers';
 export default {
   name: 'FinishedAction',
 
   props: {
     action: {
       type: Object,
-      default: () => {
-        return {
-          title: '',
-          timeExpected: 0,
-        };
-      },
+      required: true,
     },
   },
 
   mixins: [emojiStatus],
+
+  computed: {
+    expectedFinishTime() {
+      return getTimeDurationInDisplayFormat(this.action.timeExpected);
+    },
+
+    actualFinishTime() {
+      return getTimeDurationInDisplayFormat(this.action.timeTaken);
+    },
+  },
 };
 </script>

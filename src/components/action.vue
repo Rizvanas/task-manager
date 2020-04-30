@@ -106,7 +106,7 @@ export default {
     },
 
     assignedUser() {
-      return this.$store.state.users.items[this.action.assignedUserId];
+      return this.$store.state.users.items[this.clonedAction.assignedUserId];
     },
 
     clonedAction() {
