@@ -91,6 +91,7 @@ export default {
       );
 
       deletes.forEach(id => batch.delete(actionsRef(goalId).doc(id)));
+
       await batch.commit();
 
       updates.forEach(action =>

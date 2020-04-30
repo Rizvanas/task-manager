@@ -3,12 +3,12 @@ import { addSeconds, differenceInDays } from 'date-fns';
 export default {
   filters: {
     hoursEmoji: seconds => {
-      const hour = val => 3600 * val;
+      const hour = val => val * 3600;
 
       let emoji = '👶';
       if (seconds > hour(2) && seconds <= hour(3)) {
         emoji = '🧁';
-      } else if (seconds <= hour(4)) {
+      } else if (seconds > hour(3) && seconds <= hour(4)) {
         emoji = '🍰';
       } else if (seconds > hour(4) && seconds <= hour(5)) {
         emoji = '😍';

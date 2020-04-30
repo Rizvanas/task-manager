@@ -18,7 +18,7 @@
               {{ clonedAction.timeExpected | hoursEmoji }}
             </p>
             <p class="action-text is-size-7 has-text-weight-light">
-              In progress: 8h : 32m
+              In progress: {{ timeSpent }}
             </p>
           </div>
         </div>
@@ -67,7 +67,7 @@ export default {
 
   data() {
     return {
-      clonedAction: { ...this.action },
+      // clonedAction: { ...this.action },
     };
   },
 
@@ -107,6 +107,19 @@ export default {
 
     assignedUser() {
       return this.$store.state.users.items[this.action.assignedUserId];
+    },
+
+    clonedAction() {
+      return { ...this.action };
+    },
+
+    timeSpent() {
+      const seconds = this.clonedAction.timeTaken;
+      const hours = Math.trunc(seconds / 3600);
+      const minutes = Math.trunc((seconds % 3600) / 60);
+      return hours === 0
+        ? `${minutes} minutes`
+        : `${hours}hours ${minutes}minutes`;
     },
   },
 };

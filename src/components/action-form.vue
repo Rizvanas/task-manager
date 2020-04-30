@@ -58,6 +58,7 @@
               :custom-formatter="workHoursTooltip"
               tooltip-type="is-white"
               v-model="clonedAction.timeExpected"
+              @
               @change="update"
             ></b-slider>
           </b-field>
@@ -85,7 +86,7 @@ export default {
       default: () => {
         return {
           title: '',
-          timeExpected: 1,
+          timeExpected: 3600,
         };
       },
     },

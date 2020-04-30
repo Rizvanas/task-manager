@@ -67,12 +67,7 @@
                   @update="addToUpdates"
                   @remove="addToDeletes"
                 />
-                <Action
-                  v-else
-                  :action="action"
-                  @actionStateChange="changeActionState"
-                  @actionFinished="finishAction"
-                />
+                <Action v-else :action="action" />
               </transition>
             </p>
           </li>
@@ -192,10 +187,10 @@ export default {
       this.deletes = {};
     },
 
-    saveChanges() {
+    async saveChanges() {
       this.editMode = false;
 
-      this.updateActionList({
+      await this.updateActionList({
         updates: Object.values(this.updates),
         deletes: Object.keys(this.deletes),
         goalId: this.goalId,
@@ -203,8 +198,6 @@ export default {
       this.updates = {};
       this.deletes = {};
     },
-    changeActionState() {},
-    finishAction() {},
   },
 };
 </script>
