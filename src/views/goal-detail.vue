@@ -79,7 +79,9 @@
             <div class="level">
               <div class="level-item has-text-centered">
                 <div class="goal-card-stat">
-                  <p class="title is-size-5 has-text-weight-bold">🧊</p>
+                  <p class="title is-size-5 has-text-weight-bold">
+                    {{ goal.timeRequired | urgencyEmoji(completionDate) }}
+                  </p>
                   <p class="is-size-7 has-text-weight-bold">Urgency</p>
                 </div>
               </div>
@@ -134,8 +136,8 @@
             <div>
               <progress
                 class="progress is-small is-primary"
-                value="21"
-                max="100"
+                :value="goal.timeFinished"
+                :max="goal.timeRequired"
               />
             </div>
           </article>
@@ -157,6 +159,7 @@
 </template>
 
 <script>
+import emojiStatus from '@/mixins/emojiStatus';
 import asyncDataStatus from '@/mixins/asyncDataStatus';
 import ActionList from '@/components/ActionList';
 import ActivityChart from '@/components/activity-chart';
@@ -177,7 +180,7 @@ export default {
     ActionList,
   },
 
-  mixins: [asyncDataStatus],
+  mixins: [asyncDataStatus, emojiStatus],
 
   data() {
     return {
@@ -218,9 +221,6 @@ export default {
     ...mapActions('goals', ['fetchGoal', 'updateGoal']),
     ...mapActions('actions', ['fetchGoalActions']),
     ...mapActions('users', ['fetchUsers']),
-
-    saveChanges() {},
-    addNewAction() {},
 
     scrollToFinished() {
       let finished = this.$el.querySelector('#finished');

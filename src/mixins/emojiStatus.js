@@ -1,26 +1,44 @@
+import { addSeconds, differenceInDays } from 'date-fns';
+
 export default {
   filters: {
-    hoursEmoji: function(workHours) {
+    hoursEmoji: seconds => {
+      const hour = val => 3600 * val;
+
       let emoji = '👶';
-      if (workHours > 2 && workHours <= 3) {
+      if (seconds > hour(2) && seconds <= hour(3)) {
         emoji = '🧁';
-      } else if (workHours > 3 && workHours <= 4) {
+      } else if (seconds <= hour(4)) {
         emoji = '🍰';
-      } else if (workHours > 4 && workHours <= 5) {
+      } else if (seconds > hour(4) && seconds <= hour(5)) {
         emoji = '😍';
-      } else if (workHours > 5 && workHours <= 6) {
+      } else if (seconds > hour(5) && seconds <= hour(6)) {
         emoji = '😃';
-      } else if (workHours > 6 && workHours <= 7) {
+      } else if (seconds > hour(6) && seconds <= hour(7)) {
         emoji = '😐';
-      } else if (workHours > 7 && workHours <= 8) {
+      } else if (seconds > hour(7) && seconds <= hour(8)) {
         emoji = '😨';
-      } else if (workHours > 8 && workHours <= 9) {
+      } else if (seconds > hour(8) && seconds <= hour(9)) {
         emoji = '😭';
-      } else if (workHours > 9 && workHours <= 10) {
+      } else if (seconds > hour(9) && seconds <= hour(10)) {
         emoji = '💩';
-      } else if (workHours > 10) {
+      } else if (seconds > hour(10)) {
         emoji = '🚧';
       }
+      return emoji;
+    },
+
+    urgencyEmoji: (expectedDuration, completionDate) => {
+      const projectedCompletionDate = addSeconds(new Date(), expectedDuration);
+      const diff = differenceInDays(completionDate, projectedCompletionDate);
+
+      let emoji = '🧊';
+      if (diff < 14 && diff >= 7) {
+        emoji = '🌊';
+      } else if (diff < 7) {
+        emoji = '🔥';
+      }
+
       return emoji;
     },
   },
