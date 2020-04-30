@@ -29,7 +29,7 @@
         </div>
         <div class="level-item has-text-centered">
           <div>
-            <p class="title">7</p>
+            <p class="title">{{ daysLeft }}</p>
             <p class="is-size-7 has-text-weight-bold">Days left</p>
           </div>
         </div>
@@ -47,6 +47,7 @@
 
 <script>
 import emojiStatus from '@/mixins/emojiStatus';
+import dateMixins from '@/mixins/dateMixins';
 
 export default {
   name: 'GoalCard',
@@ -58,7 +59,7 @@ export default {
     },
   },
 
-  mixins: [emojiStatus],
+  mixins: [emojiStatus, dateMixins],
 
   methods: {
     disableEditMode() {
@@ -69,10 +70,6 @@ export default {
   computed: {
     actionsLeft() {
       return this.goal.totalActions - this.goal.actionsFinished;
-    },
-
-    completionDate() {
-      return this.goal.completionDate.toDate();
     },
   },
 };

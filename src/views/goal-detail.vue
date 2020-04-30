@@ -112,7 +112,9 @@
                 >
                   <a slot="trigger" role="button">
                     <div class="action goal-card-stat--active">
-                      <p class="title is-size-5 has-text-weight-bold">7</p>
+                      <p class="title is-size-5 has-text-weight-bold">
+                        {{ daysLeft }}
+                      </p>
                       <p class="is-size-7 has-text-weight-bold">Days left</p>
                     </div>
                   </a>
@@ -161,6 +163,7 @@
 <script>
 import emojiStatus from '@/mixins/emojiStatus';
 import asyncDataStatus from '@/mixins/asyncDataStatus';
+import dateMixins from '@/mixins/dateMixins';
 import ActionList from '@/components/ActionList';
 import ActivityChart from '@/components/activity-chart';
 import { mapActions } from 'vuex';
@@ -180,7 +183,7 @@ export default {
     ActionList,
   },
 
-  mixins: [asyncDataStatus, emojiStatus],
+  mixins: [asyncDataStatus, emojiStatus, dateMixins],
 
   data() {
     return {
@@ -192,10 +195,6 @@ export default {
   computed: {
     goal() {
       return { ...this.$store.state.goals.items[this.id] };
-    },
-
-    completionDate() {
-      return this.goal.completionDate.toDate();
     },
 
     actions() {
