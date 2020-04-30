@@ -53,8 +53,8 @@
             <b-slider
               type="is-info"
               :min="0"
-              :max="10"
-              :step="0.1"
+              :max="36000"
+              :step="60"
               :custom-formatter="workHoursTooltip"
               tooltip-type="is-white"
               v-model="clonedAction.timeExpected"
@@ -149,8 +149,10 @@ export default {
       }
     },
 
-    workHoursTooltip(val) {
-      return `${val} hours`;
+    workHoursTooltip(seconds) {
+      const hours = Math.trunc(seconds / 3600);
+      const minutes = Math.trunc((seconds % 3600) / 60);
+      return `${hours}h ${minutes}min`;
     },
   },
 };
