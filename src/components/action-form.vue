@@ -98,8 +98,7 @@ export default {
   },
 
   created() {
-    this.creationState = this.action['.key'] == undefined;
-    this.clonedAction.goalId = this.goalId;
+    this.creationState = this.action.id == undefined;
     if (!this.clonedAction.assignedUserId) {
       this.clonedAction.assignedUserId = this.$store.state.auth.authId;
     }
@@ -108,7 +107,7 @@ export default {
   data() {
     return {
       creationState: false,
-      clonedAction: { ...this.action },
+      clonedAction: { ...this.action, id: this.action.id },
     };
   },
 
@@ -116,8 +115,7 @@ export default {
 
   computed: {
     users() {
-      const goal = this.$store.state.goals.items[this.goalId];
-      return this.$store.getters['users/getUsers'](goal.members);
+      return this.$store.state.users.items;
     },
 
     assignedUserId() {
@@ -128,15 +126,16 @@ export default {
   methods: {
     ...mapActions('actions', ['createAction']),
 
-    create() {
-      const action = this.createAction(this.clonedAction);
-      this.$emit('create', action);
+    async create() {
+      this.$emit('create');
+
+      await this.createAction({ ...this.clonedAction, goalId: this.goalId });
     },
 
     cancel() {
       this.creationState
         ? this.$emit('cancel')
-        : this.$emit('remove', this.clonedAction['.key']);
+        : this.$emit('remove', this.clonedAction.id);
     },
 
     assignNewUser(id) {
