@@ -18,13 +18,6 @@ export default {
   name: 'App',
   components: { NavBar, NavBarTouch, AppSpinner },
 
-  created() {
-    this.$router.beforeEach((to, from, next) => {
-      this.showPage = false;
-      next();
-    });
-  },
-
   data() {
     return {
       showPage: false,
@@ -35,6 +28,13 @@ export default {
     setPageReady() {
       this.showPage = true;
     },
+  },
+
+  created() {
+    this.$router.beforeEach((to, from, next) => {
+      this.showPage = false;
+      next();
+    });
   },
 };
 </script>
