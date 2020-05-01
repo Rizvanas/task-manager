@@ -1,3 +1,4 @@
+import { firestoreAction } from 'vuexfire';
 import Vue from 'vue';
 import {
   friendInvitesRef,
@@ -5,6 +6,7 @@ import {
   goalsRef,
   serverTimestamp,
 } from '@/shared/firebase';
+
 export default {
   namespaced: true,
 
@@ -19,18 +21,17 @@ export default {
   },
 
   actions: {
-    async sendFriendInvitationTo({ rootState, commit, dispatch }, userId) {
+    async sendFriendInvitationTo({ rootState, commit }, recipient) {
       const authUserId = rootState.auth.authId;
-      const authUser = rootState.users.items[authUserId];
-      const receiver = await dispatch('fetchUser', userId);
+      const authUser = rootState.auth.authUser.items;
 
       const invite = {
         from: authUserId,
         fromUsername: authUser.username,
         fromAvatar: authUser.avatar,
-        to: userId,
-        toUsername: receiver.username,
-        toAvatar: receiver.avatar,
+        to: recipient.id,
+        toUsername: recipient.username,
+        toAvatar: recipient.avatar,
         sent: serverTimestamp,
       };
 
@@ -38,6 +39,21 @@ export default {
       const id = inviteRef.id;
       commit('setSentInvite', invite, id);
     },
+
+    bindToReceivedFriendInvitations: firestoreAction(
+      ({ bindFirestoreRef }, userId) => {
+        return bindFirestoreRef(
+          'friend.received',
+          friendInvitesRef.where('to', '==', userId),
+        );
+      },
+    ),
+
+    unbindReceivedFriendInvitations: firestoreAction(
+      ({ unbindFirestoreRef }) => {
+        unbindFirestoreRef('friend.received');
+      },
+    ),
 
     async fetchReceivedInvitations({ commit }, userId) {
       const querySnap = await friendInvitesRef.where('to', '==', userId).get();

@@ -1,32 +1,23 @@
+import { firestoreAction } from 'vuexfire';
 import { usersRef } from '@/shared/firebase';
 
 export default {
   namespaced: true,
 
   state: {
-    items: {},
+    items: [],
   },
 
   actions: {
-    async fetchUserFriends({ commit }, userId) {
-      const snap = await usersRef
-        .doc(userId)
-        .collection('friends')
-        .get();
+    bindToUserFriends: firestoreAction(({ bindFirestoreRef }, userId) => {
+      return bindFirestoreRef(
+        'items',
+        usersRef.doc(userId).collection('friends'),
+      );
+    }),
 
-      snap.docs.forEach(friend => {
-        commit(
-          'setItem',
-          {
-            resource: 'friends',
-            item: friend.data(),
-            id: friend.id,
-          },
-          { root: true },
-        );
-      });
-
-      return;
-    },
+    unbindUserFriends: firestoreAction(({ unbindFirestoreRef }) => {
+      unbindFirestoreRef('items');
+    }),
   },
 };

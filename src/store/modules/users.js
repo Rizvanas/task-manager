@@ -1,10 +1,11 @@
+import { firestoreAction } from 'vuexfire';
 import { usersRef, docId } from '@/shared/firebase';
 
 export default {
   namespaced: true,
 
   state: {
-    items: {},
+    items: [],
   },
 
   getters: {
@@ -14,6 +15,14 @@ export default {
   },
 
   actions: {
+    bindToGoalUsers: firestoreAction(({ bindFirestoreRef }, ids) => {
+      return bindFirestoreRef('items', usersRef.where(docId, 'in', ids));
+    }),
+
+    unbindGoalUsers: firestoreAction(({ unbindFirestoreRef }) => {
+      unbindFirestoreRef('items');
+    }),
+
     createUser({ commit, state }, { id, email, username, avatar }) {
       return new Promise((resolve, reject) => {
         email = email.toLowerCase();

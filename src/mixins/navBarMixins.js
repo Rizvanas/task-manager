@@ -1,7 +1,9 @@
-import { mapGetters } from 'vuex';
+// import { mapActions } from 'vuex';
 
 export default {
   computed: {
-    ...mapGetters('auth', { user: 'authUser' }),
+    user() {
+      return this.$store.state.auth.authUser;
+    },
   },
 };

@@ -19,7 +19,7 @@
     >
       <div
         v-for="goal in goals"
-        :key="goal.order"
+        :key="goal.priority"
         class="column is-12-tablet is-6-desktop is-4-widescreen"
       >
         <GoalCard :goal="goal" />
@@ -42,14 +42,27 @@ export default {
     return {
       drag: false,
       addingNewCard: false,
+      goalData: [],
     };
   },
 
   mixins: [asyncDataStatus],
 
   computed: {
-    goals() {
-      return Object.values(this.$store.state.goals.items);
+    goals: {
+      get() {
+        return this.$store.state.goals.items.map(goal => {
+          return { ...goal, id: goal.id };
+        });
+      },
+
+      set(goals) {
+        this.updateGoals(
+          goals.map((goal, index) => {
+            return { ...goal, priority: index };
+          }),
+        );
+      },
     },
 
     authId() {
@@ -69,17 +82,26 @@ export default {
   },
 
   methods: {
-    ...mapActions({
-      fetchUserGoals: 'goals/fetchUserGoals',
-    }),
-    sort() {
-      this.goals = this.goals.sort((a, b) => a.order - b.order);
-    },
+    ...mapActions('goals', [
+      'fetchUserGoals',
+      'bindToGoals',
+      'unbindGoals',
+      'updateGoals',
+    ]),
+
+    updatePriority() {},
   },
 
   async created() {
-    await this.fetchUserGoals();
+    await this.bindToGoals(this.$store.state.auth.authId);
+    this.goalData = this.$store.state.goals.items.map(goal => {
+      return { ...goal, id: goal.id };
+    });
     this.asyncDataStatus_fetched();
+  },
+
+  beforeDestroy() {
+    this.unbindGoals();
   },
 };
 </script>

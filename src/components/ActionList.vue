@@ -51,7 +51,7 @@
           </p>
         </li>
         <transition-group name="list" tag="li">
-          <li v-for="action in filteredActions" :key="action['.key']">
+          <li v-for="action in filteredActions" :key="action.id">
             <p
               v-if="action.isFinished"
               class="action-list-item action is-finished"
@@ -169,8 +169,8 @@ export default {
     ...mapActions('actions', ['updateActionList']),
 
     addToUpdates(action) {
-      if (!this.deletes[action['.key']]) {
-        this.updates[action['.key']] = { ...action };
+      if (!this.deletes[action.id]) {
+        this.updates[action.id] = { ...action };
       }
     },
 
@@ -195,6 +195,7 @@ export default {
         deletes: Object.keys(this.deletes),
         goalId: this.goalId,
       });
+
       this.updates = {};
       this.deletes = {};
     },

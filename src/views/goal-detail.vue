@@ -79,7 +79,7 @@
             <div class="level">
               <div class="level-item has-text-centered">
                 <div class="goal-card-stat">
-                  <p class="title is-size-5 has-text-weight-bold">
+                  <p class="title is-size-4 has-text-weight-bold">
                     {{ goal.timeRequired | urgencyEmoji(completionDate) }}
                   </p>
                   <p class="is-size-7 has-text-weight-bold">Urgency</p>
@@ -87,7 +87,7 @@
               </div>
               <div class="level-item has-text-centered">
                 <div class="goal-card-stat">
-                  <p class="title is-size-5 has-text-weight-bold">
+                  <p class="title is-size-4 has-text-weight-bold">
                     {{ actionsFinished }}
                   </p>
                   <p class="is-size-7 has-text-weight-bold">Actions finished</p>
@@ -95,7 +95,7 @@
               </div>
               <div class="level-item has-text-centered">
                 <div class="goal-card-stat">
-                  <p class="title is-size-5 has-text-weight-bold">
+                  <p class="title is-size-4 has-text-weight-bold">
                     {{ remainingActions }}
                   </p>
                   <p class="is-size-7 has-text-weight-bold">
@@ -112,7 +112,7 @@
                 >
                   <a slot="trigger" role="button">
                     <div class="action goal-card-stat--active">
-                      <p class="title is-size-5 has-text-weight-bold">
+                      <p class="title is-size-4 has-text-weight-bold">
                         {{ daysLeft }}
                       </p>
                       <p class="is-size-7 has-text-weight-bold">Days left</p>
@@ -153,7 +153,7 @@
       </div>
       <div class="tile is-parent fits-screen-height">
         <div class="tile is-child box has-shadow-border">
-          <ActionList :actions="actions" :goalId="goal['.key']" />
+          <ActionList :actions="actions" :goalId="goal.id" />
         </div>
       </div>
     </div>
@@ -194,13 +194,12 @@ export default {
 
   computed: {
     goal() {
-      return { ...this.$store.state.goals.items[this.id] };
+      const goalDetail = this.$store.state.goals.detail;
+      return { ...goalDetail, id: goalDetail.id };
     },
 
     actions() {
-      return Object.values(this.$store.state.actions.items).filter(
-        action => action.goalId === this.id,
-      );
+      return this.$store.state.actions.items;
     },
 
     actionsAreEmpty() {
@@ -217,9 +216,9 @@ export default {
   },
 
   methods: {
-    ...mapActions('goals', ['fetchGoal', 'updateGoal']),
-    ...mapActions('actions', ['fetchGoalActions']),
-    ...mapActions('users', ['fetchUsers']),
+    ...mapActions('goals', ['bindToGoal', 'updateGoal', 'unbindGoal']),
+    ...mapActions('actions', ['bindToGoalActions', 'unbindGoalActions']),
+    ...mapActions('users', ['bindToGoalUsers', 'unbindGoalUsers']),
 
     scrollToFinished() {
       let finished = this.$el.querySelector('#finished');
@@ -236,16 +235,22 @@ export default {
       this.editDescription = false;
     },
 
-    update() {
-      this.updateGoal({ id: this.goal['.key'], updatedGoal: this.goal });
+    async update() {
+      await this.updateGoal({ id: this.goal.id, updatedGoal: this.goal });
     },
   },
 
   async created() {
-    await this.fetchGoalActions(this.id);
-    const goal = await this.fetchGoal(this.id);
-    await this.fetchUsers(goal.members);
+    await this.bindToGoal(this.id);
+    await this.bindToGoalActions(this.id);
+    await this.bindToGoalUsers(this.goal.members);
     this.asyncDataStatus_fetched();
+  },
+
+  beforeDestroy() {
+    this.unbindGoalUsers();
+    this.unbindGoalActions();
+    this.unbindGoal();
   },
 };
 </script>

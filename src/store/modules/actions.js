@@ -1,40 +1,25 @@
+import { firestoreAction } from 'vuexfire';
 import { actionsRef, firestore } from '@/shared/firebase';
 
 export default {
   namespaced: true,
 
   state: {
-    items: {},
+    items: [],
   },
 
   actions: {
-    async fetchGoalActions({ commit }, goalId) {
-      const querySnap = await actionsRef(goalId).get();
-      querySnap.docs.forEach(actionDoc => {
-        const action = {
-          ...actionDoc.data(),
-          goalId: actionDoc.ref.parent.parent.id,
-          lastActivationTime: actionDoc.data().lastActivationTime
-            ? actionDoc.data().lastActivationTime.toDate()
-            : null,
-        };
+    bindToGoalActions: firestoreAction(({ bindFirestoreRef }, goalId) => {
+      return bindFirestoreRef('items', actionsRef(goalId));
+    }),
 
-        commit(
-          'setItem',
-          {
-            resource: 'actions',
-            item: action,
-            id: actionDoc.id,
-          },
-          { root: true },
-        );
-      });
-      return;
-    },
+    unbindGoalActions: firestoreAction(({ unbindFirestoreRef }) => {
+      unbindFirestoreRef('items');
+    }),
 
     async createAction(
-      { commit, rootState, state },
-      { title, assignedUserId, timeExpected, goalId },
+      { rootState },
+      { goalId, title, assignedUserId, timeExpected },
     ) {
       const action = {
         title,
@@ -45,22 +30,11 @@ export default {
         timeTaken: 0,
         creator: rootState.auth.authId,
       };
-      const actionRef = await actionsRef(goalId).add(action);
-      commit(
-        'setItem',
-        {
-          resource: 'actions',
-          item: { ...action, goalId },
-          id: actionRef.id,
-        },
-        { root: true },
-      );
-
-      return state.items[actionRef.id];
+      return actionsRef(goalId).add(action);
     },
 
-    async updateAction({ commit }, { goalId, id, updatedAction }) {
-      await actionsRef(goalId)
+    async updateAction(context, { goalId, id, updatedAction }) {
+      return actionsRef(goalId)
         .doc(id)
         .update({
           title: updatedAction.title,
@@ -69,19 +43,13 @@ export default {
           isActive: updatedAction.isActive,
           isFinished: updatedAction.isFinished,
         });
-
-      commit(
-        'setItem',
-        { resource: 'actions', id, item: updatedAction },
-        { root: true },
-      );
     },
 
-    async updateActionList({ commit }, { goalId, updates, deletes }) {
+    async updateActionList(context, { goalId, updates, deletes }) {
       const batch = firestore.batch();
 
       updates.forEach(action =>
-        batch.update(actionsRef(goalId).doc(action['.key']), {
+        batch.update(actionsRef(goalId).doc(action.id), {
           title: action.title,
           timeExpected: action.timeExpected,
           assignedUserId: action.assignedUserId,
@@ -92,19 +60,7 @@ export default {
 
       deletes.forEach(id => batch.delete(actionsRef(goalId).doc(id)));
 
-      await batch.commit();
-
-      updates.forEach(action =>
-        commit(
-          'setItem',
-          { resource: 'actions', id: action['.key'], item: action },
-          { root: true },
-        ),
-      );
-
-      deletes.forEach(id =>
-        commit('deleteItem', { resource: 'actions', id }, { root: true }),
-      );
+      return batch.commit();
     },
   },
 };

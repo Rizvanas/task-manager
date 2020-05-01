@@ -23,7 +23,7 @@
     <p class="is-size-5 has-text-weight-bold tile-title">Friends</p>
     <perfect-scrollbar :options="options">
       <ul class="menu menu-list">
-        <li v-for="friend in friends" :key="friend['.key']">
+        <li v-for="friend in friends" :key="friend.id">
           <FriendListItem :friend="friend" />
         </li>
       </ul>
@@ -34,7 +34,6 @@
 <script>
 import FriendListItem from '@/components/FriendListItem';
 import UserSearchDropdown from '@/components/UserSearchDropdown';
-import { mapActions } from 'vuex';
 
 export default {
   name: 'FriendList',
@@ -52,21 +51,9 @@ export default {
   },
 
   computed: {
-    authId() {
-      return this.$store.state.auth.authId;
-    },
-
     friends() {
       return this.$store.state.friends.items;
     },
-  },
-
-  methods: {
-    ...mapActions('friends', ['fetchUserFriends']),
-  },
-
-  created() {
-    this.fetchUserFriends(this.authId);
   },
 };
 </script>

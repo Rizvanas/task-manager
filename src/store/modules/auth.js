@@ -6,11 +6,14 @@ export default {
   state: {
     authId: null,
     unsubAuthObserver: null,
+    authUser: null,
   },
 
   getters: {
     authUser(state, getters, rootState) {
-      return state.authId ? rootState.users.items[state.authId] : null;
+      return state.authId
+        ? rootState.users.items.find(user => user.id === state.authId)
+        : null;
     },
   },
 
@@ -21,6 +24,10 @@ export default {
 
     setUnsubAuthObserver(state, unsub) {
       state.unsubAuthObserver = unsub;
+    },
+
+    setAuthUser(state, user) {
+      state.authUser = user;
     },
   },
 
@@ -91,6 +98,7 @@ export default {
     async signOut({ commit }) {
       await auth.signOut();
       commit('setAuthId', null);
+      commit('setAuthUser', null);
     },
 
     fetchAuthUser({ dispatch, commit }) {
@@ -104,6 +112,7 @@ export default {
               return dispatch('users/fetchUser', userId, { root: true }).then(
                 user => {
                   commit('setAuthId', userId);
+                  commit('setAuthUser', user);
                   resolve(user);
                 },
               );

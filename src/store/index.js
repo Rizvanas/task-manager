@@ -8,6 +8,7 @@ import friends from './modules/friends';
 import actions from './modules/actions';
 import * as baseActions from './actions';
 import * as mutations from './mutations';
+import { vuexfireMutations } from 'vuexfire';
 
 Vue.use(Vuex);
 
@@ -15,7 +16,10 @@ export default new Vuex.Store({
   strict: process.env.NODE_ENV !== 'production',
   state: {},
   actions: baseActions,
-  mutations,
+  mutations: {
+    ...mutations,
+    ...vuexfireMutations,
+  },
   modules: {
     goals,
     users,

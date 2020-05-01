@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{ name: 'GoalDetail', params: { id: goal['.key'] } }">
+  <router-link :to="{ name: 'GoalDetail', params: { id: goal.id } }">
     <article class="box has-shadow-lift">
       <div class="is-pulled-right is-marginless">
         <span class="profile-pic image is-32x32">

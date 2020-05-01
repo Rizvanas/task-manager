@@ -90,10 +90,10 @@ export default {
       }
     },
 
-    update() {
-      this.updateAction({
-        id: this.clonedAction['.key'],
-        goalId: this.clonedAction.goalId,
+    async update() {
+      await this.updateAction({
+        id: this.clonedAction.id,
+        goalId: this.$store.state.goals.detail.id,
         updatedAction: this.clonedAction,
       });
       this.$emit('actionStateChange', this.clonedAction);
@@ -106,11 +106,12 @@ export default {
     },
 
     assignedUser() {
-      return this.$store.state.users.items[this.clonedAction.assignedUserId];
+      const userId = this.clonedAction.assignedUserId;
+      return this.$store.state.users.items.find(user => user.id === userId);
     },
 
     clonedAction() {
-      return { ...this.action };
+      return { ...this.action, id: this.action.id };
     },
 
     timeSpent() {

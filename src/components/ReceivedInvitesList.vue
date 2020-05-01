@@ -2,7 +2,7 @@
   <div>
     <p class="has-text-weight-bold has-text-centered">Friend invitations</p>
     <ul v-if="invites.length > 0" class="menu menu-list">
-      <li v-for="invite in invites" :key="invite['.key']">
+      <li v-for="invite in invites" :key="invite.id">
         <a class="action">
           <div class="level">
             <div class="level-left">
@@ -20,13 +20,13 @@
             <div class="level-right">
               <div class="level-item">
                 <p
-                  @click="$emit('accepted', invite['.key'])"
+                  @click="$emit('accepted', invite.id)"
                   class="is-small is-pulled-right invitation-button--submit"
                 >
                   <i class="fas fa-handshake"></i>
                 </p>
                 <p
-                  @click="$emit('declined', invite['.key'])"
+                  @click="$emit('declined', invite.id)"
                   class="is-small is-pulled-right invitation-button--cancel"
                 >
                   <i class="fas fa-times"></i>

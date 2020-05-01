@@ -13,15 +13,15 @@
     </button>
     <b-dropdown-item
       v-for="user in users"
-      :key="user['.key']"
+      :key="user.id"
       aria-role="menu-item"
       :focusable="false"
       custom
       class="has-text-justified"
     >
       <button
-        @click="assignNewUser(user['.key'])"
-        v-if="user['.key'] !== userId"
+        @click="assignNewUser(user.id)"
+        v-if="user.id !== userId"
         class="button button-special"
       >
         <span class="profile-pic image is-24x24">
@@ -61,7 +61,9 @@ export default {
     },
 
     assignedUser() {
-      return this.$store.state.users.items[this.userId];
+      return this.$store.state.users.items.find(
+        user => user.id === this.userId,
+      );
     },
   },
 

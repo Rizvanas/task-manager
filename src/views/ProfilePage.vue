@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 import ActivityChart from '@/components/activity-chart';
 import FriendList from '@/components/FriendList';
 import asyncDataStatus from '@/mixins/asyncDataStatus';
@@ -105,15 +105,23 @@ export default {
   mixins: [asyncDataStatus],
 
   computed: {
-    ...mapGetters('auth', { profile: 'authUser' }),
+    profile() {
+      return this.$store.state.auth.authUser;
+    },
   },
 
   methods: {
+    ...mapActions('friends', ['bindToUserFriends', 'unbindUserFriends']),
     saveChanges() {},
   },
 
-  created() {
+  async created() {
+    await this.bindToUserFriends(this.profile['.key']);
     this.asyncDataStatus_fetched();
+  },
+
+  beforeDestroy() {
+    this.unbindUserFriends();
   },
 };
 </script>
