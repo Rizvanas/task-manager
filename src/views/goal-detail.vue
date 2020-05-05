@@ -93,16 +93,18 @@
                   <p class="title is-size-4 has-text-weight-bold">
                     {{ actionsFinished }}
                   </p>
-                  <p class="is-size-7 has-text-weight-bold">Actions finished</p>
+                  <p class="is-size-7 has-text-weight-bold">
+                    {{ actionsFinishedHeading }}
+                  </p>
                 </div>
               </div>
               <div class="level-item has-text-centered">
                 <div class="goal-card-stat">
                   <p class="title is-size-4 has-text-weight-bold">
-                    {{ remainingActions }}
+                    {{ actionsLeft }}
                   </p>
                   <p class="is-size-7 has-text-weight-bold">
-                    Actions remaining
+                    {{ actionsLeftHeading }}
                   </p>
                 </div>
               </div>
@@ -118,7 +120,9 @@
                       <p class="title is-size-4 has-text-weight-bold">
                         {{ daysLeft }}
                       </p>
-                      <p class="is-size-7 has-text-weight-bold">Days left</p>
+                      <p class="is-size-7 has-text-weight-bold">
+                        {{ daysLeftHeading }}
+                      </p>
                     </div>
                   </a>
                   <b-dropdown-item
@@ -170,6 +174,7 @@ import dateMixins from '@/mixins/dateMixins';
 import ActionList from '@/components/ActionList';
 import ActivityChart from '@/components/activity-chart';
 import { mapActions } from 'vuex';
+import goalMixins from '@/mixins/goalMixins';
 
 export default {
   name: 'GoalDetail',
@@ -186,7 +191,7 @@ export default {
     ActionList,
   },
 
-  mixins: [asyncDataStatus, emojiStatus, dateMixins],
+  mixins: [asyncDataStatus, emojiStatus, dateMixins, goalMixins],
 
   data() {
     return {

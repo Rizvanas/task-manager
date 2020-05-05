@@ -25,19 +25,23 @@
         <div class="level-item has-text-centered">
           <div>
             <p class="title">{{ actionsLeft }}</p>
-            <p class="is-size-7 has-text-weight-bold">Actions left</p>
+            <p class="is-size-7 has-text-weight-bold">
+              {{ actionsLeftHeading }}
+            </p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
-            <p class="title">{{ goal.actionsFinished }}</p>
-            <p class="is-size-7 has-text-weight-bold">Actions Finished</p>
+            <p class="title">{{ actionsFinished }}</p>
+            <p class="is-size-7 has-text-weight-bold">
+              {{ actionsFinishedHeading }}
+            </p>
           </div>
         </div>
         <div class="level-item has-text-centered">
           <div>
             <p class="title">{{ daysLeft }}</p>
-            <p class="is-size-7 has-text-weight-bold">Days left</p>
+            <p class="is-size-7 has-text-weight-bold">{{ daysLeftHeading }}</p>
           </div>
         </div>
       </div>
@@ -55,6 +59,7 @@
 <script>
 import emojiStatus from '@/mixins/emojiStatus';
 import dateMixins from '@/mixins/dateMixins';
+import goalMixins from '@/mixins/goalMixins';
 
 export default {
   name: 'GoalCard',
@@ -66,17 +71,15 @@ export default {
     },
   },
 
-  mixins: [emojiStatus, dateMixins],
+  mixins: [emojiStatus, dateMixins, goalMixins],
 
   methods: {
     disableEditMode() {
       this.editModeEnabled = false;
     },
-  },
 
-  computed: {
-    actionsLeft() {
-      return this.goal.totalActions - this.goal.actionsFinished;
+    getPlurifiedText(itemCount, itemName) {
+      return itemCount === 1 ? itemName : `${itemName}s`;
     },
   },
 };
