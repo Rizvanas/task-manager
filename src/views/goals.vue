@@ -1,14 +1,5 @@
 <template>
-  <section v-if="asyncDataStatus_ready">
-    <div class="hero">
-      <div class="hero-body">
-        <h1 class="title is-size-1 has-text-weight-bold">
-          <span class="underline-primary">Goals</span>
-        </h1>
-      </div>
-    </div>
-
-    <!-- <AddGoalCard /> -->
+  <section class="section" v-if="asyncDataStatus_ready">
     <draggable
       class="columns is-multiline"
       v-model="goals"
@@ -31,7 +22,6 @@
 import { mapActions } from 'vuex';
 import asyncDataStatus from '@/mixins/asyncDataStatus';
 import GoalCard from '@/components/goal-card.vue';
-// import AddGoalCard from '@/components/add-goal-card.vue';
 import draggable from 'vuedraggable';
 
 export default {
