@@ -1,3 +1,3 @@
 export const inputDateFormat = 'YYY-MM-dd';
-export const displayDateFormat = 'MMM DD YYYY';
+export const displayDateFormat = 'MM/dd/yyyy';
 export const displayTimeFormat = 'HH:mm';

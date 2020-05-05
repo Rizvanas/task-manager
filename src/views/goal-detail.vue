@@ -80,7 +80,10 @@
               <div class="level-item has-text-centered">
                 <div class="goal-card-stat">
                   <p class="title is-size-4 has-text-weight-bold">
-                    {{ goal.timeRequired | urgencyEmoji(completionDate) }}
+                    {{
+                      goal.timeRequired
+                        | urgencyEmoji(goal.timeFinished, completionDate)
+                    }}
                   </p>
                   <p class="is-size-7 has-text-weight-bold">Urgency</p>
                 </div>

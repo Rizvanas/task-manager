@@ -30,9 +30,6 @@
         <router-link to="/goals" class="navbar-item">
           <span>Goals</span>
         </router-link>
-        <router-link to="about" class="navbar-item">
-          <span>About</span>
-        </router-link>
         <router-link to="/logout" class="navbar-item">
           <span class="icon">
             <i class="fas fa-sign-out-alt"></i>

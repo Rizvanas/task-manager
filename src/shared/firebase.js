@@ -24,6 +24,7 @@ export const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 export const goalsRef = db.collection('goals');
 export const usersRef = db.collection('users');
 export const friendInvitesRef = db.collection('friendInvites');
+export const goalFormsRef = db.collection('goalForms');
 export const serverTimestamp = firebase.firestore.FieldValue.serverTimestamp();
 export const timeStamp = firebase.firestore.Timestamp;
 export const docId = firebase.firestore.FieldPath.documentId();

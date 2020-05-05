@@ -1,5 +1,15 @@
 import { firestoreAction } from 'vuexfire';
-import { goalsRef, firestore } from '@/shared/firebase';
+import {
+  goalsRef,
+  goalFormsRef,
+  firestore,
+  timeStamp,
+  serverTimestamp,
+} from '@/shared/firebase';
+import { format, parse } from 'date-fns';
+import { displayDateFormat } from '@/shared/constants';
+
+import cloneDeep from 'lodash/cloneDeep';
 
 export default {
   namespaced: true,
@@ -7,6 +17,7 @@ export default {
   state: {
     items: [],
     detail: {},
+    goalForm: null,
   },
 
   actions: {
@@ -56,11 +67,89 @@ export default {
 
       return batch.commit();
     },
+
+    async updateGoalForm({ commit }, goalForm) {
+      goalForm.completionDate = goalForm.completionDate || new Date();
+      const goal = {
+        title: goalForm.title,
+        description: goalForm.description,
+        completionDate: timeStamp.fromDate(
+          parse(goalForm.completionDate, displayDateFormat, new Date()),
+        ),
+        action: goalForm.action ? goalForm.action : null,
+        userId: goalForm.userId,
+      };
+
+      if (goalForm['.key']) {
+        await goalFormsRef.doc(goalForm['.key']).set(goal);
+        commit('setGoalForm', { goalForm: goalForm, id: goalForm['.key'] });
+      } else {
+        const goalDoc = await goalFormsRef.add(goal);
+        commit('setGoalForm', { goalForm: goalForm, id: goalDoc.id });
+      }
+    },
+
+    async createGoal({ dispatch }, { goalForm, user }) {
+      const goal = await goalsRef.add({
+        title: goalForm.title,
+        description: goalForm.description,
+        completionDate: timeStamp.fromDate(
+          parse(goalForm.completionDate, displayDateFormat, new Date()),
+        ),
+        createdAt: serverTimestamp,
+        owner: user['.key'],
+        ownerName: user.username,
+        ownerAvatar: user.avatar,
+        members: [user['.key']],
+        actionsFinished: 0,
+        totalActions: 0,
+        timeRequired: 0,
+        timeFinished: 0,
+        priority: 0,
+      });
+      goalForm.action.goalId = goal.id;
+      await dispatch('actions/createAction', goalForm.action, { root: true });
+      return dispatch('deleteGoalForm', goalForm['.key']);
+    },
+
+    async deleteGoalForm({ commit }, goalFormId) {
+      await goalFormsRef.doc(goalFormId).delete();
+      commit('setGoalForm', { goalForm: null, id: null });
+    },
+
+    async fetchGoalForm({ commit }, userId) {
+      const goalSnap = await goalFormsRef
+        .where('userId', '==', userId)
+        .limit(1)
+        .get();
+      if (!goalSnap.empty) {
+        const goalId = goalSnap.docs[0].id;
+        const goalDoc = goalSnap.docs[0].data();
+
+        goalDoc.completionDate = format(
+          goalDoc.completionDate.toDate(),
+          displayDateFormat,
+        );
+
+        commit('setGoalForm', {
+          goalForm: goalDoc,
+          id: goalId,
+        });
+      }
+    },
   },
 
   mutations: {
     setGoals(state, goals) {
       state.items = [...goals];
+    },
+    setGoalForm(state, { goalForm, id = null }) {
+      if (goalForm) {
+        goalForm['.key'] = id;
+        state.goalForm = cloneDeep(goalForm);
+      } else {
+        state.goalForm = goalForm;
+      }
     },
   },
 };

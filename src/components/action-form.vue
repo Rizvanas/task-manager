@@ -43,9 +43,9 @@
     </div>
     <div class="field is-grouped columns is-vcentered difficulty-slider">
       <div class="column is-1 control">
-        <span class="title is-size-4">
-          {{ clonedAction.timeExpected | hoursEmoji }}
-        </span>
+        <span class="title is-size-4">{{
+          clonedAction.timeExpected | hoursEmoji
+        }}</span>
       </div>
       <div class="column is-10 control">
         <transition name="fade">

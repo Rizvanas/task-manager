@@ -30,6 +30,7 @@ export default {
         timeTaken: 0,
         creator: rootState.auth.authId,
       };
+
       return actionsRef(goalId).add(action);
     },
 

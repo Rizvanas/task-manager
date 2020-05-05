@@ -44,12 +44,6 @@ const routes = [
       import(/* webpackChunkName: "bundle.goals" */ '../views/goals.vue'),
   },
   {
-    path: '/about',
-    name: 'About',
-    component: () =>
-      import(/* webpackChunkName: "about" */ '../views/About.vue'),
-  },
-  {
     path: '/goals/:id',
     name: 'GoalDetail',
     props: true,

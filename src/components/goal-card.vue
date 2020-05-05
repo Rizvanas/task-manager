@@ -14,7 +14,10 @@
         <div class="level-item has-text-centered">
           <div>
             <p class="title">
-              {{ goal.timeRequired | urgencyEmoji(completionDate) }}
+              {{
+                goal.timeRequired
+                  | urgencyEmoji(goal.timeFinished, completionDate)
+              }}
             </p>
             <p class="is-size-7 has-text-weight-bold">Urgency</p>
           </div>

@@ -28,14 +28,15 @@ export default {
       return emoji;
     },
 
-    urgencyEmoji: (expectedDuration, completionDate) => {
-      const projectedCompletionDate = addSeconds(new Date(), expectedDuration);
+    urgencyEmoji: (expected, finished, completionDate) => {
+      const timeLeft = expected - finished;
+      const projectedCompletionDate = addSeconds(new Date(), timeLeft);
       const diff = differenceInDays(completionDate, projectedCompletionDate);
 
       let emoji = '🧊';
-      if (diff < 14 && diff >= 7) {
+      if (diff < 7 && diff >= 2) {
         emoji = '🌊';
-      } else if (diff < 7) {
+      } else if (diff < 2) {
         emoji = '🔥';
       }
 

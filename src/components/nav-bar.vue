@@ -12,23 +12,19 @@
     </div>
     <div class="navbar-menu">
       <div class="navbar-start">
-        <router-link to="/goals" class="navbar-item">
+        <router-link to="/goals" class="navbar-item button button-special">
           <span>Goals</span>
         </router-link>
-        <router-link to="/about" class="navbar-item">
-          <span>About</span>
-        </router-link>
-
+      </div>
+      <div class="navbar-end">
         <div class="navbar-item">
-          <button class="button button-special">
+          <button @click="$emit('createGoal')" class="button button-special">
             <span class="icon is-small">
               <i class="fas fa-plus"></i>
             </span>
-            <span>Set new goal</span>
+            <span>New goal</span>
           </button>
         </div>
-      </div>
-      <div class="navbar-end">
         <div calss="navbar-item">
           <b-dropdown
             position="is-bottom-left"
@@ -112,9 +108,11 @@ import { mapActions } from 'vuex';
 
 export default {
   name: 'NavBar',
+
   components: {
     ReceivedInvitesList,
   },
+
   mixins: [navBarMixins],
 
   data() {
