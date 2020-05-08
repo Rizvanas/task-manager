@@ -14,16 +14,16 @@ export default {
     sent: {},
     received: {},
     friend: {
-      sent: {},
-      received: {},
+      sent: [],
+      received: [],
     },
     goal: {},
   },
 
   actions: {
-    async sendFriendInvitationTo({ rootState, commit }, recipient) {
+    async sendFriendInvitationTo({ rootState }, recipient) {
       const authUserId = rootState.auth.authId;
-      const authUser = rootState.auth.authUser.items;
+      const authUser = rootState.auth.authUser;
 
       const invite = {
         from: authUserId,
@@ -34,17 +34,16 @@ export default {
         toAvatar: recipient.avatar,
         sent: serverTimestamp,
       };
-
-      const inviteRef = await friendInvitesRef.add(invite);
-      const id = inviteRef.id;
-      commit('setSentInvite', invite, id);
+      await friendInvitesRef.add(invite);
+      // const id = inviteRef.id;
+      // commit('setSentInvite', invite, id);
     },
 
     bindToReceivedFriendInvitations: firestoreAction(
-      ({ bindFirestoreRef }, userId) => {
+      ({ bindFirestoreRef, rootState }) => {
         return bindFirestoreRef(
           'friend.received',
-          friendInvitesRef.where('to', '==', userId),
+          friendInvitesRef.where('to', '==', rootState.auth.authId),
         );
       },
     ),
@@ -68,7 +67,14 @@ export default {
     },
 
     async acceptFriendInvite({ state }, inviteId) {
-      const invite = state.received[inviteId];
+      const invite = state.friend.received.find(
+        invite => invite.id === inviteId,
+      );
+
+      if (!invite) {
+        return;
+      }
+
       await usersRef
         .doc(invite.from)
         .collection('friends')

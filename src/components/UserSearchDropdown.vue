@@ -1,25 +1,63 @@
 <template>
   <div>
     <p class="has-text-weight-bold has-text-centered is-size-6 dropdown-title">
-      Invite someone
+      Invite
     </p>
-    <div class="field is-fullwidth">
-      <p class="control has-icons-right">
-        <input class="input" type="text" placeholder="Enter a username" />
-      </p>
-    </div>
-    <!-- <perfect-scrollbar></perfect-scrollbar> -->
-    <div class="is-horizontal-center is-vcentered">
-      <figure class="image is-64x64 is-centered">
-        <img src="@/assets/img/search.png" alt="Search image" />
-      </figure>
-    </div>
+    <ul>
+      <li v-for="user in users" :key="user.id">
+        <UserSearchItem :user="user" />
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+import UserSearchItem from '@/components/UserSearchItem';
+
 export default {
   name: 'UserSearchDropdown',
+
+  components: {
+    UserSearchItem,
+  },
+
+  props: ['active'],
+
+  data() {
+    return {
+      alreadyFetched: false,
+      username: null,
+    };
+  },
+
+  methods: {
+    ...mapActions('users', ['fetchNonFriendUsers']),
+
+    async getUsers() {
+      if (!this.alreadyFetched) {
+        await this.fetchNonFriendUsers();
+        this.alreadyFetched = true;
+      }
+    },
+  },
+
+  computed: {
+    users() {
+      return Object.values(this.$store.state.users.nonFriends);
+    },
+  },
+
+  watch: {
+    active: {
+      immediate: true,
+      handler(val, oldVal) {
+        if (!oldVal && val) {
+          this.getUsers();
+        }
+      },
+    },
+  },
 };
 </script>
 

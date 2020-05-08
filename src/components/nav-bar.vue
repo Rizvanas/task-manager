@@ -1,6 +1,5 @@
 <template>
   <nav
-    v-if="user"
     class="navbar is-transparent is-fixed-top is-spaced is-hidden-touch"
     role="navigation"
     aria-label="main navigation"
@@ -32,23 +31,14 @@
             aria-role="menu"
             trap-focus
           >
-            <button
-              @click="fetchInvites"
-              role="button"
-              slot="trigger"
-              class="button button-special"
-            >
+            <button role="button" slot="trigger" class="button button-special">
               <span class="icon is-small">
                 <i class="fas fa-user-friends"></i>
               </span>
             </button>
             <b-dropdown-item aria-role="menu-item" :focusable="false" custom>
               <div class="modal-card" style="width:350px;">
-                <ReceivedInvitesList
-                  @accepted="acceptTest"
-                  :invites="invites"
-                  :isReady="invitesFetched"
-                />
+                <ReceivedInvitesList @accepted="accept" :invites="invites" />
               </div>
             </b-dropdown-item>
           </b-dropdown>
@@ -102,7 +92,6 @@
 </template>
 
 <script>
-import navBarMixins from '@/mixins/navBarMixins';
 import ReceivedInvitesList from '@/components/ReceivedInvitesList';
 import { mapActions } from 'vuex';
 
@@ -113,17 +102,13 @@ export default {
     ReceivedInvitesList,
   },
 
-  mixins: [navBarMixins],
-
-  data() {
-    return {
-      invitesFetched: false,
-    };
-  },
-
   computed: {
     invites() {
-      return Object.values(this.$store.state.invites.received);
+      return this.$store.state.invites.friend.received;
+    },
+
+    user() {
+      return this.$store.state.auth.authUser;
     },
   },
 
@@ -131,17 +116,16 @@ export default {
     ...mapActions('invites', [
       'fetchReceivedInvitations',
       'acceptFriendInvite',
+      'bindToReceivedFriendInvitations',
     ]),
-    async fetchInvites() {
-      if (!this.invitesFetched) {
-        await this.fetchReceivedInvitations(this.user['.key']);
-      }
-      this.invitesFetched = true;
-    },
 
-    acceptTest(id) {
+    accept(id) {
       this.acceptFriendInvite(id);
     },
+  },
+
+  created() {
+    this.bindToReceivedFriendInvitations();
   },
 };
 </script>

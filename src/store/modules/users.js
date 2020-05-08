@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import { firestoreAction } from 'vuexfire';
 import { usersRef, docId } from '@/shared/firebase';
 
@@ -6,6 +7,7 @@ export default {
 
   state: {
     items: [],
+    nonFriends: [],
   },
 
   getters: {
@@ -58,19 +60,24 @@ export default {
       );
     },
 
-    async fetchUsersByUsername(context, username) {
-      const querySnap = await usersRef
-        .where('lowerUsername', '>=', username)
-        .limit(50)
-        .get();
-
-      return querySnap.map(userDoc => {
-        userDoc.data(), userDoc.id;
-      });
+    async fetchUsersByUsername({ commit }) {
+      const querySnap = await usersRef.limit(50).get();
+      commit(
+        'setSearch',
+        querySnap.docs.map(userDoc => {
+          return {
+            ...userDoc.data(),
+            id: userDoc.id,
+          };
+        }),
+      );
     },
 
     async fetchUsers({ commit }, ids) {
-      const usersSnap = await usersRef.where(docId, 'in', ids).get();
+      const usersSnap = await usersRef
+        .where(docId, 'in', ids)
+        .limit(50)
+        .get();
 
       usersSnap.docs.forEach(userDoc => {
         commit(
@@ -88,6 +95,33 @@ export default {
       });
 
       return;
+    },
+
+    async fetchNonFriendUsers({ commit, rootState }) {
+      const usersSnap = await usersRef.limit(50).get();
+      const users = usersSnap.docs;
+      const friends = rootState.friends.items;
+      friends.forEach(friend => {
+        const userIndex = users.findIndex(user => user.id === friend.userId);
+        if (userIndex >= 0) {
+          users.splice(userIndex, 1);
+        }
+      });
+
+      commit('setUsers', {
+        resource: 'nonFriends',
+        users: users.map(user => {
+          return { ...user.data(), id: user.id };
+        }),
+      });
+    },
+  },
+
+  mutations: {
+    setUsers(state, { resource, users }) {
+      users.forEach(user => {
+        Vue.set(state[resource], user.id, user);
+      });
     },
   },
 };

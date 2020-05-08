@@ -1,58 +1,48 @@
 <template>
-  <div v-if="!showInvitationForm" class="level friend-item">
+  <div class="level friend-item">
     <div class="level-left">
       <div class="level-item">
         <span class="profile-pic image is-32x32">
-          <img class="is-rounded" :src="friend.avatar" alt="Friend avatar" />
+          <img class="is-rounded" :src="user.avatar" alt="User avatar" />
         </span>
-        <p class="is-size-6">{{ friend.username }}</p>
+        <p class="is-size-6">{{ user.username }}</p>
       </div>
       <br />
     </div>
     <transition name="fade">
       <div class="level-right is-size-7">
         <a
-          @click="showInvitationForm = true"
           class="is-small is-pulled-right action-button--submit"
+          @click="invite"
         >
           <span class="icon">
-            <i class="fas fa-project-diagram"></i>
-          </span>
-        </a>
-        <a class="is-small is-pulled-right action-button--cancel">
-          <span class="icon">
-            <i class="fas fa-times"></i>
+            <i class="fas fa-plus"></i>
           </span>
         </a>
       </div>
     </transition>
   </div>
-  <GoalInvitationForm
-    v-else
-    :friend="friend"
-    @formClosed="showInvitationForm = false"
-  />
 </template>
 
 <script>
-import GoalInvitationForm from '@/components/GoalInvitationForm';
+import { mapActions } from 'vuex';
 
 export default {
-  name: 'FriendListItem',
-
-  components: { GoalInvitationForm },
+  name: 'UserSearchItem',
 
   props: {
-    friend: {
+    user: {
       type: Object,
       required: true,
     },
   },
 
-  data() {
-    return {
-      showInvitationForm: false,
-    };
+  methods: {
+    ...mapActions('invites', ['sendFriendInvitationTo']),
+
+    invite() {
+      this.sendFriendInvitationTo(this.user);
+    },
   },
 };
 </script>
@@ -99,13 +89,6 @@ export default {
       @extend .action-button;
       &:hover {
         background-color: #3273dc;
-      }
-    }
-
-    &--cancel {
-      @extend .action-button;
-      &:hover {
-        background-color: #d33e5d;
       }
     }
   }

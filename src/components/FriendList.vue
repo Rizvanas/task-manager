@@ -8,13 +8,14 @@
           append-to-body
           aria-role="menu"
           trap-focus
+          @active-change="changeActiveStatus"
         >
           <a role="button" slot="trigger" class="edit-icon">
             <i class="fas fa-user-plus"></i>
           </a>
           <b-dropdown-item aria-role="menu-item" :focusable="false" custom>
             <div class="modal-card" style="width:400px;">
-              <UserSearchDropdown />
+              <UserSearchDropdown :active="isActive" />
             </div>
           </b-dropdown-item>
         </b-dropdown>
@@ -46,6 +47,7 @@ export default {
   data() {
     return {
       showInvitationForm: false,
+      isActive: false,
       options: { wheelPropagation: false },
     };
   },
@@ -55,15 +57,13 @@ export default {
       return this.$store.state.friends.items;
     },
   },
+
+  methods: {
+    changeActiveStatus(status) {
+      this.isActive = status;
+    },
+  },
 };
 </script>
 
-<style lang="scss" scoped>
-.tile-title {
-  margin: 0 0 1em 1em;
-}
-
-.ps {
-  height: 420px;
-}
-</style>
+<style lang="scss" scoped></style>

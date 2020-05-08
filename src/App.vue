@@ -1,7 +1,9 @@
 <template>
   <div id="app">
-    <NavBar @createGoal="displayGoalForm = true" />
-    <NavBarTouch />
+    <div v-if="user">
+      <NavBar @createGoal="displayGoalForm = true" />
+      <NavBarTouch />
+    </div>
     <main class="main-section">
       <transition name="zoom">
         <GoalForm v-if="displayGoalForm" @close="displayGoalForm = false" />
@@ -27,6 +29,12 @@ export default {
       showPage: false,
       displayGoalForm: false,
     };
+  },
+
+  computed: {
+    user() {
+      return this.$store.state.auth.authUser;
+    },
   },
 
   methods: {

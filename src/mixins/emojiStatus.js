@@ -36,8 +36,10 @@ export default {
       let emoji = '🧊';
       if (diff < 7 && diff >= 2) {
         emoji = '🌊';
-      } else if (diff < 2) {
+      } else if (diff < 2 && diff >= 0) {
         emoji = '🔥';
+      } else if (diff < 0) {
+        emoji = '💥';
       }
 
       return emoji;
