@@ -23,15 +23,6 @@
         </div>
       </transition>
     </div>
-    <div class="field">
-      <p class="control has-icons-right">
-        <input
-          class="input"
-          type="text"
-          placeholder="Start entering goal title"
-        />
-      </p>
-    </div>
     <perfect-scrollbar>
       <li v-for="invitation in invitations" :key="invitation['.key']">
         <GoalInvitationItem :invitation="invitation" />

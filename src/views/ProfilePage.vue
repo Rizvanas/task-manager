@@ -67,8 +67,7 @@
         </div>
         <div class="tile is-parent">
           <article class="tile is-child box has-shadow-border">
-            <p class="is-size-5 has-text-weight-bold tile-title">Actions</p>
-            <ActivityChart :height="200" />
+            <UserActionList :actions="actions" />
           </article>
         </div>
       </div>
@@ -83,16 +82,16 @@
 
 <script>
 import { mapActions } from 'vuex';
-import ActivityChart from '@/components/activity-chart';
 import FriendList from '@/components/FriendList';
+import UserActionList from '@/components/UserActionList';
 import asyncDataStatus from '@/mixins/asyncDataStatus';
 
 export default {
   name: 'ProfilePage',
 
   components: {
-    ActivityChart,
     FriendList,
+    UserActionList,
   },
 
   data() {
@@ -108,20 +107,27 @@ export default {
     profile() {
       return this.$store.state.auth.authUser;
     },
+
+    actions() {
+      return this.$store.state.actions.items;
+    },
   },
 
   methods: {
     ...mapActions('friends', ['bindToUserFriends', 'unbindUserFriends']),
+    ...mapActions('actions', ['bindToUserActions', 'unbindUserActions']),
     saveChanges() {},
   },
 
   async created() {
     await this.bindToUserFriends(this.profile['.key']);
+    await this.bindToUserActions(this.profile['.key']);
     this.asyncDataStatus_fetched();
   },
 
   beforeDestroy() {
     this.unbindUserFriends();
+    this.unbindUserActions();
   },
 };
 </script>

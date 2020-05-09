@@ -8,12 +8,28 @@ export default {
     items: [],
   },
 
+  mutations: {},
+
   actions: {
     bindToGoalActions: firestoreAction(({ bindFirestoreRef }, goalId) => {
       return bindFirestoreRef('items', actionsRef(goalId));
     }),
 
     unbindGoalActions: firestoreAction(({ unbindFirestoreRef }) => {
+      unbindFirestoreRef('items');
+    }),
+
+    bindToUserActions: firestoreAction(async ({ bindFirestoreRef }, userId) => {
+      return bindFirestoreRef(
+        'items',
+        firestore
+          .collectionGroup('actions')
+          .where('isFinished', '==', false)
+          .where('assignedUserId', '==', userId),
+      );
+    }),
+
+    unbindUserActions: firestoreAction(({ unbindFirestoreRef }) => {
       unbindFirestoreRef('items');
     }),
 
@@ -29,13 +45,14 @@ export default {
         isFinished: false,
         timeTaken: 0,
         creator: rootState.auth.authId,
+        goalId,
       };
 
       return actionsRef(goalId).add(action);
     },
 
-    async updateAction(context, { goalId, id, updatedAction }) {
-      return actionsRef(goalId)
+    async updateAction(context, { id, updatedAction }) {
+      return actionsRef(updatedAction.goalId)
         .doc(id)
         .update({
           title: updatedAction.title,

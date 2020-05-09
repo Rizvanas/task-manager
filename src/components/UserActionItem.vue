@@ -3,18 +3,12 @@
     <div class="level">
       <div class="level-left">
         <div class="level-item">
-          <span class="profile-pic image is-32x32">
-            <img
-              class="is-rounded"
-              :src="assignedUser.avatar"
-              alt="Friend
-          avatar"
-            />
-          </span>
+          <p class="title is-size-4 is-paddingless">
+            {{ clonedAction.timeExpected | hoursEmoji }}
+          </p>
           <div>
             <p class="action-text is-size-6 has-text-weight-bold">
               {{ clonedAction.title }}
-              {{ clonedAction.timeExpected | hoursEmoji }}
             </p>
             <p class="action-text is-size-7 has-text-weight-light">
               In progress: {{ timeSpent }}
@@ -56,7 +50,8 @@ import emojiStatus from '@/mixins/emojiStatus';
 import { mapActions } from 'vuex';
 
 export default {
-  name: 'Action',
+  name: 'UserActionItem',
+
   props: {
     action: {
       type: Object,
@@ -95,11 +90,6 @@ export default {
   computed: {
     isStarted() {
       return this.clonedAction.lastActivationTime !== undefined;
-    },
-
-    assignedUser() {
-      const userId = this.clonedAction.assignedUserId;
-      return this.$store.state.users.items.find(user => user.id === userId);
     },
 
     clonedAction() {

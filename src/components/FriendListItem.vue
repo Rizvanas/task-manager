@@ -19,11 +19,6 @@
             <i class="fas fa-project-diagram"></i>
           </span>
         </a>
-        <a class="is-small is-pulled-right action-button--cancel">
-          <span class="icon">
-            <i class="fas fa-times"></i>
-          </span>
-        </a>
       </div>
     </transition>
   </div>
