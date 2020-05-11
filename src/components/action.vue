@@ -16,8 +16,11 @@
               {{ clonedAction.title }}
               {{ clonedAction.timeExpected | hoursEmoji }}
             </p>
-            <p class="action-text is-size-7 has-text-weight-light">
-              In progress: {{ timeSpent }}
+            <p
+              v-if="isStarted"
+              class="action-text is-size-7 has-text-weight-light"
+            >
+              {{ actionSub }}
             </p>
           </div>
         </div>
@@ -94,7 +97,7 @@ export default {
 
   computed: {
     isStarted() {
-      return this.clonedAction.lastActivationTime !== undefined;
+      return this.action.lastActivationTime !== undefined;
     },
 
     assignedUser() {
@@ -106,13 +109,16 @@ export default {
       return { ...this.action, id: this.action.id };
     },
 
+    actionSub() {
+      const subtitle = this.action.isActive ? 'In progress ' : 'Paused: ';
+      return `${subtitle} ${this.timeSpent}`;
+    },
+
     timeSpent() {
       const seconds = this.clonedAction.timeTaken;
       const hours = Math.trunc(seconds / 3600);
       const minutes = Math.trunc((seconds % 3600) / 60);
-      return hours === 0
-        ? `${minutes} minutes`
-        : `${hours}hours ${minutes}minutes`;
+      return hours === 0 ? `${minutes} m` : `${hours}h ${minutes}m`;
     },
   },
 };
