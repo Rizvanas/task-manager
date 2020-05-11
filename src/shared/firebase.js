@@ -28,6 +28,7 @@ export const goalFormsRef = db.collection('goalForms');
 export const serverTimestamp = firebase.firestore.FieldValue.serverTimestamp();
 export const timeStamp = firebase.firestore.Timestamp;
 export const docId = firebase.firestore.FieldPath.documentId();
+export const goalStatsRef = db.collection('goalStats');
 export const actionsRef = goalId =>
   db
     .collection('goals')

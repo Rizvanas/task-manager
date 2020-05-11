@@ -1,9 +1,7 @@
 <template>
   <div>
-    <div class="level">
-      <div class="level-item has-text-centered">
-        <p class="has-text-weight-bold">{{ action.title }}</p>
-      </div>
+    <div class="has-text-centered">
+      <p class="has-text-weight-bold">{{ action.title }}</p>
     </div>
     <div class="level">
       <div class="level-item has-text-centered">

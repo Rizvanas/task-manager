@@ -2,11 +2,12 @@ import { firestoreAction } from 'vuexfire';
 import {
   goalsRef,
   goalFormsRef,
+  goalStatsRef,
   firestore,
   timeStamp,
   serverTimestamp,
 } from '@/shared/firebase';
-import { format, parse } from 'date-fns';
+import { format, parse, addDays } from 'date-fns';
 import { displayDateFormat } from '@/shared/constants';
 
 import cloneDeep from 'lodash/cloneDeep';
@@ -17,7 +18,23 @@ export default {
   state: {
     items: [],
     detail: {},
+    stats: {},
     goalForm: null,
+  },
+
+  getters: {
+    stats(state) {
+      const orderedStats = {};
+      Object.keys(state.stats)
+        .sort(function(a, b) {
+          return new Date(a) - new Date(b);
+        })
+        .forEach(function(key) {
+          orderedStats[key] = state.stats[key];
+        });
+
+      return orderedStats;
+    },
   },
 
   actions: {
@@ -38,6 +55,14 @@ export default {
 
     unbindGoal: firestoreAction(({ unbindFirestoreRef }) => {
       unbindFirestoreRef('detail');
+    }),
+
+    bindToGoalStat: firestoreAction(({ bindFirestoreRef }, goalId) => {
+      return bindFirestoreRef('stats', goalStatsRef.doc(goalId));
+    }),
+
+    unbindGoalStat: firestoreAction(({ unbindFirestoreRef }) => {
+      unbindFirestoreRef('stats');
     }),
 
     async updateGoal(context, { id, updatedGoal }) {
@@ -109,6 +134,7 @@ export default {
       });
       goalForm.action.goalId = goal.id;
       await dispatch('actions/createAction', goalForm.action, { root: true });
+      await dispatch('createGoalStat', goal.id);
       return dispatch('deleteGoalForm', goalForm['.key']);
     },
 
@@ -137,12 +163,26 @@ export default {
         });
       }
     },
+
+    async createGoalStat(context, goalId) {
+      const today = new Date();
+      const stats = [0, 1, 2, 3, 4, 5, 6].reduce(
+        (o, key) => ({
+          ...o,
+          [format(addDays(today, key), displayDateFormat)]: 0,
+        }),
+        {},
+      );
+
+      return goalStatsRef.doc(goalId).set(stats);
+    },
   },
 
   mutations: {
     setGoals(state, goals) {
       state.items = [...goals];
     },
+
     setGoalForm(state, { goalForm, id = null }) {
       if (goalForm) {
         goalForm['.key'] = id;

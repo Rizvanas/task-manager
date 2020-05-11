@@ -154,7 +154,7 @@
         <div class="tile is-parent">
           <article class="tile is-child box has-shadow-border">
             <p class="is-size-5 has-text-weight-bold tile-title">Activity</p>
-            <ActivityChart :height="200" />
+            <ActivityChart :height="200" :labels="labels" :data="data" />
           </article>
         </div>
       </div>
@@ -210,21 +210,23 @@ export default {
       return this.$store.state.actions.items;
     },
 
-    actionsAreEmpty() {
-      return !this.goal.actions;
+    labels() {
+      return Object.keys(this.$store.getters['goals/stats']);
     },
 
-    remainingActions() {
-      return this.goal.totalActions - this.goal.actionsFinished;
-    },
-
-    actionsFinished() {
-      return this.goal.actionsFinished;
+    data() {
+      return Object.values(this.$store.getters['goals/stats']);
     },
   },
 
   methods: {
-    ...mapActions('goals', ['bindToGoal', 'updateGoal', 'unbindGoal']),
+    ...mapActions('goals', [
+      'bindToGoal',
+      'updateGoal',
+      'unbindGoal',
+      'bindToGoalStat',
+      'unbindGoalStat',
+    ]),
     ...mapActions('actions', ['bindToGoalActions', 'unbindGoalActions']),
     ...mapActions('users', ['bindToGoalUsers', 'unbindGoalUsers']),
 
@@ -251,6 +253,7 @@ export default {
   async created() {
     await this.bindToGoal(this.id);
     await this.bindToGoalActions(this.id);
+    await this.bindToGoalStat(this.id);
     await this.bindToGoalUsers(this.goal.members);
     this.asyncDataStatus_fetched();
   },
@@ -258,6 +261,7 @@ export default {
   beforeDestroy() {
     this.unbindGoalUsers();
     this.unbindGoalActions();
+    this.unbindGoalStat();
     this.unbindGoal();
   },
 };
