@@ -10,11 +10,6 @@
       </router-link>
     </div>
     <div class="navbar-menu">
-      <div class="navbar-start">
-        <router-link to="/goals" class="navbar-item button button-special">
-          <span>Goals</span>
-        </router-link>
-      </div>
       <div class="navbar-end">
         <div class="navbar-item">
           <button @click="$emit('createGoal')" class="button button-special">
@@ -61,7 +56,6 @@
               has-link
               aria-role="menuitem"
               :focusable="false"
-              custom
             >
               <router-link to="/profile">
                 <span class="icon has-text-right">
@@ -75,7 +69,6 @@
               has-link
               aria-role="menuitem"
               :focusable="false"
-              custom
             >
               <router-link to="/logout">
                 <span class="icon has-text-right">

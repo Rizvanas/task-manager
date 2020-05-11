@@ -128,7 +128,6 @@
                   <b-dropdown-item
                     aria-role="menu-item"
                     :focusable="false"
-                    custom
                     paddingless
                   >
                     <div class="modal-card" style="width:320px;">
