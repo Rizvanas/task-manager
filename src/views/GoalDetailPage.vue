@@ -153,7 +153,7 @@
         <div class="tile is-parent">
           <article class="tile is-child box has-shadow-border">
             <p class="is-size-5 has-text-weight-bold tile-title">Activity</p>
-            <ActivityChart :height="200" :labels="labels" :data="data" />
+            <ActivityChart :height="234" :labels="labels" :data="data" />
           </article>
         </div>
       </div>
