@@ -266,7 +266,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .slide-fade-enter-active,
 .slide-fade-leave-active {
   transition: all 100ms cubic-bezier(0, 0.09, 0.33, 0.97);
@@ -316,5 +316,50 @@ export default {
 
 .tile-title {
   margin: 0 0 1em 1em;
+}
+.clickable-form {
+  transition: all 300ms cubic-bezier(0, 0.09, 0.33, 0.97);
+  padding: 0.5em;
+  border-radius: 6px;
+  margin-bottom: 0.5em;
+
+  &:hover {
+    color: #3273dc;
+    box-shadow: 0px 4px 8px rgba(38, 38, 38, 0.2);
+    background-color: #f6f9fc;
+  }
+}
+
+.one-line-form {
+  transition: all 300ms cubic-bezier(0, 0.09, 0.33, 0.97);
+  margin-bottom: 3em;
+  .action-button {
+    transition: all 300ms cubic-bezier(0, 0.09, 0.33, 0.97);
+    padding: 0.5em 0.75em;
+    border-radius: 6px;
+    margin-left: 0.5em;
+    &:hover {
+      i {
+        color: white;
+      }
+    }
+
+    &--submit {
+      @extend .action-button;
+      background-color: #bad8f5;
+
+      &:hover {
+        background-color: #3273dc;
+      }
+    }
+
+    &--cancel {
+      @extend .action-button;
+      background-color: #f8cdcd;
+      &:hover {
+        background-color: #d33e5d;
+      }
+    }
+  }
 }
 </style>
