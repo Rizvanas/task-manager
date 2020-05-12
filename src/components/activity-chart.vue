@@ -18,11 +18,11 @@ export default {
           display: false,
         },
         tooltips: {
-          enabled: false,
+          enabled: true,
         },
         elements: {
           point: {
-            radius: 0,
+            // radius: 0,
           },
         },
 
@@ -33,7 +33,7 @@ export default {
                 display: false,
               },
               ticks: {
-                display: true,
+                display: false,
               },
             },
           ],
@@ -57,6 +57,7 @@ export default {
           {
             fill: 'start',
             backgroundColor: this.bgColor,
+            pointBackgroundColor: 'rgba(50, 115, 220, 1)',
             borderColor: 'rgba(50, 115, 220, 1)',
             borderWidth: '3',
             data: this.data,

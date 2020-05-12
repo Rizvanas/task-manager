@@ -178,6 +178,7 @@ export default {
       if (this.updates[id]) {
         delete this.updates[id];
       }
+
       this.deletes[id] = true;
     },
 

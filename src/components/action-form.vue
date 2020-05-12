@@ -33,9 +33,14 @@
               <i class="fas fa-check"></i>
             </span>
           </p>
-          <p @click="cancel" class="is-small is-pulled-right action-button">
+          <p
+            @click="cancel"
+            class="is-small is-pulled-right action-button"
+            :class="{ 'is-check': markedForDeletion == true }"
+          >
             <span class="icon is-small">
-              <i class="fas fa-times"></i>
+              <i v-if="markedForDeletion" class="fas fa-plus"></i>
+              <i v-else class="fas fa-minus"></i>
             </span>
           </p>
         </div>
@@ -107,6 +112,7 @@ export default {
   data() {
     return {
       creationState: false,
+      markedForDeletion: false,
       clonedAction: { ...this.action, id: this.action.id },
     };
   },
@@ -133,9 +139,13 @@ export default {
     },
 
     cancel() {
-      this.creationState
-        ? this.$emit('cancel')
-        : this.$emit('remove', this.clonedAction.id);
+      this.creationState;
+      if (this.creationState) {
+        this.$emit('cancel');
+      } else {
+        this.markedForDeletion = true;
+        this.$emit('remove', this.clonedAction.id);
+      }
     },
 
     assignNewUser(id) {
