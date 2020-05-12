@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import NavBar from '@/components/nav-bar';
-import NavBarTouch from '@/components/nav-bar-touch';
+import NavBar from '@/components/NavBar';
+import NavBarTouch from '@/components/NavBarTouch';
 import AppSpinner from '@/components/AppSpinner';
 import GoalForm from '@/components/GoalForm';
 

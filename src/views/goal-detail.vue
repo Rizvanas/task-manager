@@ -171,7 +171,7 @@ import emojiStatus from '@/mixins/emojiStatus';
 import asyncDataStatus from '@/mixins/asyncDataStatus';
 import dateMixins from '@/mixins/dateMixins';
 import ActionList from '@/components/ActionList';
-import ActivityChart from '@/components/activity-chart';
+import ActivityChart from '@/components/ActivityChart';
 import { mapActions } from 'vuex';
 import goalMixins from '@/mixins/goalMixins';
 

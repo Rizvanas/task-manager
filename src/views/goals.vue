@@ -21,7 +21,7 @@
 <script>
 import { mapActions } from 'vuex';
 import asyncDataStatus from '@/mixins/asyncDataStatus';
-import GoalCard from '@/components/goal-card.vue';
+import GoalCard from '@/components/GoalCard.vue';
 import draggable from 'vuedraggable';
 
 export default {

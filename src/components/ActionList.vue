@@ -104,8 +104,8 @@
 
 <script>
 import Action from '@/components/action';
-import ActionForm from '@/components/action-form';
-import FinishedAction from '@/components/finished-action';
+import ActionForm from '@/components/ActionForm';
+import FinishedAction from '@/components/FinishedAction';
 import { mapActions } from 'vuex';
 
 const actionFilters = {
