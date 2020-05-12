@@ -50,7 +50,7 @@ const routes = [
     meta: { requiresAuth: true },
     component: () =>
       import(
-        /* webpackChunkName: "bundle.goals" */ '../views/GoalDetailPage.vue'
+        /* webpackChunkName: "bundle.goal-detail" */ '../views/GoalDetailPage.vue'
       ),
   },
   {

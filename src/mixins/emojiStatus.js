@@ -1,4 +1,5 @@
-import { addSeconds, differenceInDays } from 'date-fns';
+import differenceInDays from 'date-fns/differenceInDays';
+import addSeconds from 'date-fns/addSeconds';
 
 export default {
   filters: {

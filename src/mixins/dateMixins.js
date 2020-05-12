@@ -1,4 +1,4 @@
-import { differenceInDays } from 'date-fns';
+import differenceInDays from 'date-fns/differenceInDays';
 import { timeStamp } from '@/shared/firebase';
 
 export default {
