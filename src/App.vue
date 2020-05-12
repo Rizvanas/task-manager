@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div v-if="user">
+    <div class="navigation" v-if="user">
       <NavBar @createGoal="displayGoalForm = true" />
       <NavBarTouch />
     </div>

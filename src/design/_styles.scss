@@ -8,7 +8,11 @@ html > body {
 }
 
 .main-section {
-  padding: 2rem 2rem;
+  margin: 0 1.3em;
+}
+
+.navigation {
+  margin-bottom: 1em;
 }
 
 input::-moz-focus-inner {
@@ -291,7 +295,7 @@ input::-moz-focus-inner {
 }
 
 .tile .fits-screen-height {
-  height: calc(100vh - #{$navbar-height} - 4.9rem);
+  height: calc(100vh - #{$navbar-height} - 5.5em);
 }
 
 .menu {
