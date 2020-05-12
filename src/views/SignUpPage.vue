@@ -170,12 +170,12 @@
 </template>
 
 <script>
-import { uniqueUsername, uniqueEmail } from '@/shared/validators';
 import { mapActions } from 'vuex';
+import { uniqueUsername, uniqueEmail } from '@/shared/validators';
 import { required, email, minLength } from 'vuelidate/lib/validators';
 
 export default {
-  name: 'SignUp',
+  name: 'SignUpPage',
   data() {
     0;
     return {

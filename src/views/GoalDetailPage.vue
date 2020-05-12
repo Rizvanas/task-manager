@@ -176,7 +176,7 @@ import { mapActions } from 'vuex';
 import goalMixins from '@/mixins/goalMixins';
 
 export default {
-  name: 'GoalDetail',
+  name: 'GoalDetailPage',
 
   props: {
     id: {

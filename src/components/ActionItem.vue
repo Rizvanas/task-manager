@@ -59,7 +59,7 @@ import emojiStatus from '@/mixins/emojiStatus';
 import { mapActions } from 'vuex';
 
 export default {
-  name: 'Action',
+  name: 'ActionItem',
   props: {
     action: {
       type: Object,

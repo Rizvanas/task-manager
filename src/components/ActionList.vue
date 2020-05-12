@@ -67,7 +67,7 @@
                   @update="addToUpdates"
                   @remove="addToDeletes"
                 />
-                <Action v-else :action="action" />
+                <ActionItem v-else :action="action" />
               </transition>
             </p>
           </li>
@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import Action from '@/components/action';
+import ActionItem from '@/components/ActionItem';
 import ActionForm from '@/components/ActionForm';
 import FinishedAction from '@/components/FinishedAction';
 import { mapActions } from 'vuex';
@@ -126,7 +126,7 @@ export default {
   name: 'ActionList',
 
   components: {
-    Action,
+    ActionItem,
     ActionForm,
     FinishedAction,
   },

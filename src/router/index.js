@@ -15,7 +15,7 @@ const routes = [
     meta: { requiresGuest: true },
     component: () =>
       import(
-        /* webpackChunkName: "bundle.login-signup" */ '../views/login.vue'
+        /* webpackChunkName: "bundle.login-signup" */ '../views/LoginPage.vue'
       ),
   },
   {
@@ -24,7 +24,7 @@ const routes = [
     meta: { requiresGuest: true },
     component: () =>
       import(
-        /* webpackChunkName: "bundle.login-signup" */ '../views/sign-up.vue'
+        /* webpackChunkName: "bundle.login-signup" */ '../views/SignUpPage.vue'
       ),
   },
   {
@@ -41,7 +41,7 @@ const routes = [
     name: 'Goals',
     meta: { requiresAuth: true },
     component: () =>
-      import(/* webpackChunkName: "bundle.goals" */ '../views/goals.vue'),
+      import(/* webpackChunkName: "bundle.goals" */ '../views/GoalsPage.vue'),
   },
   {
     path: '/goals/:id',
@@ -49,7 +49,9 @@ const routes = [
     props: true,
     meta: { requiresAuth: true },
     component: () =>
-      import(/* webpackChunkName: "bundle.goals" */ '../views/goal-detail.vue'),
+      import(
+        /* webpackChunkName: "bundle.goals" */ '../views/GoalDetailPage.vue'
+      ),
   },
   {
     path: '/profile',
