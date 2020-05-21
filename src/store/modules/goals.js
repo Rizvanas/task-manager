@@ -9,8 +9,7 @@ import {
 } from '@/shared/firebase';
 import { format, parse, addDays } from 'date-fns';
 import { displayDateFormat } from '@/shared/constants';
-
-import cloneDeep from 'lodash/cloneDeep';
+import { cloneDeep } from 'lodash';
 
 export default {
   namespaced: true,

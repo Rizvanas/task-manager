@@ -53,7 +53,7 @@ export default {
 }
 
 .ps {
-  max-height: 355px;
+  max-height: 313px;
 }
 
 .list-enter-active,

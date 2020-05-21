@@ -1,7 +1,6 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
-import 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
@@ -19,7 +18,6 @@ const db = firebase.firestore();
 
 export const firestore = firebase.firestore();
 export const auth = firebase.auth();
-export const storage = firebase.storage();
 export const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 export const goalsRef = db.collection('goals');
 export const usersRef = db.collection('users');

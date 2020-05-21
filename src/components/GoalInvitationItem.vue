@@ -23,7 +23,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-import cloneDeep from 'lodash/cloneDeep';
+import { cloneDeep } from 'lodash';
 
 export default {
   name: 'GoalInvitationItem',

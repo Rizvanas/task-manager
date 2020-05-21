@@ -210,7 +210,7 @@ export default {
 }
 
 .ps {
-  height: 435px;
+  height: 410px;
 }
 
 .list-enter-active,
