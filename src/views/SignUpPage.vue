@@ -1,5 +1,5 @@
 <template>
-  <section class="hero is-fullheight">
+  <section class="hero">
     <div class="hero-body">
       <div class="container">
         <div class="columns is-centered">
@@ -221,8 +221,8 @@ export default {
       this.isEmailSignUp = !this.isEmailSignUp;
     },
 
-    signUpWithEmail() {
-      this.signUpWithEmailAndPassword(this.form);
+    async signUpWithEmail() {
+      await this.signUpWithEmailAndPassword(this.form);
       this.$router.push('/');
     },
 

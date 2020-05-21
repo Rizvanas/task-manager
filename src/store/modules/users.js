@@ -99,8 +99,10 @@ export default {
 
     async fetchNonFriendUsers({ commit, rootState }) {
       const usersSnap = await usersRef.limit(50).get();
-      const users = usersSnap.docs;
+      const authId = rootState.auth.authUser['.key'];
+      const users = usersSnap.docs.filter(user => user.id !== authId);
       const friends = rootState.friends.items;
+
       friends.forEach(friend => {
         const userIndex = users.findIndex(user => user.id === friend.userId);
         if (userIndex >= 0) {

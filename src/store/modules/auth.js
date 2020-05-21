@@ -1,4 +1,5 @@
 import { auth, googleAuthProvider, usersRef } from '@/shared/firebase';
+import getRandomColor from '@/shared/colorHelpers';
 
 export default {
   namespaced: true,
@@ -53,6 +54,10 @@ export default {
       { dispatch },
       { email, password, username, avatar = null },
     ) {
+      const firstLetter = username.charAt(0);
+      const bgColor = getRandomColor();
+      const textColor = getRandomColor();
+      avatar = `https://via.placeholder.com/512/${bgColor}/${textColor}/?text=${firstLetter}`;
       return auth
         .createUserWithEmailAndPassword(email, password)
         .then(userCreds => {
