@@ -10,8 +10,11 @@
             <p class="action-text is-size-6 has-text-weight-bold">
               {{ clonedAction.title }}
             </p>
-            <p class="action-text is-size-7 has-text-weight-light">
-              In progress: {{ timeSpent }}
+            <p
+              v-if="isStarted"
+              class="action-text is-size-7 has-text-weight-light"
+            >
+              {{ actionSub }}
             </p>
           </div>
         </div>
@@ -47,6 +50,7 @@
 
 <script>
 import emojiStatus from '@/mixins/emojiStatus';
+import actionMixins from '@/mixins/action-mixins';
 import { mapActions } from 'vuex';
 
 export default {
@@ -59,7 +63,7 @@ export default {
     },
   },
 
-  mixins: [emojiStatus],
+  mixins: [emojiStatus, actionMixins],
 
   methods: {
     ...mapActions('actions', ['updateAction']),
@@ -84,25 +88,6 @@ export default {
         updatedAction: this.clonedAction,
       });
       this.$emit('actionStateChange', this.clonedAction);
-    },
-  },
-
-  computed: {
-    isStarted() {
-      return this.clonedAction.lastActivationTime !== undefined;
-    },
-
-    clonedAction() {
-      return { ...this.action, id: this.action.id };
-    },
-
-    timeSpent() {
-      const seconds = this.clonedAction.timeTaken;
-      const hours = Math.trunc(seconds / 3600);
-      const minutes = Math.trunc((seconds % 3600) / 60);
-      return hours === 0
-        ? `${minutes} minutes`
-        : `${hours}hours ${minutes}minutes`;
     },
   },
 };

@@ -56,6 +56,7 @@
 
 <script>
 import emojiStatus from '@/mixins/emojiStatus';
+import actionMixins from '@/mixins/action-mixins';
 import { mapActions } from 'vuex';
 
 export default {
@@ -67,7 +68,7 @@ export default {
     },
   },
 
-  mixins: [emojiStatus],
+  mixins: [emojiStatus, actionMixins],
 
   methods: {
     ...mapActions('actions', ['updateAction']),
@@ -96,29 +97,9 @@ export default {
   },
 
   computed: {
-    isStarted() {
-      return this.action.lastActivationTime !== undefined;
-    },
-
     assignedUser() {
       const userId = this.clonedAction.assignedUserId;
       return this.$store.state.users.items.find(user => user.id === userId);
-    },
-
-    clonedAction() {
-      return { ...this.action, id: this.action.id };
-    },
-
-    actionSub() {
-      const subtitle = this.action.isActive ? 'In progress ' : 'Paused: ';
-      return `${subtitle} ${this.timeSpent}`;
-    },
-
-    timeSpent() {
-      const seconds = this.clonedAction.timeTaken;
-      const hours = Math.trunc(seconds / 3600);
-      const minutes = Math.trunc((seconds % 3600) / 60);
-      return hours === 0 ? `${minutes} m` : `${hours}h ${minutes}m`;
     },
   },
 };
